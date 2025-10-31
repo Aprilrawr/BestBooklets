@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Booklet Page Planner</title>
+<style>
+  :root{
+    --bg:#f7f7fb;
+    --panel:#ffffff;
+    --ink:#0f172a;
+    --muted:#475569;
+    --line:#cbd5e1;
+    --pill:#9ca3af;
+    --pillText:#fff;
+    --accent:#2563eb;
+    --warn:#ef4444;
+    --ok:#16a34a;
+    --amber:#f59e0b;
+  }
+  * { box-sizing: border-box; }
+  body{ margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji"; color:var(--ink); background:linear-gradient(180deg, var(--bg), #eef0f5 60%); }
+  .app{ display:grid; grid-template-columns: minmax(520px,1fr) 380px; gap:24px; padding:20px; min-height:100vh; }
+  @media (max-width: 980px){ .app{ grid-template-columns: 1fr; } }
+  .board, .side{ background:var(--panel); border-radius:14px; box-shadow: 0 8px 24px rgba(0,0,0,.05); padding:16px; }
+  .board{ display:flex; flex-direction:column; }
+  .side{ display:flex; flex-direction:column; gap:14px; }
+  h1{ font-size:22px; margin:0 0 6px; display:flex; align-items:center; gap:10px; }
+  .toolbar{ display:flex; gap:10px; flex-wrap: wrap; align-items:center; margin:8px 0 12px; }
+  .toolbar label{ font-size:14px; color: var(--muted); }
+  .toolbar input[type="number"], .text{ width: 180px; padding: 10px 12px; border:1px solid var(--line); border-radius:12px; font-weight:700; font-size:16px; }
+  button{ appearance:none; border:none; cursor:pointer; padding: 12px 16px; border-radius: 999px; font-weight:800; font-size:16px; background:var(--accent); color:white; box-shadow: 0 2px 0 rgba(0,0,0,.04); }
+  button.secondary{ background:#fff; color:var(--ink); border:1px solid var(--line); }
+  button.ghost{ background:transparent; border:1px dashed var(--line); color:var(--muted); }
+  button.small{ padding:8px 12px; font-weight:700; font-size:14px; }
+  .btn-mini{ padding:4px 8px; font-size:12px; font-weight:800; border-radius:999px; border:1px solid transparent; }
+  .btn-green{ background:var(--ok); color:#fff; }
+  .btn-yellow{ background:var(--amber); color:#111; }
+
+  /* compact circular action buttons */
+  .bubbleBtn{ width:28px; height:28px; padding:0; border-radius:999px; display:inline-grid; place-items:center; line-height:1; font-size:16px; box-shadow: 0 1px 0 rgba(0,0,0,.08); }
+  .clear-btn{ background:#c1272d; color:#fff; }
+  .spread-btn{ background:var(--ok); color:#fff; }
+
+  /* scrolling containers */
+  .boardScroll{ max-height: calc(100vh - 260px); overflow:auto; border-radius:12px; }
+  .tipsbar{ position: sticky; top: 0; z-index: 3; background:#fff; border:1px solid var(--line); border-bottom:0; border-radius:12px 12px 0 0; padding:10px 12px; }
+  .tipsbar .hint{ display:block; }
+
+  .grid{ display:grid; grid-template-columns: repeat(2, minmax(240px, 1fr)); border:1px solid var(--line); border-radius: 0 0 12px 12px; background:#fff; }
+  .cell{ position:relative; min-height: 140px; border-top:1px solid var(--line); border-left:1px solid var(--line); padding: 34px 10px 14px; }
+  .cell:nth-child(-n+2){ border-top:none; }
+  .cell:nth-child(2n+1){ border-left:none; }
+  .cell .page{ position:absolute; left:10px; top:6px; font-size: 13px; font-weight:800; color:var(--muted); }
+  .cell .clear{ position:absolute; right:8px; top:6px; display:none; z-index:12; width:28px; height:28px; padding:0; border-radius:999px; font-size:18px; font-weight:900; line-height:1; }
+  .cell.has-label .clear{ display:block; }
+  .cell .actions{ position:absolute; right:40px; top:6px; display:flex; gap:6px; z-index:10; }
+
+  /* slot layouts */
+  .slot{ display:grid; gap:10px; align-items:stretch; justify-items:stretch; min-height:64px; position:relative; overflow:visible; }
+  .slot.count-1{ grid-template-columns: 1fr; grid-auto-rows: minmax(56px, auto); }
+  .slot.count-2{ grid-template-columns: 1fr; grid-auto-rows: minmax(50px, auto); }
+  .slot.count-3{ grid-template-columns: 1fr 1fr; grid-template-rows: auto auto; grid-template-areas: 'wide wide' 'q1 q2'; }
+  .slot.count-4{ grid-template-columns: 1fr; grid-auto-rows: minmax(44px, auto); }
+
+  /* spanning across facing page */
+  .tag.spanning{ position:absolute; top:0; left:0; width:200%; z-index:1; }
+  .tag.spanning[data-dir="prev"]{ left:-100%; }
+
+  /* bubble pills for tags everywhere (pages + pool) */
+  #pool{ display:flex; flex-direction:column; gap:8px; overflow:auto; max-height: calc(100vh - 360px); padding-right:6px; }
+  #pool .tag,
+  .slot .tag{ display:inline-flex; align-items:center; gap:10px; padding: 12px 16px; border-radius: 999px; background:#f1f5f9; color:#4b5563; border:1px solid var(--line); cursor:grab; user-select:none; -webkit-user-select:none; -ms-user-select:none; touch-action: manipulation; font-weight:800; letter-spacing:.2px; box-shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 2px 0 rgba(0,0,0,.04); }
+
+  .slot.count-3 .tag.pos-wide{ grid-area: wide; }
+  .slot.count-3 .tag.pos-q1{ grid-area: q1; }
+  .slot.count-3 .tag.pos-q2{ grid-area: q2; }
+
+  .tag:active{ cursor:grabbing; }
+  .tag .x{ display:inline-grid; place-items:center; width:20px; height:20px; border-radius:50%; background: rgba(255,255,255,.25); font-size: 12px; font-weight: 900; line-height: 1; pointer-events:auto; }
+  .tag .mini{ margin-left:6px; }
+  .tag.selected{ outline:3px solid var(--accent); outline-offset:2px; }
+  .tag[data-from="cell"]{ background:#f1f5f9; color:#4b5563; border:1px solid var(--line); }
+
+  .size-1{ font-size:18px; padding:14px 18px; }
+  .size-2{ font-size:16px; padding:12px 16px; }
+  .size-3-wide{ font-size:16px; padding:12px 16px; }
+  .size-3-small{ font-size:14px; padding:10px 14px; }
+  .size-4{ font-size:14px; padding:10px 14px; }
+
+  .hint{ font-size:14px; color:var(--muted); }
+  .section-title{ font-size:13px; font-weight:800; color:#374151; text-transform:uppercase; letter-spacing:.04em; }
+  .side hr{ border:0; border-top:1px solid var(--line); margin: 6px 0; }
+  .pair{ display:flex; gap:10px; flex-wrap: wrap; align-items:center; }
+  .footer-note{ font-size:12px; color:var(--muted); margin-top:auto; }
+  .danger{ color: var(--warn); border-color: #fecaca !important; }
+  .kbd{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: 12px; background:#f3f4f6; padding:2px 6px; border-radius:6px; border:1px solid #e5e7eb; }
+</style>
+</head>
+<body>
+  <div class="app">
+    <section class="board" aria-label="Booklet board">
+      <h1>Booklet Page Planner</h1>
+      <div class="toolbar">
+        <label for="pageCount"><strong>Σύνολο σελίδων (μαζί με το εξώφυλλο):</strong></label>
+        <input id="pageCount" type="number" min="2" step="2" value="82" title="Total number of pages (even number, Page 1 is cover)"/>
+        <button id="applyPages" class="small secondary" title="Rebuild grid with this page count">Apply</button>
+        <button id="addSpread" class="small">+ Add spread</button>
+        <button id="removeSpread" class="small secondary">− Remove spread</button>
+        <span class="hint">Η προβολή ξεκινά από <b>Σελίδα 1</b>. Drag on desktop or <b>tap a label then tap a page</b> on mobile.</span>
+      </div>
+
+      <div class="boardScroll">
+        <div class="tipsbar">
+          <ul class="hint" style="padding-left:16px; margin:0;">
+            <li><b>Κινητό:</b> Πατήστε ένα αυτοκόλλητο για επιλογή και μετά πατήστε μια σελίδα για να το τοποθετήσετε ή να το μετακινήσετε.</li>
+            <li>Διπλό κλικ σε αυτοκόλλητο για μετονομασία. Κλικ στο <span class="kbd">×</span> για να επιστρέψει στην λίστα.</li>
+            <li>Δεξί κλικ στη σελίδα (ή Clear) για καθαρισμό. Max <b>4</b> ονόματα ανά σελίδα.</li>
+            <li><b>Spread:</b> Όταν μία ετικέτα είναι μόνη της σε σελίδα, πατήστε <span class="kbd">Spread</span> για να εμφανιστεί και στην δίπλα σελίδα.</li>
+            <li><b>Διάταξη 3:</b> Πατήστε το κίτρινο <span class="kbd">1/2</span> δίπλα στην ετικέτα που θέλετε να γίνει 1/2. Οι άλλες δύο γίνονται 1/4.</li>
+          </ul>
+        </div>
+        <div id="grid" class="grid" role="grid" aria-label="Pages grid"></div>
+      </div>
+
+      <div class="toolbar" style="margin-top:12px">
+        <button id="exportBtn" class="small">Export JSON</button>
+        <button id="importBtn" class="small secondary">Import JSON</button>
+        <button id="clearAll" class="small ghost danger">Clear all</button>
+        <button id="hardReset" class="small ghost">Hard reset (local)</button>
+        <span class="hint">Αποθηκεύει αυτόματα στον φυλλομετρητή σας (<span class="kbd">localStorage</span>).</span>
+      </div>
+    </section>
+
+    <aside class="side" aria-label="Names palette">
+      <div>
+        <div class="section-title" style="margin-bottom:8px;">Available names</div>
+        <div id="pool" aria-live="polite"></div>
+        <div class="pair">
+          <button id="addName" class="small secondary">+ Add new</button>
+          <button id="resetNames" class="small ghost">Reset to provided</button>
+        </div>
+        <div id="newNameForm" class="pair" style="display:none;">
+          <input id="newNameInput" type="text" class="text" placeholder="Enter name…"/>
+          <button id="saveNewName" class="small">Add</button>
+          <button id="cancelNewName" class="small secondary" type="button">Cancel</button>
+        </div>
+      </div>
+      <hr/>
+      <p class="footer-note">Prototype — local-only save for now.</p>
+    </aside>
+  </div>
+
+<script>
+'use strict';
+(function(){
+  // ---------- DOM ----------
+  var poolEl = document.getElementById('pool');
+  var gridEl = document.getElementById('grid');
+  var pageCountInput = document.getElementById('pageCount');
+  var applyPagesBtn = document.getElementById('applyPages');
+  var addSpreadBtn = document.getElementById('addSpread');
+  var removeSpreadBtn = document.getElementById('removeSpread');
+  var exportBtn = document.getElementById('exportBtn');
+  var importBtn = document.getElementById('importBtn');
+  var clearAllBtn = document.getElementById('clearAll');
+  var hardResetBtn = document.getElementById('hardReset');
+  var addNameBtn = document.getElementById('addName');
+  var resetNamesBtn = document.getElementById('resetNames');
+  var newNameForm = document.getElementById('newNameForm');
+  var newNameInput = document.getElementById('newNameInput');
+  var saveNewNameBtn = document.getElementById('saveNewName');
+  var cancelNewNameBtn = document.getElementById('cancelNewName');
+
+  // ---------- Config ----------
+  var STORAGE_KEY = 'booklet-planner-v9c';
+  var START_PAGE = 1;              // numbering starts from 1
+  var MAX_PER_PAGE = 4;
+
+  // Provided labels
+  var PROVIDED = [
+    "Deos","Resorts Mykonos","Unmistakably Katikies","Nammos","Kalesma","Once in Mykonos","Epic Blue","San Marco","Semeli Hotel","Semeli Coast","Ornos Beach","Casa Del Mar","Divine Property","Andronikos Hotel","Theoxenia","Elia","Mykonos Dove","Million Stars","Ftelia Black Villas","Asty Mykonos","Kivotos","Omnia","Petra Blu","Salty Houses","Dionysos Hotel","Is Mykonos","Villa Aegeas","Ataraxia","MykonosVillas","Zinas","MykonosAmmosVillas","Mykonos Dream Villas","Katikies Villas","Gofas","Cavo Paradiso","Nammos World","Nammos Village","Principote","SantAnna","Paraj","Aperanto Galazio","beefbar","PereUbu","Dsquared2","Queen","Queen Saloni","Semeli Group","Mosaic","Katrin","Blublu","Roca","Missoni","Cape Ftelia","Pnoe","Beauty World","Baboulas","Fiora Super Market","Portioli","OneExchange","Cinema","Costa Lekka","GMT Voyager","Premium Legal","MPOS","Priveon","Traffic","Autopower","Nilina","Elixir","Lionsbay","Dolphin","Advanced VIP","Yaloou"
+  ];
+
+  // ---------- State ----------
+  var state = {
+    pages: 82,          // total pages (including cover)
+    names: [],          // {id, text}
+    assignments: {},    // pageNumber -> [ids]
+    spreads: {},        // pageNumber -> {id, dir}
+    meta: { start: START_PAGE }
+  };
+
+  // ---------- Utils ----------
+  function uid(){ return Math.random().toString(36).slice(2,9); }
+  function byId(id){ for(var i=0;i<state.names.length;i++){ if(state.names[i].id===id) return state.names[i]; } return null; }
+  function arrRemove(arr, id){ var i = arr.indexOf(id); if(i>-1) arr.splice(i,1); }
+
+  // ---------- Migration / Repair ----------
+  function migrateState(s){
+    if(!s || typeof s !== 'object') return null;
+    if(!Array.isArray(s.names) || s.names.length===0){
+      s.names = PROVIDED.map(function(t){ return { id: uid(), text: t }; });
+      s.assignments = {}; // avoid dangling ids
+      s.spreads = {};
+    }
+    if(!s.assignments || typeof s.assignments !== 'object'){ s.assignments = {}; }
+    if(!s.spreads || typeof s.spreads !== 'object'){ s.spreads = {}; }
+    if(typeof s.pages !== 'number' || s.pages < 2){ s.pages = 82; }
+    return s;
+  }
+
+  // ---------- Rendering ----------
+  function buildGrid(){
+    try{
+      var n = Number(pageCountInput.value);
+      var total = Math.max(2, n - n % 2); // keep even
+      state.pages = total;
+      gridEl.innerHTML = '';
+
+      // Rebuild pool tags so assigned items can be re-placed after grid rebuild
+      try{
+        poolEl.innerHTML = '';
+        for(var _i=0; _i<state.names.length; _i++){
+          var _n = state.names[_i];
+          poolEl.appendChild(makeTag(_n.text, _n.id));
+        }
+      }catch(e){}
+
+      // Clean out-of-range assignments
+      for(var k in state.assignments){
+        var p = Number(k);
+        if(p < START_PAGE || p > total){ delete state.assignments[k]; }
+      }
+      // clean invalid spreads
+      for(var sk in state.spreads){
+        var sp = Number(sk);
+        if(sp < START_PAGE || sp > total){ delete state.spreads[sk]; continue; }
+        var dirX = state.spreads[sk].dir || 'next';
+        var neighX = (dirX==='next')? sp+1 : sp-1;
+        if(neighX < START_PAGE || neighX > total){ delete state.spreads[sk]; }
+      }
+
+      // --- build all visible page cells ---
+      for(var p2=START_PAGE; p2<=total; p2++){
+        var cell = document.createElement('div');
+        cell.className = 'cell';
+        cell.setAttribute('data-page', String(p2));
+        cell.setAttribute('role','gridcell');
+        cell.innerHTML = ''+
+          '<div class="page">Σελίδα '+p2+'</div>'+
+          '<button class="clear bubbleBtn clear-btn" title="Καθαρισμός">×</button>'+
+          '<div class="actions"></div>'+
+          '<div class="slot"></div>';
+        attachCellDnD(cell);
+        attachCellClick(cell);
+        gridEl.appendChild(cell);
+
+        // Render any existing assignments in order
+        var ids = getAssignments(p2);
+        for(var j=0;j<ids.length;j++){
+          var id = ids[j];
+          var tag = document.querySelector('.tag[data-id="'+id+'"]');
+          if(tag) placeTagInCell(tag, cell, false, true);
+        }
+        updateCellLayout(cell);
+      }
+
+      save();
+    }catch(err){ console.error('buildGrid error', err); }
+  }
+
+  function renderPool(){
+    try{
+      poolEl.innerHTML = '';
+      for(var i=0;i<state.names.length;i++){
+        var n = state.names[i];
+        var isAssigned = false;
+        for(var key in state.assignments){
+          var list = state.assignments[key];
+          if(Array.isArray(list) && list.indexOf(n.id)>-1){ isAssigned = true; break; }
+        }
+        var tag = makeTag(n.text, n.id);
+        if(!isAssigned){ poolEl.appendChild(tag); }
+      }
+      // Safety: if pool ended up empty AND no tags exist anywhere, repopulate
+      if(poolEl.children.length===0 && document.querySelectorAll('.cell .tag').length===0){
+        state.names = PROVIDED.map(function(t){ return { id: uid(), text: t }; });
+        renderPool();
+        save();
+      }
+    }catch(err){ console.error('renderPool error', err); }
+  }
+
+  function makeTag(text, id){
+    if(!id) id = uid();
+    var tag = document.createElement('div');
+    tag.className = 'tag size-1';
+    tag.draggable = true; // desktop dnd
+    tag.setAttribute('data-id', id);
+    tag.title = 'Drag (desktop) or tap to select (mobile)';
+    tag.innerHTML = '<span class="label"></span><span class="x" title="Send back to pool">×</span>';
+    tag.querySelector('.label').textContent = text;
+
+    // rename
+    tag.addEventListener('dblclick', function(){
+      var current = tag.querySelector('.label').textContent;
+      var next = prompt('Rename label', current);
+      if(next && next.trim()){
+        tag.querySelector('.label').textContent = next.trim();
+        var rec = byId(tag.getAttribute('data-id'));
+        if(rec){ rec.text = next.trim(); }
+        save();
+      }
+    });
+    // send back to pool
+    tag.querySelector('.x').addEventListener('click', function(e){ e.stopPropagation(); moveTagToPool(tag); save(); });
+
+    // --- Desktop drag & drop ---
+    tag.addEventListener('dragstart', function(e){ e.dataTransfer.setData('text/plain', tag.getAttribute('data-id')); e.dataTransfer.effectAllowed = 'move'; tag.classList.add('dragging'); clearSelection(); });
+    tag.addEventListener('dragend', function(){ tag.classList.remove('dragging'); });
+
+    // --- Mobile-friendly: tap-to-place selection ---
+    tag.addEventListener('click', function(e){ e.preventDefault(); toggleSelection(tag); });
+
+    return tag;
+  }
+
+  function getCell(i){ return gridEl.querySelector('.cell[data-page="'+i+'"]'); }
+  function getAssignments(page){ return state.assignments[page] || (state.assignments[page] = []); }
+
+  function attachCellDnD(cell){
+    cell.addEventListener('dragover', function(e){ e.preventDefault(); cell.classList.add('drag-over'); e.dataTransfer.dropEffect = 'move'; });
+    cell.addEventListener('dragleave', function(){ cell.classList.remove('drag-over'); });
+    cell.addEventListener('drop', function(e){ e.preventDefault(); cell.classList.remove('drag-over'); var id = e.dataTransfer.getData('text/plain'); var tag = document.querySelector('.tag[data-id="'+id+'"]'); if(!tag) return; dropTagIntoCell(tag, cell); });
+  }
+
+  function attachCellClick(cell){
+    cell.addEventListener('click', function(){ if(!selectedTag) return; dropTagIntoCell(selectedTag, cell); clearSelection(); });
+    cell.querySelector('.clear').addEventListener('click', function(){ clearCell(cell); });
+    cell.addEventListener('contextmenu', function(e){ e.preventDefault(); clearCell(cell); });
+  }
+
+  function neighborOf(page){ return (page % 2 === 0) ? page - 1 : page + 1; }
+
+  // Find active spread that locks a given page (either as anchor or neighbor)
+  function spreadInfoForPage(page){
+    for(var a in state.spreads){
+      var anchor = Number(a);
+      var info = state.spreads[a];
+      var neigh = (info.dir === 'next') ? anchor + 1 : anchor - 1;
+      if(page === anchor || page === neigh){
+        return { anchor: anchor, id: info.id, dir: info.dir, neighbor: neigh };
+      }
+    }
+    return null;
+  }
+
+  function dropTagIntoCell(tag, cell){
+    var destPage = Number(cell.getAttribute('data-page'));
+    var ids = getAssignments(destPage);
+    var fromCell = tag.closest('.cell');
+
+    // Prevent placing into pages that are currently part of a spread (lock both pages)
+    var spInfo = spreadInfoForPage(destPage);
+    if(spInfo){
+      // allow only no-op move of the same anchor tag within its anchor page
+      var sameAnchor = (spInfo.anchor === destPage) && (tag.getAttribute('data-id') === spInfo.id);
+      if(!sameAnchor){
+        alert('Αυτό το διδύμο σελίδων είναι κλειδωμένο λόγω spread. Απενεργοποιήστε το με το ↔ πρώτα.');
+        return;
+      }
+    }
+
+    if(ids.length >= MAX_PER_PAGE){
+      if(fromCell && fromCell !== cell){
+        // swap with the first tag of the target cell
+        var firstId = ids[0];
+        var firstTag = cell.querySelector('.tag[data-id="'+firstId+'"]');
+        if(firstTag){ placeTagInCell(firstTag, fromCell, false); }
+        // now we have space
+      } else {
+        alert('This page already has 4 names. Clear or move one first.');
+        return;
+      }
+    }
+    placeTagInCell(tag, cell);
+    save();
+  }
+
+  function removeFromAssignments(id){
+    for(var p in state.assignments){
+      var list = state.assignments[p];
+      if(Array.isArray(list) && list.indexOf(id)>-1){
+        arrRemove(list, id);
+        var cell = getCell(Number(p));
+        if(cell) updateCellLayout(cell);
+        break;
+      }
+    }
+  }
+
+  function placeTagInCell(tag, cell, focus, skipState){
+    if(typeof focus === 'undefined') focus = true;
+    var prevCell = tag.closest('.cell');
+    if(prevCell){
+      var prevPageNum = Number(prevCell.getAttribute('data-page'));
+      var prevIds = getAssignments(prevPageNum);
+      arrRemove(prevIds, tag.getAttribute('data-id'));
+      // remove spread if this tag was spanning from its previous page
+      if(state.spreads[prevPageNum] && state.spreads[prevPageNum].id === tag.getAttribute('data-id')){ delete state.spreads[prevPageNum]; }
+      prevCell.classList.toggle('has-label', prevIds.length>0);
+      updateCellLayout(prevCell);
+    }
+
+    var ids = getAssignments(Number(cell.getAttribute('data-page')));
+    if(!skipState){ ids.push(tag.getAttribute('data-id')); }
+
+    cell.querySelector('.slot').appendChild(tag);
+    cell.classList.add('has-label');
+    tag.setAttribute('data-from', 'cell');
+
+    updateCellLayout(cell);
+    if(focus && tag && typeof tag.focus === 'function') { try{ tag.focus(); }catch(_){} }
+  }
+
+  function updateCellLayout(cell){
+    var slot = cell.querySelector('.slot');
+    var tags = Array.from(slot.querySelectorAll('.tag'));
+    var count = tags.length;
+    slot.className = 'slot count-' + (count||1);
+    var pageNum = Number(cell.getAttribute('data-page'));
+    if(count !== 1 && state.spreads[pageNum]){ delete state.spreads[pageNum]; }
+
+    // clear action buttons
+    var actions = cell.querySelector('.actions'); if(actions) actions.innerHTML = '';
+    for(var k=0;k<tags.length;k++){
+      var t = tags[k];
+      t.classList.remove('size-1','size-2','size-3-wide','size-3-small','size-4','pos-wide','pos-q1','pos-q2');
+      var old = t.querySelector('.mini'); if(old) old.remove();
+    }
+
+    if(count === 0){ return; }
+
+    if(count === 1){
+      // layout
+      tags[0].classList.add('size-1');
+      // apply spanning if exists
+      var span = state.spreads[pageNum];
+      if(span && span.id === tags[0].getAttribute('data-id')){ tags[0].classList.add('spanning'); tags[0].setAttribute('data-dir', span.dir || 'next'); }
+      else { tags[0].classList.remove('spanning'); tags[0].removeAttribute('data-dir'); }
+      // if neighbor has content, cancel span
+      var neighP = neighborOf(pageNum); var neighCell = getCell(neighP); if(neighCell && (neighCell.querySelectorAll('.tag').length>0) && state.spreads[pageNum]){ delete state.spreads[pageNum]; tags[0].classList.remove('spanning'); tags[0].removeAttribute('data-dir'); }
+      // spread button
+      var btn = document.createElement('button');
+      btn.className = 'btn-mini bubbleBtn spread-btn';
+      btn.textContent = '↔';
+      btn.title = 'Span this label across the facing page';
+      btn.addEventListener('click', function(){
+        var page = Number(cell.getAttribute('data-page'));
+        var currentId = tags[0].getAttribute('data-id');
+        var active = state.spreads[page];
+        // Toggle OFF if already spanning this tag
+        if(active && active.id === currentId){
+          delete state.spreads[page];
+          updateCellLayout(cell);
+          save();
+          return;
+        }
+        // Otherwise, enable span. Ensure neighbor is clear and lock both pages
+        var dir = (page % 2 === 1) ? 'next' : 'prev';
+        var neigh = neighborOf(page);
+        var neighCell = getCell(neigh); if(!neighCell) return;
+        clearCell(neighCell); // clear opposite page to guarantee space/lock
+        state.spreads[page] = { id: currentId, dir: dir };
+        updateCellLayout(cell);
+        save();
+      });
+      if(actions) actions.appendChild(btn);
+    }
+    else if(count === 2){
+      for(var a=0;a<tags.length;a++){ tags[a].classList.add('size-2'); }
+    }
+    else if(count === 3){
+      // ensure one is wide (index 0)
+      tags[0].classList.add('size-3-wide','pos-wide');
+      if(tags[1]) tags[1].classList.add('size-3-small','pos-q1');
+      if(tags[2]) tags[2].classList.add('size-3-small','pos-q2');
+      // add yellow promote buttons
+      var slotEl = cell.querySelector('.slot');
+      tags.forEach(function(t, idx){
+        var b = document.createElement('button');
+        b.className = 'btn-mini btn-yellow mini';
+        b.textContent = (idx===0)? '1/2' : '1/4';
+        b.title='Make this the 1/2 banner';
+        b.addEventListener('click', function(){
+          var p = Number(cell.getAttribute('data-page'));
+          var ids = getAssignments(p);
+          var id = t.getAttribute('data-id');
+          var i = ids.indexOf(id);
+          if(i>0){ ids.splice(i,1); ids.unshift(id); }
+          if(slotEl && slotEl.firstChild !== t){ slotEl.insertBefore(t, slotEl.firstChild); }
+          updateCellLayout(cell); save();
+        });
+        t.appendChild(b);
+      });
+    }
+    else { // 4 -> one per row
+      for(var b2=0;b2<tags.length;b2++){ tags[b2].classList.add('size-4'); }
+    }
+  }
+
+  function moveTagToPool(tag){
+    removeFromAssignments(tag.getAttribute('data-id'));
+    var prevCell = tag.closest('.cell');
+    if(prevCell){ prevCell.classList.toggle('has-label', getAssignments(Number(prevCell.getAttribute('data-page'))).length>0); }
+    poolEl.appendChild(tag); tag.setAttribute('data-from','pool');
+  }
+
+  function clearCell(cell){
+    var pageNum = Number(cell.getAttribute('data-page'));
+    var ids = getAssignments(pageNum).slice();
+    for(var i=0;i<ids.length;i++){ var id = ids[i]; var tag = cell.querySelector('.tag[data-id="'+id+'"]'); if(tag) moveTagToPool(tag); }
+    state.assignments[String(pageNum)] = [];
+    // remove spread if this page is anchor or neighbor of any spread
+    if(state.spreads[pageNum]){ delete state.spreads[pageNum]; }
+    else{
+      for(var a in state.spreads){
+        var info = state.spreads[a];
+        var neigh = (info.dir==='next')? Number(a)+1 : Number(a)-1;
+        if(neigh === pageNum){ delete state.spreads[a]; break; }
+      }
+    }
+    updateCellLayout(cell);
+    cell.classList.remove('has-label');
+    save();
+  }
+
+  // Selection helpers (mobile)
+  var selectedTag = null;
+  function toggleSelection(tag){ if(selectedTag === tag){ clearSelection(); return; } clearSelection(); selectedTag = tag; tag.classList.add('selected'); }
+  function clearSelection(){ if(selectedTag){ selectedTag.classList.remove('selected'); selectedTag = null; } }
+
+  // ---------- Persistence (local only) ----------
+  function save(){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){} }
+  function load(){
+    var raw = null; try{ raw = localStorage.getItem(STORAGE_KEY); }catch(_){ }
+    if(!raw) return false;
+    try{
+      var s = migrateState(JSON.parse(raw));
+      if(!s) return false;
+      state = s; if(!state.meta) state.meta = { start: START_PAGE };
+      pageCountInput.value = String(state.pages);
+      buildGrid();
+      // rebuild tags
+      poolEl.innerHTML = '';
+      for(var i=0;i<state.names.length;i++){ poolEl.appendChild(makeTag(state.names[i].text, state.names[i].id)); }
+      renderPool();
+      // restore assignments in order
+      for(var page in state.assignments){
+        var list = state.assignments[page];
+        var cell = getCell(Number(page)); if(!cell || !Array.isArray(list)) continue;
+        for(var j=0;j<list.length;j++){ var id = list[j]; var tag = document.querySelector('.tag[data-id="'+id+'"]'); if(cell && tag) placeTagInCell(tag, cell, false, true); }
+        updateCellLayout(cell);
+      }
+      return true;
+    }catch(e){ console.warn('Failed to load state', e); }
+    return false;
+  }
+
+  function exportJSON(){ var data = JSON.stringify(state, null, 2); var blob = new Blob([data], {type:'application/json'}); var url = URL.createObjectURL(blob); var a = document.createElement('a'); var date = new Date().toISOString().slice(0,10); a.href = url; a.download = 'booklet-planner-'+date+'.json'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); }
+
+  function importJSON(){
+    var input = document.createElement('input'); input.type = 'file'; input.accept = 'application/json';
+    input.addEventListener('change', function(){ var file = (input.files && input.files[0]) ? input.files[0] : null; if(!file) return; var reader = new FileReader(); reader.onload = function(){ try{ var parsed = JSON.parse(String(reader.result)); if(!parsed || typeof parsed !== 'object') throw new Error('Invalid file'); state = migrateState(parsed); if(!state.meta) state.meta = { start: START_PAGE }; pageCountInput.value = String(state.pages || 82); buildGrid(); poolEl.innerHTML = ''; for(var i=0;i<state.names.length;i++){ var n = state.names[i]; poolEl.appendChild(makeTag(n.text, n.id)); } renderPool(); for(var page in state.assignments){ var list = state.assignments[page]; var cell = getCell(Number(page)); if(!cell) continue; for(var j=0;j<list.length;j++){ var id = list[j]; var tag = document.querySelector('.tag[data-id="'+id+'"]'); if(cell && tag) placeTagInCell(tag, cell, false, true); } updateCellLayout(cell); } save(); }catch(e){ alert('Could not import file.'); } }; reader.readAsText(file); });
+    input.click();
+  }
+
+  // ---------- Actions ----------
+  function applyAndSave(){ buildGrid(); save(); }
+  applyPagesBtn.addEventListener('click', applyAndSave);
+  addSpreadBtn.addEventListener('click', function(){ var next = Number(pageCountInput.value) + 2; pageCountInput.value = String(next); applyAndSave(); });
+  removeSpreadBtn.addEventListener('click', function(){ var next = Math.max(2, Number(pageCountInput.value) - 2); pageCountInput.value = String(next); applyAndSave(); });
+
+  exportBtn.addEventListener('click', exportJSON);
+  importBtn.addEventListener('click', importJSON);
+
+  clearAllBtn.addEventListener('click', function(){ if(!confirm('Clear all assignments on the board?')) return; var cells = gridEl.querySelectorAll('.cell'); for(var i=0;i<cells.length;i++){ clearCell(cells[i]); } state.assignments = {}; save(); });
+  hardResetBtn.addEventListener('click', function(){ if(!confirm('Hard reset local data? This clears labels & assignments on this device.')) return; try{ localStorage.removeItem(STORAGE_KEY); }catch(_){} state = { pages:82, names:[], assignments:{}, meta:{start:START_PAGE} }; state.names = PROVIDED.map(function(t){ return { id: uid(), text: t }; }); buildGrid(); renderPool(); save(); });
+
+  addNameBtn.addEventListener('click', function(){ newNameForm.style.display = 'flex'; newNameInput.value = ''; try{ newNameInput.focus(); }catch(_){} });
+  function commitNewName(){ var name = (newNameInput.value || '').trim(); if(!name) return; var rec = { id: uid(), text: name }; state.names.push(rec); poolEl.appendChild(makeTag(rec.text, rec.id)); newNameForm.style.display = 'none'; save(); }
+  saveNewNameBtn.addEventListener('click', commitNewName);
+  newNameInput.addEventListener('keydown', function(e){ if(e.key === 'Enter'){ commitNewName(); }});
+  cancelNewNameBtn.addEventListener('click', function(){ newNameForm.style.display = 'none'; });
+
+  resetNamesBtn.addEventListener('click', function(){
+    if(!confirm('Replace current available names with the provided list?')) return;
+    // send any occupied tags back to pool first
+    for(var page in state.assignments){ var cell = getCell(Number(page)); if(!cell) continue; var list = state.assignments[page]; for(var i=0;i<list.length;i++){ var id = list[i]; var tag = document.querySelector('.tag[data-id="'+id+'"]'); if(tag) moveTagToPool(tag); } state.assignments[page] = []; updateCellLayout(cell); }
+    state.names = PROVIDED.map(function(t){ return { id: uid(), text: t }; });
+    poolEl.innerHTML = '';
+    for(var i2=0;i2<state.names.length;i2++){ var n = state.names[i2]; poolEl.appendChild(makeTag(n.text, n.id)); }
+    save();
+  });
+
+  // ---------- Init ----------
+  function ensureNames(){ if(!state.names || !state.names.length){ state.names = PROVIDED.map(function(t){ return { id: uid(), text: t }; }); } }
+  ensureNames();
+  if(!load()){ buildGrid(); renderPool(); save(); }
+
+  // --------------- Tests ---------------
+  function assert(cond, msg){ if(cond){ console.log('✅', msg); } else { console.error('❌', msg); } }
+  function runTests(){
+    try{
+      var pages = Array.from(document.querySelectorAll('.cell .page'));
+      assert(pages.length === state.pages, 'Grid shows pages 1..N (count = total)');
+      assert(state.pages === 82, 'Default total pages is 82');
+      assert(state.names.length >= 70, 'Provided ~73 labels loaded');
+      var before = state.pages; var totalTagsBefore = document.querySelectorAll('#pool .tag, .cell .tag').length;
+      document.getElementById('addSpread').click();
+      assert(state.pages === before + 2, 'Add spread increments by 2');
+      var totalTagsAfterAdd = document.querySelectorAll('#pool .tag, .cell .tag').length;
+      assert(totalTagsAfterAdd === totalTagsBefore, 'Adding spreads does not lose tags');
+      document.getElementById('removeSpread').click();
+      assert(state.pages === before, 'Remove spread decrements by 2');
+      var totalTagsAfterRemove = document.querySelectorAll('#pool .tag, .cell .tag').length;
+      assert(totalTagsAfterRemove === totalTagsBefore, 'Removing spreads does not lose tags');
+
+      // --- Spread lock + toggle tests ---
+      var poolFirst = document.querySelector('#pool .tag');
+      var cell1 = getCell(1), cell2 = getCell(2);
+      dropTagIntoCell(poolFirst, cell1);
+      updateCellLayout(cell1);
+      var spreadBtn = cell1.querySelector('.spread-btn');
+      if(spreadBtn){ spreadBtn.click(); }
+      assert(!!state.spreads[1], 'Spread toggled ON on page 1');
+      // Try to place a different tag into page 2 (should be blocked)
+      var another = document.querySelector('#pool .tag');
+      var countBefore = getAssignments(2).length;
+      dropTagIntoCell(another, cell2);
+      assert(getAssignments(2).length === countBefore, 'Locked spread blocks drops on neighbor');
+      // Toggle OFF
+      var spreadBtn2 = cell1.querySelector('.spread-btn');
+      if(spreadBtn2){ spreadBtn2.click(); }
+      assert(!state.spreads[1], 'Spread toggled OFF on page 1');
+    }catch(e){ console.error('Test run error', e); }
+  }
+  setTimeout(runTests, 400);
+})();
+</script>
+</body>
+</html>
