@@ -265,6 +265,7 @@
       var label = tag.querySelector('.label'); if(!label) return;
       var cell = tag.closest('.cell');
       var inPool = !!tag.closest('#pool');
+      var isMobileView = window.matchMedia && window.matchMedia('(max-width: 900px)').matches;
       if(!cell && !inPool){
         label.style.fontSize = '';
         return;
@@ -279,20 +280,20 @@
       else if(tag.classList.contains('is-half')) kind = 'half';
 
       if(inPool){
-        var poolSize = 19;
-        if(len > 12) poolSize = 17;
-        if(len > 18) poolSize = 16;
-        if(len > 26) poolSize = 15;
-        if(len > 34) poolSize = 14;
+        var poolSize = isMobileView ? 12 : 19;
+        if(len > 12) poolSize = isMobileView ? 11 : 17;
+        if(len > 18) poolSize = isMobileView ? 10 : 16;
+        if(len > 26) poolSize = isMobileView ? 9.5 : 15;
+        if(len > 34) poolSize = isMobileView ? 9 : 14;
         label.style.fontSize = poolSize.toFixed(1) + 'px';
         return;
       }
 
       var cfg = {
-        spread: { base: 56, min: 34, max: 72, rightBoost: 1.16 },
-        single: { base: 44, min: 24, max: 62, rightBoost: 1.28 },
-        half: { base: 34, min: 20, max: 52, rightBoost: 1.4 },
-        quarter: { base: 22, min: 13, max: 40, rightBoost: 1.5 }
+        spread: isMobileView ? { base: 24, min: 14, max: 30, rightBoost: 1 } : { base: 56, min: 34, max: 72, rightBoost: 1.16 },
+        single: isMobileView ? { base: 20, min: 12, max: 26, rightBoost: 1 } : { base: 44, min: 24, max: 62, rightBoost: 1.28 },
+        half: isMobileView ? { base: 16, min: 10, max: 20, rightBoost: 1 } : { base: 34, min: 20, max: 52, rightBoost: 1.4 },
+        quarter: isMobileView ? { base: 12, min: 8, max: 14, rightBoost: 1 } : { base: 22, min: 13, max: 40, rightBoost: 1.5 }
       }[kind];
 
       var factor = 1;
@@ -300,6 +301,11 @@
       if(len > 18) factor *= 0.88;
       if(len > 26) factor *= 0.84;
       if(len > 36) factor *= 0.8;
+      if(isMobileView){
+        if(len > 10) factor *= 0.9;
+        if(len > 16) factor *= 0.86;
+        if(len > 22) factor *= 0.82;
+      }
 
       var size = cfg.base * factor * (isRight ? cfg.rightBoost : 1);
       if(size < cfg.min) size = cfg.min;
