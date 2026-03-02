@@ -26,14 +26,15 @@
   var saveNameBtn=document.getElementById('saveName');
   var cancelNameBtn=document.getElementById('cancelName');
 
-  var BOOKLET_KEY='mykonos';
-  var BOOKLET_TITLE='Mykonos Best';
+  var BOOKLET_KEY=getBookletKeyFromUrl();
+  var BOOKLET_TITLE=bookletTitleForKey(BOOKLET_KEY);
+  var DEFAULT_PAGES=defaultPagesForKey(BOOKLET_KEY);
   var STORAGE='booklet-v2-sortable-'+BOOKLET_KEY;
-  var SORT_STORAGE=STORAGE+'-sort';
+  var SORT_STORAGE=STORAGE+'-sort-v2';
   var API_STATE='/api/state?booklet='+encodeURIComponent(BOOKLET_KEY);
   var API_NOTIFY='/api/notify?booklet='+encodeURIComponent(BOOKLET_KEY);
   var MAX=4, START=1;
-  var labelSortMode='recent';
+  var labelSortMode='default';
   var saveTimer=null;
   var globalSyncTimer=null;
   var lastServerFingerprint='';
@@ -43,6 +44,54 @@
   var isUndoing=false;
 
   function uid(){return Math.random().toString(36).slice(2,9);}
+
+  function sanitizeBookletKey(raw){
+    var cleaned=(raw||'').toString().trim().toLowerCase().replace(/[^a-z0-9_-]/g,'');
+    return cleaned || 'mykonos';
+  }
+  function getBookletKeyFromUrl(){
+    try{
+      var params=new URLSearchParams(window.location.search||'');
+      return sanitizeBookletKey(params.get('booklet')||'mykonos');
+    }catch(_){
+      return 'mykonos';
+    }
+  }
+  function titleCaseWords(text){
+    return (text||'').split(/[-_\s]+/).filter(Boolean).map(function(part){
+      return part.charAt(0).toUpperCase()+part.slice(1);
+    }).join(' ');
+  }
+  function bookletTitleForKey(key){
+    var titles={
+      mykonos:'Mykonos Best',
+      santorini:'Santorini Best',
+      paros:'Paros Best',
+      'flying-to-greece':'Flying to Greece',
+      'best-destinations':'Best Destinations'
+    };
+    return titles[key] || (titleCaseWords(key)+' Best');
+  }
+  function defaultPagesForKey(key){
+    var defaults={
+      mykonos:82,
+      santorini:82,
+      paros:24,
+      'flying-to-greece':24,
+      'best-destinations':24
+    };
+    return Number(defaults[key]||82);
+  }
+  function updateTopNavActive(){
+    var items=[].slice.call(document.querySelectorAll('.topNav .navItem[data-booklet]'));
+    items.forEach(function(item){
+      var key=sanitizeBookletKey(item.getAttribute('data-booklet')||'');
+      var active=(key===BOOKLET_KEY);
+      item.classList.toggle('is-active', active);
+      if(active) item.setAttribute('aria-current','page');
+      else item.removeAttribute('aria-current');
+    });
+  }
 
   function updateFixedSidebarMetrics(){
     if(!topNavEl) return;
@@ -109,6 +158,7 @@
   function sortNamesForPool(names){
     var copy=(names||[]).slice();
     var mode=currentLabelSort();
+    if(mode==='default') return copy;
     if(mode==='az'){
       copy.sort(function(a,b){
         var at=((a&&a.text)||'').toLowerCase();
@@ -423,8 +473,46 @@
     "Portioli","OneExchange","Cinema","Costa Lekka","GMT Voyager","Premium Legal","MPOS","Priveon","Traffic","Autopower",
     "Nilina","Elixir","Lionsbay","Dolphin","Advanced VIP","Yaloou"
   ];
+  var PROVIDED_SET=(function(){
+    var map={};
+    for(var i=0;i<PROVIDED.length;i++) map[PROVIDED[i]]=true;
+    return map;
+  })();
 
-  var state={pages:82,names:[],assignments:{},spreads:{},layout3:{}};
+  function defaultNamesForBooklet(){
+    if(BOOKLET_KEY==='mykonos') return PROVIDED.slice();
+    return [];
+  }
+
+  function stripForeignLabelsFromState(){
+    if(!Array.isArray(state.names)) state.names=[];
+
+    var removed={};
+    state.names=state.names.filter(function(rec){
+      var labelBooklet=(rec && rec.bookletKey) ? sanitizeBookletKey(rec.bookletKey) : BOOKLET_KEY;
+      var drop=labelBooklet!==BOOKLET_KEY;
+      if(drop && rec.id) removed[rec.id]=true;
+      return !drop;
+    });
+
+    if(!Object.keys(removed).length) return;
+
+    if(state.assignments && typeof state.assignments==='object'){
+      Object.keys(state.assignments).forEach(function(key){
+        var arr=state.assignments[key];
+        if(Array.isArray(arr)) state.assignments[key]=arr.filter(function(id){ return !removed[id]; });
+      });
+    }
+
+    if(state.spreads && typeof state.spreads==='object'){
+      Object.keys(state.spreads).forEach(function(key){
+        var info=state.spreads[key];
+        if(info && removed[info.id]) delete state.spreads[key];
+      });
+    }
+  }
+
+  var state={pages:DEFAULT_PAGES,names:[],assignments:{},spreads:{},layout3:{}};
 
   function getThreeBottom(page){
     return !!(state.layout3 && state.layout3[page]);
@@ -460,15 +548,24 @@
       var raw=localStorage.getItem(STORAGE); if(!raw) return false;
       var s=JSON.parse(raw);
       if(!s.names||!Array.isArray(s.names)||!s.names.length){
-        s.names=PROVIDED.map(function(t,idx){return{id:uid(),text:t,isNew:false,createdAt:idx+1};});
+        s.names=defaultNamesForBooklet().map(function(t,idx){return{id:uid(),text:t,isNew:false,createdAt:idx+1,bookletKey:BOOKLET_KEY};});
         s.assignments={}; s.spreads={};
       } else {
-        s.names=s.names.map(function(n){
-          return {id:n.id,text:n.text,isNew:!!n.isNew,createdAt:Number(n.createdAt)||0};
+        s.names=s.names.map(function(n,idx){
+          return {
+            id:n.id,
+            text:n.text,
+            isNew:!!n.isNew,
+            createdAt:Number(n.createdAt)||idx+1,
+            bookletKey:sanitizeBookletKey(n.bookletKey||BOOKLET_KEY)
+          };
         });
       }
       if(!s.layout3 || typeof s.layout3!=='object') s.layout3={};
-      state=s; pageCount.value=String(state.pages||82); return true;
+      state=s;
+      stripForeignLabelsFromState();
+      pageCount.value=String(state.pages||DEFAULT_PAGES);
+      return true;
     }catch(_){return false;}
   }
   function saveLocal(){try{localStorage.setItem(STORAGE,JSON.stringify(state));}catch(_){} }
@@ -526,16 +623,23 @@
 
   function applyState(s){
     if(!isValidState(s)) return false;
-    s.names=s.names.map(function(n){
-      return {id:n.id,text:n.text,isNew:!!n.isNew,createdAt:Number(n.createdAt)||0};
+    s.names=s.names.map(function(n,idx){
+      return {
+        id:n.id,
+        text:n.text,
+        isNew:!!n.isNew,
+        createdAt:Number(n.createdAt)||idx+1,
+        bookletKey:sanitizeBookletKey(n.bookletKey||BOOKLET_KEY)
+      };
     });
     if(!s.assignments || typeof s.assignments!=='object') s.assignments={};
     if(!s.spreads || typeof s.spreads!=='object') s.spreads={};
     if(!s.layout3 || typeof s.layout3!=='object') s.layout3={};
-    if(!s.pages || !isFinite(Number(s.pages))) s.pages=82;
+    if(!s.pages || !isFinite(Number(s.pages))) s.pages=DEFAULT_PAGES;
     state=s;
+    stripForeignLabelsFromState();
     normalizeSpreads();
-    pageCount.value=String(state.pages||82);
+    pageCount.value=String(state.pages||DEFAULT_PAGES);
     return true;
   }
 
@@ -613,7 +717,7 @@
   }
 
   function build(){
-    var total=Math.max(2,(Number(pageCount.value)||82));
+    var total=Math.max(2,(Number(pageCount.value)||DEFAULT_PAGES));
     if(total%2===1) total+=1;
     state.pages=total;
     normalizeSpreads();
@@ -1109,7 +1213,7 @@
     var v=(newNameInput.value||'').trim();
     if(!v) return;
     rememberState();
-    var rec={id:uid(),text:v,isNew:false,createdAt:Date.now()};
+    var rec={id:uid(),text:v,isNew:false,createdAt:Date.now(),bookletKey:BOOKLET_KEY};
     if(!state.names) state.names=[];
     state.names.push(rec);
     build();
@@ -1120,7 +1224,7 @@
   resetNamesBtn.onclick=function(){
     if(!confirm('Reset available names to provided list?')) return;
     rememberState();
-    state.names=PROVIDED.map(function(t,idx){return{id:uid(),text:t,isNew:false,createdAt:idx+1};});
+    state.names=defaultNamesForBooklet().map(function(t,idx){return{id:uid(),text:t,isNew:false,createdAt:idx+1,bookletKey:BOOKLET_KEY};});
     renderAllTagsToPool();
     save();
   };
@@ -1129,7 +1233,7 @@
     if(!undoStack.length) return;
     isUndoing=true;
     state=undoStack.pop();
-    pageCount.value=String(state.pages||82);
+    pageCount.value=String(state.pages||DEFAULT_PAGES);
     updateUndoButton();
     build();
     save();
@@ -1138,22 +1242,29 @@
 
   function initNames(){
     if(!state.names.length){
-      state.names=PROVIDED.map(function(t,idx){return{id:uid(),text:t,isNew:false,createdAt:idx+1};});
+      state.names=defaultNamesForBooklet().map(function(t,idx){return{id:uid(),text:t,isNew:false,createdAt:idx+1,bookletKey:BOOKLET_KEY};});
     }
+    stripForeignLabelsFromState();
   }
   function init(){ updateBadge(); build(); }
 
-  if(!loadLocal()) initNames();
+  if(!loadLocal()){
+    pageCount.value=String(DEFAULT_PAGES);
+    initNames();
+  }
   if(bookletTitleEl) bookletTitleEl.textContent=BOOKLET_TITLE;
+  updateTopNavActive();
   setNotifyButtonState('idle');
   try{
     var savedSort=localStorage.getItem(SORT_STORAGE);
-    if(savedSort==='az' || savedSort==='recent') labelSortMode=savedSort;
+    if(savedSort==='default' || savedSort==='az' || savedSort==='recent') labelSortMode=savedSort;
   }catch(_){ }
   if(labelSortEl){
     labelSortEl.value=labelSortMode;
     labelSortEl.onchange=function(){
-      labelSortMode=labelSortEl.value==='az' ? 'az' : 'recent';
+      if(labelSortEl.value==='az') labelSortMode='az';
+      else if(labelSortEl.value==='recent') labelSortMode='recent';
+      else labelSortMode='default';
       try{ localStorage.setItem(SORT_STORAGE,labelSortMode); }catch(_){ }
       build();
     };

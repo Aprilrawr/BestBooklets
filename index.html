@@ -4,18 +4,17 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Booklet Page Planner</title>
-  <link rel="stylesheet" href="./styles.css?v=20260303t" />
+  <link rel="stylesheet" href="./styles.css?v=20260303u" />
 </head>
 <body>
   <div class="viewport">
     <div id="stage">
       <nav class="topNav" aria-label="Booklet Navigation">
-        <button type="button" class="navItem">Home</button>
-        <button type="button" class="navItem is-active" aria-current="page">Mykonos</button>
-        <button type="button" class="navItem">Santorini</button>
-        <button type="button" class="navItem">Paros</button>
-        <button type="button" class="navItem">Flying to Greece</button>
-        <button type="button" class="navItem">Best Destinations</button>
+        <a class="navItem" data-booklet="mykonos" href="./?booklet=mykonos">Mykonos</a>
+        <a class="navItem" data-booklet="santorini" href="./?booklet=santorini">Santorini</a>
+        <a class="navItem" data-booklet="paros" href="./?booklet=paros">Paros</a>
+        <a class="navItem" data-booklet="flying-to-greece" href="./?booklet=flying-to-greece">Flying to Greece</a>
+        <a class="navItem" data-booklet="best-destinations" href="./?booklet=best-destinations">Best Destinations</a>
       </nav>
 
       <div class="app">
@@ -52,8 +51,9 @@
           <div class="paletteHead">
             <h3 style="margin:0">All Labels</h3>
             <select id="labelSort" aria-label="Sort labels">
-              <option value="recent">Most Recent</option>
+              <option value="default">Default</option>
               <option value="az">A–Z</option>
+              <option value="recent">Most Recent</option>
             </select>
           </div>
           <div id="pool"></div>
@@ -75,6 +75,6 @@
     </div>
   </div>
 
-  <script src="./app.js?v=20260303q"></script>
+  <script src="./app.js?v=20260303w"></script>
 </body>
 </html>
