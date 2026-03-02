@@ -270,7 +270,7 @@ button,
   align-items:center;
   justify-content:center;
   text-align:center;
-  padding:10px 40px 10px 16px;border-radius:26px;
+  padding:10px 30px;border-radius:26px;
   border:2px solid #dbe3ef;background:#eef3f8;font-weight:900;
   cursor:grab;user-select:none;
   width:min(100%, var(--tag-w, 260px));
@@ -283,6 +283,8 @@ button,
 .tag:active{cursor:grabbing}
 .tag .label{
   display:block;
+  width:100%;
+  text-align:center;
   min-width:0;
   white-space:normal;
   overflow:hidden;
@@ -389,13 +391,13 @@ button,
 .bubble .tag.is-quarter .label{ font-size:clamp(12px,1.4vw,18px); line-height:1.1; }
 .bubble .tag.is-spread .label{ font-size:clamp(46px,5vw,62px); line-height:1.12; }
 
-.palette .tag{justify-content:flex-start;text-align:left;padding-right:40px}
+.palette .tag{justify-content:center;text-align:center;padding-right:30px}
 .palette .tag .label{
   font-size:16px;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  overflow-wrap:normal;
+  white-space:normal;
+  overflow:visible;
+  text-overflow:clip;
+  overflow-wrap:break-word;
 }
 
 #pool{display:flex;flex:1;min-height:0;flex-direction:column;gap:10px;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;padding:2px 12px 2px 2px}
@@ -466,7 +468,7 @@ button,
     width:100%;
     min-width:0;
     min-height:56px;
-    align-items:flex-start;
+    align-items:center;
     padding:8px 24px 8px 8px;
     border-radius:14px;
   }
@@ -494,9 +496,9 @@ button,
 
   .tag.spanning,
   .bubble .slot .tag.spanning{
-    width:calc(200% - (var(--pad) * 2) - 14px + var(--center));
+    width:calc(200% + var(--pad) + var(--center));
   }
   .tag.spanning.prev{
-    transform:translateX(calc(-100% + (var(--pad) * 2) + 14px - var(--center)));
+    transform:translateX(calc(-100% - var(--pad) - var(--center)));
   }
 }

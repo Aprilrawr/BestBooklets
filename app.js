@@ -291,7 +291,7 @@
 
       var cfg = {
         spread: isMobileView ? { base: 24, min: 14, max: 30, rightBoost: 1 } : { base: 56, min: 34, max: 72, rightBoost: 1.16 },
-        single: isMobileView ? { base: 20, min: 12, max: 26, rightBoost: 1 } : { base: 44, min: 24, max: 62, rightBoost: 1.28 },
+        single: isMobileView ? { base: 18, min: 10, max: 22, rightBoost: 1 } : { base: 44, min: 24, max: 62, rightBoost: 1.28 },
         half: isMobileView ? { base: 16, min: 10, max: 20, rightBoost: 1 } : { base: 34, min: 20, max: 52, rightBoost: 1.4 },
         quarter: isMobileView ? { base: 12, min: 8, max: 14, rightBoost: 1 } : { base: 22, min: 13, max: 40, rightBoost: 1.5 }
       }[kind];
@@ -609,7 +609,6 @@
     }
 
     for(var a in state.spreads){ applySpanVisual(Number(a)); }
-    save();
     adjustAllFonts();
   }
 
