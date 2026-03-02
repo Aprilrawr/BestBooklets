@@ -12,8 +12,6 @@
   --tag-w: 260px;
 
   --page-inner-w:210px;
-  --chip-single-w:196px;
-  --chip-quarter-w:112px;
 
   --font-scale: .85;
   --side-fixed-top: 16px;
@@ -280,9 +278,6 @@ button,
   box-sizing:border-box;
   overflow:visible
 }
-.bubble .slot .tag{ width: min(100%, var(--chip-single-w)); }
-.bubble .slot .tag.is-quarter{ width: min(100%, var(--chip-quarter-w)); }
-.bubble .slot.count-4 .tag.is-quarter{ width:min(100%, var(--chip-single-w)); }
 .bubble .slot .tag{ min-height:44px; }
 
 .tag:active{cursor:grabbing}
@@ -334,8 +329,6 @@ button,
 .tag .tagNew:hover{background:#f6b9df;border-color:#ee8fcf;box-shadow:0 0 0 3px rgba(244,164,216,.22),0 4px 10px rgba(233,129,199,.24);transform:translateY(-1px)}
 .tag .tagSpread:hover{background:#bbf7d0;border-color:#4ade80;box-shadow:0 0 0 3px rgba(34,197,94,.2),0 4px 10px rgba(34,197,94,.25);transform:translateY(-1px)}
 .tag.can-spread .tagSpread{display:grid;place-items:center}
-.bubble .tag .label{font-size:12px}
-.bubble .tag.is-quarter .label{font-size:11px}
 .bubble .tag .label{overflow:visible}
 .chip{
   position:absolute;
@@ -499,16 +492,9 @@ button,
     line-height:1.1;
   }
 
-  .bubble{
-    overflow:visible;
-  }
-
   .tag.spanning,
   .bubble .slot .tag.spanning{
     width:calc(200% - (var(--pad) * 2) - 14px + var(--center));
-  }
-  .tag.spanning.next{
-    margin-right:0;
   }
   .tag.spanning.prev{
     transform:translateX(calc(-100% + (var(--pad) * 2) + 14px - var(--center)));

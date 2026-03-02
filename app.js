@@ -402,6 +402,53 @@
     return !!(s && typeof s==='object' && Array.isArray(s.names));
   }
 
+  function normalizeSpreads(){
+    if(!state.spreads || typeof state.spreads!=='object'){
+      state.spreads={};
+      return;
+    }
+
+    var normalized={};
+    Object.keys(state.spreads).forEach(function(key){
+      var anchor=Number(key);
+      var info=state.spreads[key]||{};
+      var id=info.id;
+      if(!anchor || !id) return;
+
+      if(anchor===1 || anchor===2) return;
+
+      if(info.dir==='prev'){
+        var prevAnchor=anchor-1;
+        if(prevAnchor<1) return;
+        var fromPrev=list(anchor);
+        var toPrev=list(prevAnchor);
+        var idxPrev=fromPrev.indexOf(id);
+        if(idxPrev>-1){
+          fromPrev.splice(idxPrev,1);
+          if(toPrev.indexOf(id)===-1) toPrev.push(id);
+        }
+        anchor=prevAnchor;
+      }
+
+      if(anchor%2===0){
+        var leftAnchor=anchor-1;
+        var fromEven=list(anchor);
+        var toLeft=list(leftAnchor);
+        var idxEven=fromEven.indexOf(id);
+        if(idxEven>-1){
+          fromEven.splice(idxEven,1);
+          if(toLeft.indexOf(id)===-1) toLeft.push(id);
+        }
+        anchor=leftAnchor;
+      }
+
+      if(anchor===1 || anchor===2) return;
+      normalized[anchor]={id:id,dir:'next'};
+    });
+
+    state.spreads=normalized;
+  }
+
   function applyState(s){
     if(!isValidState(s)) return false;
     s.names=s.names.map(function(n){
@@ -412,6 +459,7 @@
     if(!s.layout3 || typeof s.layout3!=='object') s.layout3={};
     if(!s.pages || !isFinite(Number(s.pages))) s.pages=82;
     state=s;
+    normalizeSpreads();
     pageCount.value=String(state.pages||82);
     return true;
   }
@@ -480,6 +528,7 @@
     var total=Math.max(2,(Number(pageCount.value)||82));
     if(total%2===1) total+=1;
     state.pages=total;
+    normalizeSpreads();
     state.assignments[1]=[];
     state.assignments[2]=[];
     if(state.spreads[1]) delete state.spreads[1];
