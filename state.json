@@ -1,270 +1,5 @@
 ﻿{
     "booklets":  {
-                     "paros":  {
-                                   "pages":  24,
-                                   "names":  [
-                                                 {
-                                                     "id":  "30vgh1e",
-                                                     "text":  "Crios",
-                                                     "isNew":  false,
-                                                     "createdAt":  1772494273790,
-                                                     "bookletKey":  "paros"
-                                                 },
-                                                 {
-                                                     "id":  "2048xcs",
-                                                     "text":  "Kensho",
-                                                     "isNew":  false,
-                                                     "createdAt":  1772494273795,
-                                                     "bookletKey":  "paros"
-                                                 },
-                                                 {
-                                                     "id":  "ok2x6an",
-                                                     "text":  "Golden Beach Hotel Paros",
-                                                     "isNew":  false,
-                                                     "createdAt":  1772494273800,
-                                                     "bookletKey":  "paros"
-                                                 },
-                                                 {
-                                                     "id":  "8ztgy24",
-                                                     "text":  "Calme Hotel Paros",
-                                                     "isNew":  false,
-                                                     "createdAt":  1772494273806,
-                                                     "bookletKey":  "paros"
-                                                 },
-                                                 {
-                                                     "id":  "a4279s1",
-                                                     "text":  "Crios",
-                                                     "isNew":  false,
-                                                     "createdAt":  1772494273810,
-                                                     "bookletKey":  "paros"
-                                                 },
-                                                 {
-                                                     "id":  "9tcoaur",
-                                                     "text":  "Barbarossa",
-                                                     "isNew":  false,
-                                                     "createdAt":  1772494273814,
-                                                     "bookletKey":  "paros"
-                                                 },
-                                                 {
-                                                     "id":  "teup8j0",
-                                                     "text":  "Faragas Beach",
-                                                     "isNew":  false,
-                                                     "createdAt":  1772494273827,
-                                                     "bookletKey":  "paros"
-                                                 },
-                                                 {
-                                                     "id":  "y25gue6",
-                                                     "text":  "Parocks Luxury Hotel \u0026 Spa",
-                                                     "isNew":  false,
-                                                     "createdAt":  1772494273842,
-                                                     "bookletKey":  "paros"
-                                                 },
-                                                 {
-                                                     "id":  "f6q9pwh",
-                                                     "text":  "Polos Hotel",
-                                                     "isNew":  false,
-                                                     "createdAt":  1772494273904,
-                                                     "bookletKey":  "paros"
-                                                 },
-                                                 {
-                                                     "id":  "x4dl9av",
-                                                     "text":  "High Mill Paros",
-                                                     "isNew":  false,
-                                                     "createdAt":  1772494273905,
-                                                     "bookletKey":  "paros"
-                                                 },
-                                                 {
-                                                     "id":  "in3sz2d",
-                                                     "text":  "Mr and Mrs White Paros",
-                                                     "isNew":  false,
-                                                     "createdAt":  1772494273905,
-                                                     "bookletKey":  "paros"
-                                                 },
-                                                 {
-                                                     "id":  "ldb2cho",
-                                                     "text":  "Mrs Armelina (by Mr and Mrs White Hotels)",
-                                                     "isNew":  false,
-                                                     "createdAt":  1772494273905,
-                                                     "bookletKey":  "paros"
-                                                 },
-                                                 {
-                                                     "id":  "ezx6h1i",
-                                                     "text":  "Sunrise Accommodation",
-                                                     "isNew":  false,
-                                                     "createdAt":  1772494273905,
-                                                     "bookletKey":  "paros"
-                                                 },
-                                                 {
-                                                     "id":  "r9xy5bl",
-                                                     "text":  "San Antonio Summerhouse",
-                                                     "isNew":  false,
-                                                     "createdAt":  1772494273905,
-                                                     "bookletKey":  "paros"
-                                                 },
-                                                 {
-                                                     "id":  "ej0qdtu",
-                                                     "text":  "Giacomo",
-                                                     "isNew":  false,
-                                                     "createdAt":  1772494273957,
-                                                     "bookletKey":  "paros"
-                                                 },
-                                                 {
-                                                     "id":  "idp4ze3",
-                                                     "text":  "PR2 | Paros RIB Riders",
-                                                     "isNew":  false,
-                                                     "createdAt":  1772494273957,
-                                                     "bookletKey":  "paros"
-                                                 },
-                                                 {
-                                                     "id":  "n5lreb7",
-                                                     "text":  "The Golden Beach Bar Restaurant \u0026 Surf Club Paros",
-                                                     "isNew":  false,
-                                                     "createdAt":  1772494273957,
-                                                     "bookletKey":  "paros"
-                                                 },
-                                                 {
-                                                     "id":  "3rmzuyo",
-                                                     "text":  "Golden Beach Shop",
-                                                     "isNew":  false,
-                                                     "createdAt":  1772494273957,
-                                                     "bookletKey":  "paros"
-                                                 },
-                                                 {
-                                                     "id":  "3glituz",
-                                                     "text":  "Portioli Super Premium Italian Espresso",
-                                                     "isNew":  false,
-                                                     "createdAt":  1772494273957,
-                                                     "bookletKey":  "paros"
-                                                 },
-                                                 {
-                                                     "id":  "r2exfgt",
-                                                     "text":  "Nilina Management",
-                                                     "isNew":  false,
-                                                     "createdAt":  1772494273962,
-                                                     "bookletKey":  "paros"
-                                                 },
-                                                 {
-                                                     "id":  "1x4icdt",
-                                                     "text":  "Elixir Cruises",
-                                                     "isNew":  false,
-                                                     "createdAt":  1772494273979,
-                                                     "bookletKey":  "paros"
-                                                 },
-                                                 {
-                                                     "id":  "ekfcd4h",
-                                                     "text":  "The Sailors Ride Boats for Rent (BACK COVER)",
-                                                     "isNew":  false,
-                                                     "createdAt":  1772494273995,
-                                                     "bookletKey":  "paros"
-                                                 }
-                                             ],
-                                   "assignments":  {
-                                                       "16":  [
-                                                                  "3rmzuyo",
-                                                                  "3glituz"
-                                                              ],
-                                                       "3":  [
-                                                                 "30vgh1e"
-                                                             ],
-                                                       "5":  [
-                                                                 "a4279s1"
-                                                             ],
-                                                       "21":  [
-                                                                  "ekfcd4h"
-                                                              ],
-                                                       "18":  [
-
-                                                              ],
-                                                       "12":  [
-                                                                  "8ztgy24"
-                                                              ],
-                                                       "10":  [
-
-                                                              ],
-                                                       "2":  [
-
-                                                             ],
-                                                       "22":  [
-
-                                                              ],
-                                                       "8":  [
-
-                                                             ],
-                                                       "17":  [
-                                                                  "r2exfgt"
-                                                              ],
-                                                       "11":  [
-                                                                  "ok2x6an"
-                                                              ],
-                                                       "1":  [
-
-                                                             ],
-                                                       "9":  [
-                                                                 "y25gue6"
-                                                             ],
-                                                       "24":  [
-
-                                                              ],
-                                                       "14":  [
-                                                                  "ldb2cho",
-                                                                  "ezx6h1i",
-                                                                  "r9xy5bl"
-                                                              ],
-                                                       "7":  [
-                                                                 "teup8j0"
-                                                             ],
-                                                       "15":  [
-                                                                  "ej0qdtu",
-                                                                  "idp4ze3",
-                                                                  "n5lreb7"
-                                                              ],
-                                                       "20":  [
-
-                                                              ],
-                                                       "23":  [
-
-                                                              ],
-                                                       "6":  [
-                                                                 "9tcoaur"
-                                                             ],
-                                                       "4":  [
-                                                                 "2048xcs"
-                                                             ],
-                                                       "19":  [
-                                                                  "1x4icdt"
-                                                              ],
-                                                       "13":  [
-                                                                  "f6q9pwh",
-                                                                  "x4dl9av",
-                                                                  "in3sz2d"
-                                                              ]
-                                                   },
-                                   "spreads":  {
-                                                   "9":  {
-                                                             "id":  "y25gue6",
-                                                             "dir":  "next"
-                                                         },
-                                                   "21":  {
-                                                              "id":  "ekfcd4h",
-                                                              "dir":  "next"
-                                                          },
-                                                   "17":  {
-                                                              "id":  "r2exfgt",
-                                                              "dir":  "next"
-                                                          },
-                                                   "19":  {
-                                                              "id":  "1x4icdt",
-                                                              "dir":  "next"
-                                                          },
-                                                   "7":  {
-                                                             "id":  "teup8j0",
-                                                             "dir":  "next"
-                                                         }
-                                               },
-                                   "layout3":  {
-
-                                               }
-                               },
                      "mykonos":  {
                                      "pages":  82,
                                      "names":  [
@@ -888,6 +623,929 @@
                                      "layout3":  {
 
                                                  }
-                                 }
+                                 },
+                     "paros":  {
+                                   "pages":  24,
+                                   "names":  [
+                                                 {
+                                                     "id":  "30vgh1e",
+                                                     "text":  "Crios",
+                                                     "isNew":  false,
+                                                     "createdAt":  1772494273790,
+                                                     "bookletKey":  "paros"
+                                                 },
+                                                 {
+                                                     "id":  "2048xcs",
+                                                     "text":  "Kensho",
+                                                     "isNew":  false,
+                                                     "createdAt":  1772494273795,
+                                                     "bookletKey":  "paros"
+                                                 },
+                                                 {
+                                                     "id":  "ok2x6an",
+                                                     "text":  "Golden Beach Hotel Paros",
+                                                     "isNew":  false,
+                                                     "createdAt":  1772494273800,
+                                                     "bookletKey":  "paros"
+                                                 },
+                                                 {
+                                                     "id":  "8ztgy24",
+                                                     "text":  "Calme Hotel Paros",
+                                                     "isNew":  false,
+                                                     "createdAt":  1772494273806,
+                                                     "bookletKey":  "paros"
+                                                 },
+                                                 {
+                                                     "id":  "a4279s1",
+                                                     "text":  "Crios",
+                                                     "isNew":  false,
+                                                     "createdAt":  1772494273810,
+                                                     "bookletKey":  "paros"
+                                                 },
+                                                 {
+                                                     "id":  "9tcoaur",
+                                                     "text":  "Barbarossa",
+                                                     "isNew":  false,
+                                                     "createdAt":  1772494273814,
+                                                     "bookletKey":  "paros"
+                                                 },
+                                                 {
+                                                     "id":  "teup8j0",
+                                                     "text":  "Faragas Beach",
+                                                     "isNew":  false,
+                                                     "createdAt":  1772494273827,
+                                                     "bookletKey":  "paros"
+                                                 },
+                                                 {
+                                                     "id":  "y25gue6",
+                                                     "text":  "Parocks Luxury Hotel \u0026 Spa",
+                                                     "isNew":  false,
+                                                     "createdAt":  1772494273842,
+                                                     "bookletKey":  "paros"
+                                                 },
+                                                 {
+                                                     "id":  "f6q9pwh",
+                                                     "text":  "Polos Hotel",
+                                                     "isNew":  false,
+                                                     "createdAt":  1772494273904,
+                                                     "bookletKey":  "paros"
+                                                 },
+                                                 {
+                                                     "id":  "x4dl9av",
+                                                     "text":  "High Mill Paros",
+                                                     "isNew":  false,
+                                                     "createdAt":  1772494273905,
+                                                     "bookletKey":  "paros"
+                                                 },
+                                                 {
+                                                     "id":  "in3sz2d",
+                                                     "text":  "Mr and Mrs White Paros",
+                                                     "isNew":  false,
+                                                     "createdAt":  1772494273905,
+                                                     "bookletKey":  "paros"
+                                                 },
+                                                 {
+                                                     "id":  "ldb2cho",
+                                                     "text":  "Mrs Armelina (by Mr and Mrs White Hotels)",
+                                                     "isNew":  false,
+                                                     "createdAt":  1772494273905,
+                                                     "bookletKey":  "paros"
+                                                 },
+                                                 {
+                                                     "id":  "ezx6h1i",
+                                                     "text":  "Sunrise Accommodation",
+                                                     "isNew":  false,
+                                                     "createdAt":  1772494273905,
+                                                     "bookletKey":  "paros"
+                                                 },
+                                                 {
+                                                     "id":  "r9xy5bl",
+                                                     "text":  "San Antonio Summerhouse",
+                                                     "isNew":  false,
+                                                     "createdAt":  1772494273905,
+                                                     "bookletKey":  "paros"
+                                                 },
+                                                 {
+                                                     "id":  "ej0qdtu",
+                                                     "text":  "Giacomo",
+                                                     "isNew":  false,
+                                                     "createdAt":  1772494273957,
+                                                     "bookletKey":  "paros"
+                                                 },
+                                                 {
+                                                     "id":  "idp4ze3",
+                                                     "text":  "PR2 | Paros RIB Riders",
+                                                     "isNew":  false,
+                                                     "createdAt":  1772494273957,
+                                                     "bookletKey":  "paros"
+                                                 },
+                                                 {
+                                                     "id":  "n5lreb7",
+                                                     "text":  "The Golden Beach Bar Restaurant \u0026 Surf Club Paros",
+                                                     "isNew":  false,
+                                                     "createdAt":  1772494273957,
+                                                     "bookletKey":  "paros"
+                                                 },
+                                                 {
+                                                     "id":  "3rmzuyo",
+                                                     "text":  "Golden Beach Shop",
+                                                     "isNew":  false,
+                                                     "createdAt":  1772494273957,
+                                                     "bookletKey":  "paros"
+                                                 },
+                                                 {
+                                                     "id":  "3glituz",
+                                                     "text":  "Portioli Super Premium Italian Espresso",
+                                                     "isNew":  false,
+                                                     "createdAt":  1772494273957,
+                                                     "bookletKey":  "paros"
+                                                 },
+                                                 {
+                                                     "id":  "r2exfgt",
+                                                     "text":  "Nilina Management",
+                                                     "isNew":  false,
+                                                     "createdAt":  1772494273962,
+                                                     "bookletKey":  "paros"
+                                                 },
+                                                 {
+                                                     "id":  "1x4icdt",
+                                                     "text":  "Elixir Cruises",
+                                                     "isNew":  false,
+                                                     "createdAt":  1772494273979,
+                                                     "bookletKey":  "paros"
+                                                 },
+                                                 {
+                                                     "id":  "ekfcd4h",
+                                                     "text":  "The Sailors Ride Boats for Rent (BACK COVER)",
+                                                     "isNew":  false,
+                                                     "createdAt":  1772494273995,
+                                                     "bookletKey":  "paros"
+                                                 }
+                                             ],
+                                   "assignments":  {
+                                                       "16":  [
+                                                                  "3rmzuyo",
+                                                                  "3glituz"
+                                                              ],
+                                                       "3":  [
+                                                                 "30vgh1e"
+                                                             ],
+                                                       "5":  [
+                                                                 "a4279s1"
+                                                             ],
+                                                       "21":  [
+                                                                  "ekfcd4h"
+                                                              ],
+                                                       "18":  [
+
+                                                              ],
+                                                       "12":  [
+                                                                  "8ztgy24"
+                                                              ],
+                                                       "10":  [
+
+                                                              ],
+                                                       "2":  [
+
+                                                             ],
+                                                       "22":  [
+
+                                                              ],
+                                                       "8":  [
+
+                                                             ],
+                                                       "17":  [
+                                                                  "r2exfgt"
+                                                              ],
+                                                       "11":  [
+                                                                  "ok2x6an"
+                                                              ],
+                                                       "1":  [
+
+                                                             ],
+                                                       "9":  [
+                                                                 "y25gue6"
+                                                             ],
+                                                       "24":  [
+
+                                                              ],
+                                                       "14":  [
+                                                                  "ldb2cho",
+                                                                  "ezx6h1i",
+                                                                  "r9xy5bl"
+                                                              ],
+                                                       "7":  [
+                                                                 "teup8j0"
+                                                             ],
+                                                       "15":  [
+                                                                  "ej0qdtu",
+                                                                  "idp4ze3",
+                                                                  "n5lreb7"
+                                                              ],
+                                                       "20":  [
+
+                                                              ],
+                                                       "23":  [
+
+                                                              ],
+                                                       "6":  [
+                                                                 "9tcoaur"
+                                                             ],
+                                                       "4":  [
+                                                                 "2048xcs"
+                                                             ],
+                                                       "19":  [
+                                                                  "1x4icdt"
+                                                              ],
+                                                       "13":  [
+                                                                  "f6q9pwh",
+                                                                  "x4dl9av",
+                                                                  "in3sz2d"
+                                                              ]
+                                                   },
+                                   "spreads":  {
+                                                   "9":  {
+                                                             "id":  "y25gue6",
+                                                             "dir":  "next"
+                                                         },
+                                                   "21":  {
+                                                              "id":  "ekfcd4h",
+                                                              "dir":  "next"
+                                                          },
+                                                   "17":  {
+                                                              "id":  "r2exfgt",
+                                                              "dir":  "next"
+                                                          },
+                                                   "19":  {
+                                                              "id":  "1x4icdt",
+                                                              "dir":  "next"
+                                                          },
+                                                   "7":  {
+                                                             "id":  "teup8j0",
+                                                             "dir":  "next"
+                                                         }
+                                               },
+                                   "layout3":  {
+
+                                               }
+                               },
+                     "santorini":  {
+                                       "pages":  82,
+                                       "names":  [
+                                                     {
+                                                         "id":  "d7j8hx0",
+                                                         "text":  "Santorini Best",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771446,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "oeq3uha",
+                                                         "text":  "Caldera Yachting",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771447,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "bztvudp",
+                                                         "text":  "New York Tourism Advisory Group",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771448,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "4ibx1ov",
+                                                         "text":  "Katikies",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771449,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "k0ifh6j",
+                                                         "text":  "West East Suites",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771450,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "crnzo2y",
+                                                         "text":  "Fly Away",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771451,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "fscued7",
+                                                         "text":  "Cresanto Luxury Suites",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771452,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "pti86ha",
+                                                         "text":  "Aestian",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771453,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "oe1j3hm",
+                                                         "text":  "Sperisma",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771454,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "wcgvruj",
+                                                         "text":  "Sienna Eco Resort",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771455,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "zvmrqx1",
+                                                         "text":  "Rizes",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771456,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "ylbq6zk",
+                                                         "text":  "Etereo Suites",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771457,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "rsjt0ln",
+                                                         "text":  "Venus Sunrise",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771458,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "cxw23bi",
+                                                         "text":  "Santorini Princess",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771459,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "wo1sc9l",
+                                                         "text":  "Le Ciel",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771460,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "6s5vdwu",
+                                                         "text":  "NOUS Santorini",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771461,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "jprz5sq",
+                                                         "text":  "Lilium Holiday Homes \u0026 Villas Santorini",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771462,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "36eh5ls",
+                                                         "text":  "Lilium Hotel Santorini",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771463,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "14m625j",
+                                                         "text":  "mysantorini hotels",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771464,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "g4eo6pz",
+                                                         "text":  "Blue Dolphins",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771465,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "jwdy2cs",
+                                                         "text":  "Grand View",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771466,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "hxf1twe",
+                                                         "text":  "Casa Grande",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771467,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "3kr0pg1",
+                                                         "text":  "Just Blue",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771468,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "0bet24z",
+                                                         "text":  "Yposkafo Jacuzzi House",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771469,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "y6fdz1p",
+                                                         "text":  "Atoles Retreat",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771470,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "emaj8sl",
+                                                         "text":  "Gofas Jewelry",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771471,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "qsk96h3",
+                                                         "text":  "Poniros",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771472,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "iyjmn45",
+                                                         "text":  "Nikki Beach Resort \u0026 Spa",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771473,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "lg2d60u",
+                                                         "text":  "Topos Exclusive",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771474,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "37yldxu",
+                                                         "text":  "Oia Suites",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771475,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "8ablkzn",
+                                                         "text":  "LVKAS Aetherial Living",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771476,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "52tq74j",
+                                                         "text":  "Caldera Villas",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771477,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "ah3kgnb",
+                                                         "text":  "Elies Suites",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771478,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "rhobzk9",
+                                                         "text":  "Vogue Suites",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771479,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "n6q1w4k",
+                                                         "text":  "Phaos Santorini Suites",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771480,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "61nljuw",
+                                                         "text":  "Phaos 1870",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771481,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "8znqehv",
+                                                         "text":  "Phaos Cellaria",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771482,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "2ejcpt5",
+                                                         "text":  "Phaos St John Villas",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771483,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "437p6jg",
+                                                         "text":  "Villa Renos",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771484,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "7vpb3qc",
+                                                         "text":  "Santo Wines 1911",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771485,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "iyd7q6k",
+                                                         "text":  "Barolo Beach",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771486,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "o9sdb1r",
+                                                         "text":  "Barolo Santorini",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771487,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "u5h12g3",
+                                                         "text":  "Taste and Feel Santorini",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771488,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "nqo4fkt",
+                                                         "text":  "Hill Suites Santorini",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771489,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "d1jyxzl",
+                                                         "text":  "Hillside Suites",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771490,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "ougb9lc",
+                                                         "text":  "Hillside Elegance Suites",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771491,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "yw7akmv",
+                                                         "text":  "Cacio e Pepe",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771492,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "4d1mx7y",
+                                                         "text":  "Fusionnelle",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771493,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "3kjsb6z",
+                                                         "text":  "Frati Santorini",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771494,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "ixjklnu",
+                                                         "text":  "Skala Restaurant",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771495,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "zwd8ies",
+                                                         "text":  "Skiza Café",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771496,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "8ujl6w1",
+                                                         "text":  "Deck Santorini",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771497,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "lxcfpyn",
+                                                         "text":  "Portioli Super Premium Italian Espresso",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771498,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "4yqcfbt",
+                                                         "text":  "Luxury Spot Helicopter Tours",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771499,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "4kply8n",
+                                                         "text":  "Santorini\u0027s Luxury Travel",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771500,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "m4fn6ic",
+                                                         "text":  "Therapy",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771501,
+                                                         "bookletKey":  "santorini"
+                                                     },
+                                                     {
+                                                         "id":  "ldvm0gx",
+                                                         "text":  "Elixir Cruises",
+                                                         "isNew":  false,
+                                                         "createdAt":  1772494771502,
+                                                         "bookletKey":  "santorini"
+                                                     }
+                                                 ],
+                                       "assignments":  {
+                                                           "78":  [
+
+                                                                  ],
+                                                           "10":  [
+
+                                                                  ],
+                                                           "63":  [
+
+                                                                  ],
+                                                           "30":  [
+
+                                                                  ],
+                                                           "49":  [
+
+                                                                  ],
+                                                           "62":  [
+
+                                                                  ],
+                                                           "22":  [
+
+                                                                  ],
+                                                           "13":  [
+
+                                                                  ],
+                                                           "47":  [
+
+                                                                  ],
+                                                           "71":  [
+
+                                                                  ],
+                                                           "77":  [
+
+                                                                  ],
+                                                           "73":  [
+
+                                                                  ],
+                                                           "3":  [
+
+                                                                 ],
+                                                           "8":  [
+
+                                                                 ],
+                                                           "12":  [
+
+                                                                  ],
+                                                           "65":  [
+
+                                                                  ],
+                                                           "40":  [
+
+                                                                  ],
+                                                           "14":  [
+
+                                                                  ],
+                                                           "26":  [
+
+                                                                  ],
+                                                           "17":  [
+
+                                                                  ],
+                                                           "28":  [
+
+                                                                  ],
+                                                           "76":  [
+
+                                                                  ],
+                                                           "36":  [
+
+                                                                  ],
+                                                           "4":  [
+
+                                                                 ],
+                                                           "50":  [
+
+                                                                  ],
+                                                           "45":  [
+
+                                                                  ],
+                                                           "60":  [
+
+                                                                  ],
+                                                           "38":  [
+
+                                                                  ],
+                                                           "82":  [
+
+                                                                  ],
+                                                           "23":  [
+
+                                                                  ],
+                                                           "51":  [
+
+                                                                  ],
+                                                           "20":  [
+
+                                                                  ],
+                                                           "59":  [
+
+                                                                  ],
+                                                           "69":  [
+
+                                                                  ],
+                                                           "54":  [
+
+                                                                  ],
+                                                           "66":  [
+
+                                                                  ],
+                                                           "57":  [
+
+                                                                  ],
+                                                           "43":  [
+
+                                                                  ],
+                                                           "80":  [
+
+                                                                  ],
+                                                           "35":  [
+
+                                                                  ],
+                                                           "41":  [
+
+                                                                  ],
+                                                           "5":  [
+
+                                                                 ],
+                                                           "34":  [
+
+                                                                  ],
+                                                           "6":  [
+
+                                                                 ],
+                                                           "53":  [
+
+                                                                  ],
+                                                           "2":  [
+
+                                                                 ],
+                                                           "44":  [
+
+                                                                  ],
+                                                           "72":  [
+
+                                                                  ],
+                                                           "11":  [
+
+                                                                  ],
+                                                           "70":  [
+
+                                                                  ],
+                                                           "68":  [
+
+                                                                  ],
+                                                           "1":  [
+
+                                                                 ],
+                                                           "58":  [
+
+                                                                  ],
+                                                           "55":  [
+
+                                                                  ],
+                                                           "33":  [
+
+                                                                  ],
+                                                           "67":  [
+
+                                                                  ],
+                                                           "27":  [
+
+                                                                  ],
+                                                           "16":  [
+
+                                                                  ],
+                                                           "64":  [
+
+                                                                  ],
+                                                           "24":  [
+
+                                                                  ],
+                                                           "19":  [
+
+                                                                  ],
+                                                           "29":  [
+
+                                                                  ],
+                                                           "61":  [
+
+                                                                  ],
+                                                           "9":  [
+
+                                                                 ],
+                                                           "74":  [
+
+                                                                  ],
+                                                           "37":  [
+
+                                                                  ],
+                                                           "7":  [
+
+                                                                 ],
+                                                           "52":  [
+
+                                                                  ],
+                                                           "81":  [
+
+                                                                  ],
+                                                           "39":  [
+
+                                                                  ],
+                                                           "48":  [
+
+                                                                  ],
+                                                           "21":  [
+
+                                                                  ],
+                                                           "56":  [
+
+                                                                  ],
+                                                           "46":  [
+
+                                                                  ],
+                                                           "75":  [
+
+                                                                  ],
+                                                           "79":  [
+
+                                                                  ],
+                                                           "32":  [
+
+                                                                  ],
+                                                           "31":  [
+
+                                                                  ],
+                                                           "15":  [
+
+                                                                  ],
+                                                           "25":  [
+
+                                                                  ],
+                                                           "18":  [
+
+                                                                  ],
+                                                           "42":  [
+
+                                                                  ]
+                                                       },
+                                       "spreads":  {
+
+                                                   },
+                                       "layout3":  {
+
+                                                   }
+                                   }
                  }
 }
