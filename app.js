@@ -321,6 +321,14 @@
   window.addEventListener('pointercancel', endPointerDrag);
   window.addEventListener('mousemove', function(e){ if(pointerDrag) movePointerDrag(e); });
   window.addEventListener('mouseup', endPointerDrag);
+  window.addEventListener('beforeunload', function(){
+    if(suppressGlobalSave) return;
+    try{
+      var payload = JSON.stringify(state);
+      var blob = new Blob([payload], {type:'application/json'});
+      if(navigator.sendBeacon) navigator.sendBeacon(API_STATE, blob);
+    }catch(_){ }
+  });
   rescale();
 
   var PROVIDED=[
@@ -426,19 +434,25 @@
     setSaveStatus('saving');
     saveTimer=setTimeout(function(){
       saveTimer=null;
-      try{
-        fetch(API_STATE,{
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body:JSON.stringify(state),
-          keepalive:true
-        }).then(function(){
-          setSaveStatus('saved');
-        }).catch(function(){
-          setSaveStatus('error');
-        });
-      }catch(_){ }
-    },120);
+      flushGlobalSave();
+    },0);
+  }
+
+  function flushGlobalSave(){
+    try{
+      fetch(API_STATE,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(state),
+        keepalive:true
+      }).then(function(){
+        setSaveStatus('saved');
+      }).catch(function(){
+        setSaveStatus('error');
+      });
+    }catch(_){
+      setSaveStatus('error');
+    }
   }
 
   function save(){
