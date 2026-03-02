@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: booklet-planner
+    env: python
+    plan: free
+    buildCommand: "echo no build step"
+    startCommand: "python server.py"

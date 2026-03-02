@@ -1,0 +1,15 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Serve website",
+			"type": "shell",
+			"command": "python",
+			"args": [
+				"server.py",
+				"5500"
+			],
+			"isBackground": true
+		}
+	]
+}
