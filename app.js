@@ -357,10 +357,25 @@
   function list(p){return state.assignments[p]||(state.assignments[p]=[]);}
   function nb(p){return (p%2===0)?p-1:p+1;}
   function displayPageNumber(page){
-    var total=Number(state.pages)||2;
-    if(page===1) return total;
-    if(page===2) return 1;
-    return page-1;
+    var total=Math.max(2, Number(state.pages)||2);
+    if(total%2===1) total+=1;
+
+    var rowIndex=Math.floor((page-1)/2);
+    var spreadGroup=Math.floor(rowIndex/2);
+    var low=1 + (spreadGroup*2);
+    var high=total - (spreadGroup*2);
+
+    var leftDisplay;
+    var rightDisplay;
+    if(rowIndex%2===0){
+      leftDisplay=high;
+      rightDisplay=low;
+    } else {
+      leftDisplay=low+1;
+      rightDisplay=high-1;
+    }
+
+    return (page%2===1) ? leftDisplay : rightDisplay;
   }
   function isLockedCoverPage(page){ return page===1 || page===2; }
   function coverNameForPage(page){
