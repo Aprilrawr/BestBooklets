@@ -111,6 +111,17 @@ h1{ font-size: calc(20px * var(--font-scale)); }
 .saveStatus.is-saved{background:#dcfce7;color:#166534;border-color:#86efac}
 .saveStatus.is-saving{background:#fef3c7;color:#92400e;border-color:#fcd34d}
 .saveStatus.is-error{background:#fee2e2;color:#991b1b;border-color:#fca5a5}
+.lastSynced{
+  display:inline-flex;
+  align-items:center;
+  border-radius:999px;
+  padding:6px 10px;
+  font-size:12px;
+  font-weight:700;
+  color:#334155;
+  background:#eef2f7;
+  border:1px solid #d6ddeb;
+}
 .pageCountNote{
   margin:0 0 10px;
   color:#64748b;
@@ -161,6 +172,23 @@ button,
   background:#f3f5f9;border:1px solid var(--line);border-radius:12px;padding:8px 12px
 }
 .scroll{overflow:visible;padding-top:12px}
+
+.paletteHead{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  margin:0 0 8px;
+}
+.paletteHead select{
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#fff;
+  color:#1e293b;
+  font-weight:700;
+  font-size:12px;
+  padding:6px 8px;
+}
 
 .row{display:flex;gap:14px;margin-bottom:var(--row-gap);padding-left:12px}
 .row.follow-focus .bubble{
@@ -471,6 +499,10 @@ button,
     align-items:center;
     padding:8px 24px 8px 8px;
     border-radius:14px;
+  }
+  .paletteHead select{
+    font-size:11px;
+    padding:5px 7px;
   }
   .palette .tag .label{
     font-size:11px;

@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Booklet Page Planner</title>
-  <link rel="stylesheet" href="./styles.css?v=20260303s" />
+  <link rel="stylesheet" href="./styles.css?v=20260303t" />
 </head>
 <body>
   <div class="viewport">
@@ -29,6 +29,7 @@
             <button id="applyBtn" class="btn secondary">Apply</button>
             <button id="undoBtn" class="btn secondary">Undo</button>
             <span id="saveStatus" class="saveStatus">Saved</span>
+            <span id="lastSyncedStatus" class="lastSynced">Last synced --:--:--</span>
             <button id="sendRaniaBtn" class="btn primary" type="button">Send to Rania</button>
             <span class="hint">Drag & drop στο desktop ή tap ετικέτα και μετά σελίδα στο κινητό.</span>
           </div>
@@ -48,7 +49,13 @@
         </section>
 
         <aside class="side palette">
-          <h3 style="margin:0 0 8px">All Labels</h3>
+          <div class="paletteHead">
+            <h3 style="margin:0">All Labels</h3>
+            <select id="labelSort" aria-label="Sort labels">
+              <option value="recent">Most Recent</option>
+              <option value="az">A–Z</option>
+            </select>
+          </div>
           <div id="pool"></div>
 
           <div style="display:flex;gap:8px;margin-top:10px">
@@ -68,6 +75,6 @@
     </div>
   </div>
 
-  <script src="./app.js?v=20260303n"></script>
+  <script src="./app.js?v=20260303q"></script>
 </body>
 </html>

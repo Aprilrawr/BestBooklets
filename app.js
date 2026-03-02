@@ -16,6 +16,8 @@
   var applyBtn=document.getElementById('applyBtn');
   var undoBtn=document.getElementById('undoBtn');
   var saveStatusEl=document.getElementById('saveStatus');
+  var lastSyncedEl=document.getElementById('lastSyncedStatus');
+  var labelSortEl=document.getElementById('labelSort');
   var sendRaniaBtn=document.getElementById('sendRaniaBtn');
   var addNameBtn=document.getElementById('addName');
   var resetNamesBtn=document.getElementById('resetNames');
@@ -27,9 +29,11 @@
   var BOOKLET_KEY='mykonos';
   var BOOKLET_TITLE='Mykonos Best';
   var STORAGE='booklet-v2-sortable-'+BOOKLET_KEY;
+  var SORT_STORAGE=STORAGE+'-sort';
   var API_STATE='/api/state?booklet='+encodeURIComponent(BOOKLET_KEY);
   var API_NOTIFY='/api/notify?booklet='+encodeURIComponent(BOOKLET_KEY);
   var MAX=4, START=1;
+  var labelSortMode='recent';
   var saveTimer=null;
   var globalSyncTimer=null;
   var lastServerFingerprint='';
@@ -80,6 +84,14 @@
     saveStatusEl.textContent='Saved';
     saveStatusEl.classList.add('is-saved');
   }
+  function setLastSyncedNow(){
+    if(!lastSyncedEl) return;
+    var now=new Date();
+    var hh=String(now.getHours()).padStart(2,'0');
+    var mm=String(now.getMinutes()).padStart(2,'0');
+    var ss=String(now.getSeconds()).padStart(2,'0');
+    lastSyncedEl.textContent='Last synced '+hh+':'+mm+':'+ss;
+  }
   function setLabelNewState(labelId, isNew){
     if(!Array.isArray(state.names)) return;
     for(var i=0;i<state.names.length;i++){
@@ -89,6 +101,55 @@
         return;
       }
     }
+  }
+  function currentLabelSort(){
+    if(labelSortEl && labelSortEl.value) return labelSortEl.value;
+    return labelSortMode || 'recent';
+  }
+  function sortNamesForPool(names){
+    var copy=(names||[]).slice();
+    var mode=currentLabelSort();
+    if(mode==='az'){
+      copy.sort(function(a,b){
+        var at=((a&&a.text)||'').toLowerCase();
+        var bt=((b&&b.text)||'').toLowerCase();
+        return at.localeCompare(bt);
+      });
+      return copy;
+    }
+    copy.sort(function(a,b){
+      var av=Number((a&&a.createdAt)||0);
+      var bv=Number((b&&b.createdAt)||0);
+      return bv-av;
+    });
+    return copy;
+  }
+  function deleteLabelEverywhere(labelId){
+    if(!labelId) return;
+
+    if(Array.isArray(state.names)){
+      state.names=state.names.filter(function(rec){ return rec && rec.id!==labelId; });
+    }
+
+    if(state.assignments && typeof state.assignments==='object'){
+      Object.keys(state.assignments).forEach(function(key){
+        var arr=state.assignments[key];
+        if(Array.isArray(arr)) state.assignments[key]=arr.filter(function(id){ return id!==labelId; });
+      });
+    }
+
+    if(state.spreads && typeof state.spreads==='object'){
+      Object.keys(state.spreads).forEach(function(key){
+        var info=state.spreads[key];
+        if(info && info.id===labelId){
+          removeSpan(Number(key));
+          delete state.spreads[key];
+        }
+      });
+    }
+
+    build();
+    save();
   }
 
   function setNotifyButtonState(kind){
@@ -207,7 +268,15 @@
       }
     }
     if(isNew) el.classList.add('is-new');
-    el.querySelector('.kill').addEventListener('click',function(e){e.stopPropagation(); rememberState(); moveToPool(el);});
+    el.querySelector('.kill').addEventListener('click',function(e){
+      e.stopPropagation();
+      rememberState();
+      if(el.closest('#pool')){
+        deleteLabelEverywhere(id);
+        return;
+      }
+      moveToPool(el);
+    });
     el.querySelector('.tagSpread').addEventListener('click',function(e){e.stopPropagation(); toggleTagSpread(el);});
     el.querySelector('.tagNew').addEventListener('click',function(e){
       e.stopPropagation();
@@ -391,11 +460,11 @@
       var raw=localStorage.getItem(STORAGE); if(!raw) return false;
       var s=JSON.parse(raw);
       if(!s.names||!Array.isArray(s.names)||!s.names.length){
-        s.names=PROVIDED.map(function(t){return{id:uid(),text:t,isNew:false};});
+        s.names=PROVIDED.map(function(t,idx){return{id:uid(),text:t,isNew:false,createdAt:idx+1};});
         s.assignments={}; s.spreads={};
       } else {
         s.names=s.names.map(function(n){
-          return {id:n.id,text:n.text,isNew:!!n.isNew};
+          return {id:n.id,text:n.text,isNew:!!n.isNew,createdAt:Number(n.createdAt)||0};
         });
       }
       if(!s.layout3 || typeof s.layout3!=='object') s.layout3={};
@@ -458,7 +527,7 @@
   function applyState(s){
     if(!isValidState(s)) return false;
     s.names=s.names.map(function(n){
-      return {id:n.id,text:n.text,isNew:!!n.isNew};
+      return {id:n.id,text:n.text,isNew:!!n.isNew,createdAt:Number(n.createdAt)||0};
     });
     if(!s.assignments || typeof s.assignments!=='object') s.assignments={};
     if(!s.spreads || typeof s.spreads!=='object') s.spreads={};
@@ -481,6 +550,7 @@
       .then(function(serverState){
         var incomingFingerprint=stateFingerprint(serverState);
         if(incomingFingerprint && incomingFingerprint===lastServerFingerprint){
+          setLastSyncedNow();
           if(!opts.silent) setSaveStatus('saved');
           return;
         }
@@ -491,6 +561,7 @@
         suppressGlobalSave=false;
         saveLocal();
         lastServerFingerprint=incomingFingerprint;
+        setLastSyncedNow();
         if(!opts.silent) setSaveStatus('saved');
       })
       .catch(function(){ if(!opts.silent) setSaveStatus('saved'); });
@@ -515,6 +586,7 @@
         keepalive:true
       }).then(function(){
         lastServerFingerprint=stateFingerprint(state);
+        setLastSyncedNow();
         setSaveStatus('saved');
       }).catch(function(){
         setSaveStatus('error');
@@ -532,8 +604,9 @@
 
   function renderAllTagsToPool(){
     pool.innerHTML='';
-    for(var i=0;i<state.names.length;i++){
-      var n=state.names[i]; pool.appendChild(makeTag(n.text,n.id));
+    var visibleNames=sortNamesForPool(state.names);
+    for(var i=0;i<visibleNames.length;i++){
+      var n=visibleNames[i]; pool.appendChild(makeTag(n.text,n.id));
     }
     computeTargetTagWidth();
     adjustAllFonts();
@@ -1036,10 +1109,10 @@
     var v=(newNameInput.value||'').trim();
     if(!v) return;
     rememberState();
-    var rec={id:uid(),text:v,isNew:false};
+    var rec={id:uid(),text:v,isNew:false,createdAt:Date.now()};
     if(!state.names) state.names=[];
     state.names.push(rec);
-    pool.appendChild(makeTag(rec.text,rec.id));
+    build();
     newNameRow.style.display='none';
     save();
   };
@@ -1047,7 +1120,7 @@
   resetNamesBtn.onclick=function(){
     if(!confirm('Reset available names to provided list?')) return;
     rememberState();
-    state.names=PROVIDED.map(function(t){return{id:uid(),text:t,isNew:false};});
+    state.names=PROVIDED.map(function(t,idx){return{id:uid(),text:t,isNew:false,createdAt:idx+1};});
     renderAllTagsToPool();
     save();
   };
@@ -1065,7 +1138,7 @@
 
   function initNames(){
     if(!state.names.length){
-      state.names=PROVIDED.map(function(t){return{id:uid(),text:t,isNew:false};});
+      state.names=PROVIDED.map(function(t,idx){return{id:uid(),text:t,isNew:false,createdAt:idx+1};});
     }
   }
   function init(){ updateBadge(); build(); }
@@ -1073,6 +1146,18 @@
   if(!loadLocal()) initNames();
   if(bookletTitleEl) bookletTitleEl.textContent=BOOKLET_TITLE;
   setNotifyButtonState('idle');
+  try{
+    var savedSort=localStorage.getItem(SORT_STORAGE);
+    if(savedSort==='az' || savedSort==='recent') labelSortMode=savedSort;
+  }catch(_){ }
+  if(labelSortEl){
+    labelSortEl.value=labelSortMode;
+    labelSortEl.onchange=function(){
+      labelSortMode=labelSortEl.value==='az' ? 'az' : 'recent';
+      try{ localStorage.setItem(SORT_STORAGE,labelSortMode); }catch(_){ }
+      build();
+    };
+  }
   updateFixedSidebarMetrics();
   updateUndoButton();
   setSaveStatus('saved');
