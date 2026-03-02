@@ -1,22 +1,53 @@
-# Booklet Page Planner
+# Booklets Website
 
-A tiny single-file web app to drag-and-drop labels onto booklet pages, plan **spreads**, and keep a local copy of the plan in your browser.
+A minimal static website starter built with plain HTML, CSS, and JavaScript.
 
-- Mobile friendly (tap a label, then tap a page).
-- Up to **4 labels per page** with auto sizing.
-- **Spread** toggle (↔) when one label is on a page (locks both pages).
-- **3-label layout**: one 1/2 + two 1/4; tap the yellow button to choose which is 1/2.
-- **Add/Remove spreads** (adds/removes 2 pages). No labels are lost.
-- Names live in the right sidebar; you can add new ones.
-- Data is saved in `localStorage` (no server).
+## Run locally
 
-## Quick start
+You can open `index.html` directly in a browser.
 
-Just open `index.html` in any modern browser.
+For local serving (recommended), run in PowerShell from project root:
 
-## GitHub Pages
+```powershell
+python server.py 5500
+```
 
-1. Create a new repo and add `index.html`.
-2. Push to `main`.
-3. Enable **Settings → Pages → Deploy from branch** (root, `main`).
+Then open `http://localhost:5500`.
 
+## Global shared state
+
+All planner changes are saved globally in `state.json` via `POST /api/state` and loaded from `GET /api/state`.
+This means everyone using the same running server sees the same latest layout/state.
+
+## Email notification (Send to Rania)
+
+The **Send to Rania** button calls `POST /api/notify` and sends an email through SMTP.
+
+Set these environment variables before starting the server:
+
+- `SMTP_HOST` (example: `smtp.gmail.com`)
+- `SMTP_PORT` (example: `587`)
+- `SMTP_USER` (SMTP login username)
+- `SMTP_PASS` (SMTP login password / app password)
+- `NOTIFY_TO` (your personal email)
+- `NOTIFY_FROM` (sender address shown in email)
+- `SMTP_SECURE` (`starttls` default, or `ssl`)
+
+If these are missing, the button will show a send error and the server returns `email-not-configured`.
+
+## Deploy from GitHub (easy path)
+
+The app now includes `render.yaml`, so the easiest hosted option is Render:
+
+1. Push this repository to GitHub.
+2. In Render, choose **New +** → **Blueprint**.
+3. Connect your GitHub repo.
+4. Render reads `render.yaml` and runs `python server.py` automatically.
+
+After deploy, open your Render URL and use the app normally.
+
+### Important note about persistence
+
+`state.json` lives on the server filesystem.
+If your host clears ephemeral disk between restarts/deploys, state may reset.
+For guaranteed long-term persistence, use a host with persistent disk enabled.
