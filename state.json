@@ -1,1 +1,893 @@
-{"pages": 82, "names": [{"id": "sm71x88", "text": "Deos"}, {"id": "899633b", "text": "Resorts Mykonos"}, {"id": "7p4v9ck", "text": "Unmistakably Katikies"}, {"id": "e9ym6yl", "text": "Nammos"}, {"id": "445izof", "text": "Kalesma"}, {"id": "di5f8zl", "text": "Once in Mykonos"}, {"id": "digfs3w", "text": "Epic Blue"}, {"id": "3yqssxj", "text": "San Marco"}, {"id": "6d3ksi2", "text": "Semeli Hotel"}, {"id": "tkoe2zi", "text": "Semeli Coast"}, {"id": "7lvswh7", "text": "Ornos Beach"}, {"id": "5x26gqk", "text": "Casa Del Mar"}, {"id": "jmavszd", "text": "Divine Property"}, {"id": "jv5g9yv", "text": "Andronikos Hotel"}, {"id": "xi7uupq", "text": "Theoxenia"}, {"id": "rxtv055", "text": "Elia"}, {"id": "c2umbfy", "text": "Mykonos Dove"}, {"id": "mvxsoui", "text": "Million Stars"}, {"id": "vtfa8go", "text": "Ftelia Black Villas"}, {"id": "x9ojq7z", "text": "Asty Mykonos"}, {"id": "pyeea0j", "text": "Kivotos"}, {"id": "0ktwm3h", "text": "Omnia"}, {"id": "hslekju", "text": "Petra Blu"}, {"id": "npvewlo", "text": "Salty Houses"}, {"id": "3zam0lk", "text": "Dionysos Hotel"}, {"id": "txit215", "text": "Is Mykonos"}, {"id": "icxajt4", "text": "Villa Aegeas"}, {"id": "mxudnbm", "text": "Ataraxia"}, {"id": "csr7msx", "text": "MykonosVillas"}, {"id": "a3t4uvi", "text": "Zinas"}, {"id": "kv4vdo6", "text": "MykonosAmmosVillas"}, {"id": "n6vogzy", "text": "Mykonos Dream Villas"}, {"id": "fjsh1z2", "text": "Katikies Villas"}, {"id": "9ii6cwb", "text": "Gofas"}, {"id": "csi1ush", "text": "Cavo Paradiso"}, {"id": "mpmqx37", "text": "Nammos World"}, {"id": "x9ir4k2", "text": "Nammos Village"}, {"id": "hv3rh2u", "text": "Principote"}, {"id": "792p8ha", "text": "SantAnna"}, {"id": "xdvfjhk", "text": "Paraj"}, {"id": "njw3jto", "text": "Aperanto Galazio"}, {"id": "r669xnr", "text": "beefbar"}, {"id": "rwl2y8m", "text": "PereUbu"}, {"id": "kah7fwd", "text": "Dsquared2"}, {"id": "bdphwd1", "text": "Queen"}, {"id": "3xlbhha", "text": "Queen Saloni"}, {"id": "qi3gnsg", "text": "Semeli Group"}, {"id": "2mqhgn0", "text": "Mosaic"}, {"id": "xv22zin", "text": "Katrin"}, {"id": "tadtdb8", "text": "Blublu"}, {"id": "pkroa4h", "text": "Roca"}, {"id": "ln6k1fy", "text": "Missoni"}, {"id": "3kb1e04", "text": "Cape Ftelia"}, {"id": "b1c1pqp", "text": "Pnoe"}, {"id": "eil2n2d", "text": "Beauty World"}, {"id": "g1ruota", "text": "Baboulas"}, {"id": "84nr4ao", "text": "Fiora Super Market"}, {"id": "1e6nz9w", "text": "Portioli"}, {"id": "e6xmofm", "text": "OneExchange"}, {"id": "78ofkbv", "text": "Cinema"}, {"id": "ldsq9e1", "text": "Costa Lekka"}, {"id": "z22ayft", "text": "GMT Voyager"}, {"id": "97xopqn", "text": "Premium Legal"}, {"id": "zawnayi", "text": "MPOS"}, {"id": "9nvt0z5", "text": "Priveon"}, {"id": "yjoa7eu", "text": "Traffic"}, {"id": "8mzevbx", "text": "Autopower"}, {"id": "tx0ftu9", "text": "Nilina"}, {"id": "6puip3z", "text": "Elixir"}, {"id": "y6ywpwg", "text": "Lionsbay"}, {"id": "ma0mvy8", "text": "Dolphin"}, {"id": "1fzy0n7", "text": "Advanced VIP"}, {"id": "pidnkz3", "text": "Yaloou"}], "assignments": {"1": [], "2": [], "3": [], "4": [], "6": ["5x26gqk", "jv5g9yv", "jmavszd"]}, "spreads": {}}
+﻿{
+    "booklets":  {
+                     "paros":  {
+                                   "pages":  24,
+                                   "names":  [
+                                                 {
+                                                     "id":  "30vgh1e",
+                                                     "text":  "Crios",
+                                                     "isNew":  false,
+                                                     "createdAt":  1772494273790,
+                                                     "bookletKey":  "paros"
+                                                 },
+                                                 {
+                                                     "id":  "2048xcs",
+                                                     "text":  "Kensho",
+                                                     "isNew":  false,
+                                                     "createdAt":  1772494273795,
+                                                     "bookletKey":  "paros"
+                                                 },
+                                                 {
+                                                     "id":  "ok2x6an",
+                                                     "text":  "Golden Beach Hotel Paros",
+                                                     "isNew":  false,
+                                                     "createdAt":  1772494273800,
+                                                     "bookletKey":  "paros"
+                                                 },
+                                                 {
+                                                     "id":  "8ztgy24",
+                                                     "text":  "Calme Hotel Paros",
+                                                     "isNew":  false,
+                                                     "createdAt":  1772494273806,
+                                                     "bookletKey":  "paros"
+                                                 },
+                                                 {
+                                                     "id":  "a4279s1",
+                                                     "text":  "Crios",
+                                                     "isNew":  false,
+                                                     "createdAt":  1772494273810,
+                                                     "bookletKey":  "paros"
+                                                 },
+                                                 {
+                                                     "id":  "9tcoaur",
+                                                     "text":  "Barbarossa",
+                                                     "isNew":  false,
+                                                     "createdAt":  1772494273814,
+                                                     "bookletKey":  "paros"
+                                                 },
+                                                 {
+                                                     "id":  "teup8j0",
+                                                     "text":  "Faragas Beach",
+                                                     "isNew":  false,
+                                                     "createdAt":  1772494273827,
+                                                     "bookletKey":  "paros"
+                                                 },
+                                                 {
+                                                     "id":  "y25gue6",
+                                                     "text":  "Parocks Luxury Hotel \u0026 Spa",
+                                                     "isNew":  false,
+                                                     "createdAt":  1772494273842,
+                                                     "bookletKey":  "paros"
+                                                 },
+                                                 {
+                                                     "id":  "f6q9pwh",
+                                                     "text":  "Polos Hotel",
+                                                     "isNew":  false,
+                                                     "createdAt":  1772494273904,
+                                                     "bookletKey":  "paros"
+                                                 },
+                                                 {
+                                                     "id":  "x4dl9av",
+                                                     "text":  "High Mill Paros",
+                                                     "isNew":  false,
+                                                     "createdAt":  1772494273905,
+                                                     "bookletKey":  "paros"
+                                                 },
+                                                 {
+                                                     "id":  "in3sz2d",
+                                                     "text":  "Mr and Mrs White Paros",
+                                                     "isNew":  false,
+                                                     "createdAt":  1772494273905,
+                                                     "bookletKey":  "paros"
+                                                 },
+                                                 {
+                                                     "id":  "ldb2cho",
+                                                     "text":  "Mrs Armelina (by Mr and Mrs White Hotels)",
+                                                     "isNew":  false,
+                                                     "createdAt":  1772494273905,
+                                                     "bookletKey":  "paros"
+                                                 },
+                                                 {
+                                                     "id":  "ezx6h1i",
+                                                     "text":  "Sunrise Accommodation",
+                                                     "isNew":  false,
+                                                     "createdAt":  1772494273905,
+                                                     "bookletKey":  "paros"
+                                                 },
+                                                 {
+                                                     "id":  "r9xy5bl",
+                                                     "text":  "San Antonio Summerhouse",
+                                                     "isNew":  false,
+                                                     "createdAt":  1772494273905,
+                                                     "bookletKey":  "paros"
+                                                 },
+                                                 {
+                                                     "id":  "ej0qdtu",
+                                                     "text":  "Giacomo",
+                                                     "isNew":  false,
+                                                     "createdAt":  1772494273957,
+                                                     "bookletKey":  "paros"
+                                                 },
+                                                 {
+                                                     "id":  "idp4ze3",
+                                                     "text":  "PR2 | Paros RIB Riders",
+                                                     "isNew":  false,
+                                                     "createdAt":  1772494273957,
+                                                     "bookletKey":  "paros"
+                                                 },
+                                                 {
+                                                     "id":  "n5lreb7",
+                                                     "text":  "The Golden Beach Bar Restaurant \u0026 Surf Club Paros",
+                                                     "isNew":  false,
+                                                     "createdAt":  1772494273957,
+                                                     "bookletKey":  "paros"
+                                                 },
+                                                 {
+                                                     "id":  "3rmzuyo",
+                                                     "text":  "Golden Beach Shop",
+                                                     "isNew":  false,
+                                                     "createdAt":  1772494273957,
+                                                     "bookletKey":  "paros"
+                                                 },
+                                                 {
+                                                     "id":  "3glituz",
+                                                     "text":  "Portioli Super Premium Italian Espresso",
+                                                     "isNew":  false,
+                                                     "createdAt":  1772494273957,
+                                                     "bookletKey":  "paros"
+                                                 },
+                                                 {
+                                                     "id":  "r2exfgt",
+                                                     "text":  "Nilina Management",
+                                                     "isNew":  false,
+                                                     "createdAt":  1772494273962,
+                                                     "bookletKey":  "paros"
+                                                 },
+                                                 {
+                                                     "id":  "1x4icdt",
+                                                     "text":  "Elixir Cruises",
+                                                     "isNew":  false,
+                                                     "createdAt":  1772494273979,
+                                                     "bookletKey":  "paros"
+                                                 },
+                                                 {
+                                                     "id":  "ekfcd4h",
+                                                     "text":  "The Sailors Ride Boats for Rent (BACK COVER)",
+                                                     "isNew":  false,
+                                                     "createdAt":  1772494273995,
+                                                     "bookletKey":  "paros"
+                                                 }
+                                             ],
+                                   "assignments":  {
+                                                       "16":  [
+                                                                  "3rmzuyo",
+                                                                  "3glituz"
+                                                              ],
+                                                       "3":  [
+                                                                 "30vgh1e"
+                                                             ],
+                                                       "5":  [
+                                                                 "a4279s1"
+                                                             ],
+                                                       "21":  [
+                                                                  "ekfcd4h"
+                                                              ],
+                                                       "18":  [
+
+                                                              ],
+                                                       "12":  [
+                                                                  "8ztgy24"
+                                                              ],
+                                                       "10":  [
+
+                                                              ],
+                                                       "2":  [
+
+                                                             ],
+                                                       "22":  [
+
+                                                              ],
+                                                       "8":  [
+
+                                                             ],
+                                                       "17":  [
+                                                                  "r2exfgt"
+                                                              ],
+                                                       "11":  [
+                                                                  "ok2x6an"
+                                                              ],
+                                                       "1":  [
+
+                                                             ],
+                                                       "9":  [
+                                                                 "y25gue6"
+                                                             ],
+                                                       "24":  [
+
+                                                              ],
+                                                       "14":  [
+                                                                  "ldb2cho",
+                                                                  "ezx6h1i",
+                                                                  "r9xy5bl"
+                                                              ],
+                                                       "7":  [
+                                                                 "teup8j0"
+                                                             ],
+                                                       "15":  [
+                                                                  "ej0qdtu",
+                                                                  "idp4ze3",
+                                                                  "n5lreb7"
+                                                              ],
+                                                       "20":  [
+
+                                                              ],
+                                                       "23":  [
+
+                                                              ],
+                                                       "6":  [
+                                                                 "9tcoaur"
+                                                             ],
+                                                       "4":  [
+                                                                 "2048xcs"
+                                                             ],
+                                                       "19":  [
+                                                                  "1x4icdt"
+                                                              ],
+                                                       "13":  [
+                                                                  "f6q9pwh",
+                                                                  "x4dl9av",
+                                                                  "in3sz2d"
+                                                              ]
+                                                   },
+                                   "spreads":  {
+                                                   "9":  {
+                                                             "id":  "y25gue6",
+                                                             "dir":  "next"
+                                                         },
+                                                   "21":  {
+                                                              "id":  "ekfcd4h",
+                                                              "dir":  "next"
+                                                          },
+                                                   "17":  {
+                                                              "id":  "r2exfgt",
+                                                              "dir":  "next"
+                                                          },
+                                                   "19":  {
+                                                              "id":  "1x4icdt",
+                                                              "dir":  "next"
+                                                          },
+                                                   "7":  {
+                                                             "id":  "teup8j0",
+                                                             "dir":  "next"
+                                                         }
+                                               },
+                                   "layout3":  {
+
+                                               }
+                               },
+                     "mykonos":  {
+                                     "pages":  82,
+                                     "names":  [
+                                                   {
+                                                       "id":  "ed9bcbb",
+                                                       "text":  "Deos",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "2ed9ea8",
+                                                       "text":  "Resorts Mykonos",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "109667d",
+                                                       "text":  "Unmistakably Katikies",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "d417fef",
+                                                       "text":  "Nammos",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "2817df4",
+                                                       "text":  "Kalesma",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "c517377",
+                                                       "text":  "Once in Mykonos",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "e1e915d",
+                                                       "text":  "Epic Blue",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "abc540c",
+                                                       "text":  "San Marco",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "204d90c",
+                                                       "text":  "Semeli Hotel",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "153090b",
+                                                       "text":  "Semeli Coast",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "a9d6cff",
+                                                       "text":  "Ornos Beach",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "a9f287d",
+                                                       "text":  "Casa Del Mar",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "572b6d1",
+                                                       "text":  "Divine Property",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "78fb9ed",
+                                                       "text":  "Andronikos Hotel",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "594e66e",
+                                                       "text":  "Theoxenia",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "590e2b4",
+                                                       "text":  "Elia",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "5bed18d",
+                                                       "text":  "Mykonos Dove",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "1d1dd94",
+                                                       "text":  "Million Stars",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "191bbed",
+                                                       "text":  "Ftelia Black Villas",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "7e0e5c4",
+                                                       "text":  "Asty Mykonos",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "0e6745e",
+                                                       "text":  "Kivotos",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "9b41453",
+                                                       "text":  "Omnia",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "f8d2945",
+                                                       "text":  "Petra Blu",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "c17afd7",
+                                                       "text":  "Salty Houses",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "722a4bc",
+                                                       "text":  "Dionysos Hotel",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "6967799",
+                                                       "text":  "Is Mykonos",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "c847308",
+                                                       "text":  "Villa Aegeas",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "c16a7ff",
+                                                       "text":  "Ataraxia",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "56ecdf4",
+                                                       "text":  "MykonosVillas",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "cee5f07",
+                                                       "text":  "Zinas",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "da03630",
+                                                       "text":  "MykonosAmmosVillas",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "21217d3",
+                                                       "text":  "Mykonos Dream Villas",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "87fd443",
+                                                       "text":  "Katikies Villas",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "fc6a6f8",
+                                                       "text":  "Gofas",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "38c09a8",
+                                                       "text":  "Cavo Paradiso",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "81ad252",
+                                                       "text":  "Nammos World",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "3de6118",
+                                                       "text":  "Nammos Village",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "6d2f4f0",
+                                                       "text":  "Principote",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "43bd00a",
+                                                       "text":  "SantAnna",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "7fefeb3",
+                                                       "text":  "Paraj",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "bbb3585",
+                                                       "text":  "Aperanto Galazio",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "249490e",
+                                                       "text":  "beefbar",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "96eba1b",
+                                                       "text":  "PereUbu",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "ca99493",
+                                                       "text":  "Dsquared2",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "6b47c13",
+                                                       "text":  "Queen",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "d57732c",
+                                                       "text":  "Queen Saloni",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "e37f8c2",
+                                                       "text":  "Semeli Group",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "1b02bde",
+                                                       "text":  "Mosaic",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "4f7060e",
+                                                       "text":  "Katrin",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "10143b6",
+                                                       "text":  "Blublu",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "502dace",
+                                                       "text":  "Roca",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "5a0cef9",
+                                                       "text":  "Missoni",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "083f748",
+                                                       "text":  "Cape Ftelia",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "e437272",
+                                                       "text":  "Pnoe",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "30278f3",
+                                                       "text":  "Beauty World",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "8ea3a83",
+                                                       "text":  "Baboulas",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "f319d53",
+                                                       "text":  "Fiora Super Market",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "351a6d6",
+                                                       "text":  "Portioli",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "5557820",
+                                                       "text":  "OneExchange",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "3113a59",
+                                                       "text":  "Cinema",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "8ff982a",
+                                                       "text":  "Costa Lekka",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "ea4b19f",
+                                                       "text":  "GMT Voyager",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "f05f4bd",
+                                                       "text":  "Premium Legal",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "2355fe8",
+                                                       "text":  "MPOS",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "984d0b1",
+                                                       "text":  "Priveon",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "f43bbe0",
+                                                       "text":  "Traffic",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "10fd034",
+                                                       "text":  "Autopower",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "09e2d37",
+                                                       "text":  "Nilina",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "34e4e0b",
+                                                       "text":  "Elixir",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "ff8b3c8",
+                                                       "text":  "Lionsbay",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "a02b5f2",
+                                                       "text":  "Dolphin",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "2563ffb",
+                                                       "text":  "Advanced VIP",
+                                                       "isNew":  false
+                                                   },
+                                                   {
+                                                       "id":  "ec18eec",
+                                                       "text":  "Yaloou",
+                                                       "isNew":  false
+                                                   }
+                                               ],
+                                     "assignments":  {
+                                                         "78":  [
+
+                                                                ],
+                                                         "10":  [
+
+                                                                ],
+                                                         "63":  [
+
+                                                                ],
+                                                         "30":  [
+
+                                                                ],
+                                                         "49":  [
+
+                                                                ],
+                                                         "62":  [
+
+                                                                ],
+                                                         "22":  [
+
+                                                                ],
+                                                         "13":  [
+
+                                                                ],
+                                                         "47":  [
+
+                                                                ],
+                                                         "71":  [
+
+                                                                ],
+                                                         "77":  [
+
+                                                                ],
+                                                         "73":  [
+
+                                                                ],
+                                                         "3":  [
+
+                                                               ],
+                                                         "8":  [
+
+                                                               ],
+                                                         "12":  [
+
+                                                                ],
+                                                         "65":  [
+
+                                                                ],
+                                                         "40":  [
+
+                                                                ],
+                                                         "14":  [
+
+                                                                ],
+                                                         "26":  [
+
+                                                                ],
+                                                         "17":  [
+
+                                                                ],
+                                                         "28":  [
+
+                                                                ],
+                                                         "76":  [
+
+                                                                ],
+                                                         "36":  [
+
+                                                                ],
+                                                         "4":  [
+
+                                                               ],
+                                                         "50":  [
+
+                                                                ],
+                                                         "45":  [
+
+                                                                ],
+                                                         "60":  [
+
+                                                                ],
+                                                         "38":  [
+
+                                                                ],
+                                                         "82":  [
+
+                                                                ],
+                                                         "23":  [
+
+                                                                ],
+                                                         "51":  [
+
+                                                                ],
+                                                         "20":  [
+
+                                                                ],
+                                                         "59":  [
+
+                                                                ],
+                                                         "69":  [
+
+                                                                ],
+                                                         "54":  [
+
+                                                                ],
+                                                         "66":  [
+
+                                                                ],
+                                                         "57":  [
+
+                                                                ],
+                                                         "43":  [
+
+                                                                ],
+                                                         "80":  [
+
+                                                                ],
+                                                         "35":  [
+
+                                                                ],
+                                                         "41":  [
+
+                                                                ],
+                                                         "5":  [
+
+                                                               ],
+                                                         "34":  [
+
+                                                                ],
+                                                         "6":  [
+
+                                                               ],
+                                                         "53":  [
+
+                                                                ],
+                                                         "2":  [
+
+                                                               ],
+                                                         "44":  [
+
+                                                                ],
+                                                         "72":  [
+
+                                                                ],
+                                                         "11":  [
+
+                                                                ],
+                                                         "70":  [
+
+                                                                ],
+                                                         "68":  [
+
+                                                                ],
+                                                         "1":  [
+
+                                                               ],
+                                                         "58":  [
+
+                                                                ],
+                                                         "55":  [
+
+                                                                ],
+                                                         "33":  [
+
+                                                                ],
+                                                         "67":  [
+
+                                                                ],
+                                                         "27":  [
+
+                                                                ],
+                                                         "16":  [
+
+                                                                ],
+                                                         "64":  [
+
+                                                                ],
+                                                         "24":  [
+
+                                                                ],
+                                                         "19":  [
+
+                                                                ],
+                                                         "29":  [
+
+                                                                ],
+                                                         "61":  [
+
+                                                                ],
+                                                         "9":  [
+
+                                                               ],
+                                                         "74":  [
+
+                                                                ],
+                                                         "37":  [
+
+                                                                ],
+                                                         "7":  [
+
+                                                               ],
+                                                         "52":  [
+
+                                                                ],
+                                                         "81":  [
+
+                                                                ],
+                                                         "39":  [
+
+                                                                ],
+                                                         "48":  [
+
+                                                                ],
+                                                         "21":  [
+
+                                                                ],
+                                                         "56":  [
+
+                                                                ],
+                                                         "46":  [
+
+                                                                ],
+                                                         "75":  [
+
+                                                                ],
+                                                         "79":  [
+
+                                                                ],
+                                                         "32":  [
+
+                                                                ],
+                                                         "31":  [
+
+                                                                ],
+                                                         "15":  [
+
+                                                                ],
+                                                         "25":  [
+
+                                                                ],
+                                                         "18":  [
+
+                                                                ],
+                                                         "42":  [
+
+                                                                ]
+                                                     },
+                                     "spreads":  {
+
+                                                 },
+                                     "layout3":  {
+
+                                                 }
+                                 }
+                 }
+}
