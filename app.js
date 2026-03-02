@@ -31,6 +31,8 @@
   var API_NOTIFY='/api/notify?booklet='+encodeURIComponent(BOOKLET_KEY);
   var MAX=4, START=1;
   var saveTimer=null;
+  var globalSyncTimer=null;
+  var lastServerFingerprint='';
   var suppressGlobalSave=false;
   var undoStack=[];
   var UNDO_MAX=30;
@@ -45,6 +47,10 @@
   }
 
   function cloneState(src){ return JSON.parse(JSON.stringify(src)); }
+  function stateFingerprint(src){
+    try{ return JSON.stringify(src||{}); }
+    catch(_){ return ''; }
+  }
 
   function updateUndoButton(){
     if(!undoBtn) return;
@@ -464,22 +470,30 @@
     return true;
   }
 
-  function loadGlobal(){
-    setSaveStatus('saving');
+  function loadGlobal(opts){
+    opts=opts||{};
+    if(!opts.silent) setSaveStatus('saving');
     return fetch(API_STATE,{cache:'no-store'})
       .then(function(res){
         if(!res.ok) throw new Error('no-global-state');
         return res.json();
       })
       .then(function(serverState){
+        var incomingFingerprint=stateFingerprint(serverState);
+        if(incomingFingerprint && incomingFingerprint===lastServerFingerprint){
+          if(!opts.silent) setSaveStatus('saved');
+          return;
+        }
+        if(pointerDrag) return;
         if(!applyState(serverState)) return;
         suppressGlobalSave=true;
         build();
         suppressGlobalSave=false;
         saveLocal();
-        setSaveStatus('saved');
+        lastServerFingerprint=incomingFingerprint;
+        if(!opts.silent) setSaveStatus('saved');
       })
-      .catch(function(){ setSaveStatus('saved'); });
+      .catch(function(){ if(!opts.silent) setSaveStatus('saved'); });
   }
 
   function queueGlobalSave(){
@@ -500,6 +514,7 @@
         body:JSON.stringify(state),
         keepalive:true
       }).then(function(){
+        lastServerFingerprint=stateFingerprint(state);
         setSaveStatus('saved');
       }).catch(function(){
         setSaveStatus('error');
@@ -1063,6 +1078,16 @@
   setSaveStatus('saved');
   init();
   loadGlobal();
+  globalSyncTimer=setInterval(function(){
+    if(document.hidden) return;
+    loadGlobal({silent:true});
+  },2000);
+  document.addEventListener('visibilitychange', function(){
+    if(!document.hidden) loadGlobal({silent:true});
+  });
+  window.addEventListener('focus', function(){
+    loadGlobal({silent:true});
+  });
 
   if(sendRaniaBtn) sendRaniaBtn.onclick=function(){
     setNotifyButtonState('sending');
