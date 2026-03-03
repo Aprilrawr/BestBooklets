@@ -51,3 +51,21 @@ After deploy, open your Render URL and use the app normally.
 `state.json` lives on the server filesystem.
 If your host clears ephemeral disk between restarts/deploys, state may reset.
 For guaranteed long-term persistence, use a host with persistent disk enabled.
+
+## Keep label order/layout in GitHub
+
+Before pushing future code changes, snapshot the current live Render state into `state.json`:
+
+```powershell
+./scripts/snapshot_state_from_render.ps1
+```
+
+Then commit it:
+
+```powershell
+git add state.json
+git commit -m "Snapshot live booklet state"
+git push
+```
+
+This preserves current label order/placements in Git history and avoids losing changes during later deploys.
