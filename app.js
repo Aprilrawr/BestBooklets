@@ -663,6 +663,15 @@
     if(BOOKLET_KEY==='flying-to-greece') return FLYING_TO_GREECE.slice();
     return [];
   }
+  function seedDefaultNamesIfEmpty(){
+    if(!Array.isArray(state.names) || state.names.length) return false;
+    var defaults=defaultNamesForBooklet();
+    if(!defaults.length) return false;
+    state.names=defaults.map(function(t,idx){
+      return {id:uid(),text:t,isNew:false,createdAt:idx+1,bookletKey:BOOKLET_KEY};
+    });
+    return true;
+  }
 
   function stripForeignLabelsFromState(){
     if(!Array.isArray(state.names)) state.names=[];
@@ -822,6 +831,7 @@
     state=s;
     stripForeignLabelsFromState();
     dedupeLabelsInState();
+    seedDefaultNamesIfEmpty();
     normalizeSpreads();
     pageCount.value=String(state.pages||DEFAULT_PAGES);
     return true;
@@ -845,6 +855,10 @@
         }
         if(pointerDrag) return;
         if(!applyState(serverState)) return;
+        if(seedDefaultNamesIfEmpty()){
+          saveLocal();
+          queueGlobalSave();
+        }
         suppressGlobalSave=true;
         preserveWindowScroll(function(){ build(); });
         suppressGlobalSave=false;
