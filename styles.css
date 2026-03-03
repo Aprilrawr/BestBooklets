@@ -555,27 +555,59 @@ button,
 }
 
 @media (max-width: 900px){
+  html,body{
+    height:100dvh;
+    overflow:hidden;
+  }
+  .viewport{
+    height:100dvh;
+    min-height:100dvh;
+    overflow:hidden;
+  }
+  #stage{
+    margin:8px auto;
+    width:min(var(--design-w), calc(100% - 16px));
+    height:calc(100dvh - 16px);
+    display:flex;
+    flex-direction:column;
+  }
   .app{
+    position:relative;
     display:block;
+    flex:1;
+    min-height:0;
+    overflow:hidden;
   }
   .topNav{padding:8px}
   .navItem{padding:7px 10px}
   .board{
     margin-right:0;
-    margin-bottom:calc(33dvh + 18px);
+    margin-bottom:0;
+    height:66.5dvh;
+    max-height:66.5dvh;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+  }
+  .scroll{
+    flex:1;
+    min-height:0;
+    overflow:auto;
+    overscroll-behavior:contain;
   }
   .side{
-    position:fixed;
+    position:absolute;
     top:auto;
-    right:12px;
-    left:12px;
-    bottom:10px;
+    right:0;
+    left:0;
+    bottom:0;
     width:auto;
-    height:33dvh;
-    max-height:33dvh;
+    height:33.5dvh;
+    max-height:33.5dvh;
     margin-top:0;
     padding:10px;
     z-index:40;
+    border-radius:14px 14px 0 0;
   }
 
   #pool{
@@ -592,7 +624,7 @@ button,
     min-width:0;
     min-height:56px;
     align-items:center;
-    padding:8px 24px 8px 8px;
+    padding:8px 42px 8px 8px;
     border-radius:14px;
   }
   .paletteHead select{
@@ -609,6 +641,11 @@ button,
   }
   .palette .kill{
     right:4px;
+    width:18px;
+    height:18px;
+  }
+  .palette .tag .tagEdit{
+    right:22px;
     width:18px;
     height:18px;
   }
