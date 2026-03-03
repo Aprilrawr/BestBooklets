@@ -617,7 +617,7 @@ button,
   .navItem{padding:7px 10px}
   .board{
     margin-right:0;
-    margin-bottom:calc(25dvh + 18px);
+    margin-bottom:calc(33.5dvh + 18px);
     height:auto;
     max-height:none;
     overflow:visible;
@@ -629,8 +629,8 @@ button,
     left:12px;
     bottom:10px;
     width:auto;
-    height:25dvh;
-    max-height:25dvh;
+    height:33.5dvh;
+    max-height:33.5dvh;
     margin-top:0;
     padding:10px;
     z-index:40;
@@ -694,7 +694,10 @@ button,
   }
   .backToTopBtn{
     right:12px;
-    bottom:calc(25dvh + 12px);
+    bottom:calc(33.5dvh + 12px);
     z-index:90;
+  }
+  .syncDiag{
+    display:none;
   }
 }
