@@ -63,14 +63,24 @@
             <button id="resetNames" class="btn primary" style="background:#475569">Επιστροφή όλων</button>
           </div>
 
-          <div id="newNameRow" style="display:none;gap:8px;margin-top:10px">
-            <input id="newName" placeholder="Enter name…" style="flex:1;padding:8px 10px;border:1px solid var(--line);border-radius:10px"/>
-            <button id="saveName" class="btn primary">Add</button>
-            <button id="cancelName" class="btn secondary">Cancel</button>
-          </div>
-
           <p style="margin-top:auto;color:#64748b;font-size:12px">Shared αποθήκευση για το ενεργό booklet.</p>
+          <div class="syncDiag" aria-live="polite">
+            <div id="syncDiagStatus" class="syncDiagStatus">Sync: --</div>
+            <div id="syncDiagDetail" class="syncDiagDetail">No sync events yet</div>
+          </div>
         </aside>
+      </div>
+    </div>
+  </div>
+
+  <div id="multiLabelModal" class="modalBackdrop" hidden>
+    <div class="modalWindow" role="dialog" aria-modal="true" aria-labelledby="multiLabelTitle">
+      <h3 id="multiLabelTitle" style="margin:0">Προσθήκη labels</h3>
+      <div id="multiLabelFields" class="multiLabelFields"></div>
+      <button id="addMultiLabelField" class="btn secondary modalPlus" type="button" aria-label="Add another label field">+</button>
+      <div class="modalActions">
+        <button id="cancelMultiLabel" class="btn secondary" type="button">Cancel</button>
+        <button id="confirmMultiLabel" class="btn primary" type="button">OK</button>
       </div>
     </div>
   </div>

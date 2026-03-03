@@ -26,7 +26,7 @@ def read_store() -> dict:
     if not os.path.exists(STATE_PATH):
         return {"booklets": {}}
 
-    with open(STATE_PATH, "r", encoding="utf-8") as state_file:
+    with open(STATE_PATH, "r", encoding="utf-8-sig") as state_file:
         parsed = json.load(state_file)
 
     if isinstance(parsed, dict) and isinstance(parsed.get("booklets"), dict):

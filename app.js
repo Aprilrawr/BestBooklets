@@ -19,12 +19,15 @@
   var lastSyncedEl=document.getElementById('lastSyncedStatus');
   var labelSortEl=document.getElementById('labelSort');
   var sendRaniaBtn=document.getElementById('sendRaniaBtn');
+  var syncDiagStatusEl=document.getElementById('syncDiagStatus');
+  var syncDiagDetailEl=document.getElementById('syncDiagDetail');
   var addNameBtn=document.getElementById('addName');
   var resetNamesBtn=document.getElementById('resetNames');
-  var newNameRow=document.getElementById('newNameRow');
-  var newNameInput=document.getElementById('newName');
-  var saveNameBtn=document.getElementById('saveName');
-  var cancelNameBtn=document.getElementById('cancelName');
+  var multiLabelModal=document.getElementById('multiLabelModal');
+  var multiLabelFields=document.getElementById('multiLabelFields');
+  var addMultiLabelFieldBtn=document.getElementById('addMultiLabelField');
+  var confirmMultiLabelBtn=document.getElementById('confirmMultiLabel');
+  var cancelMultiLabelBtn=document.getElementById('cancelMultiLabel');
 
   var BOOKLET_KEY=getBookletKeyFromUrl();
   var BOOKLET_TITLE=bookletTitleForKey(BOOKLET_KEY);
@@ -150,6 +153,30 @@
     var ss=String(now.getSeconds()).padStart(2,'0');
     lastSyncedEl.textContent='Last synced '+hh+':'+mm+':'+ss;
   }
+  function setSyncDiagnostic(kind, detail){
+    if(syncDiagStatusEl){
+      syncDiagStatusEl.classList.remove('is-ok','is-pending','is-error');
+      if(kind==='ok'){
+        syncDiagStatusEl.textContent='Sync: OK';
+        syncDiagStatusEl.classList.add('is-ok');
+      }else if(kind==='pending'){
+        syncDiagStatusEl.textContent='Sync: Pending';
+        syncDiagStatusEl.classList.add('is-pending');
+      }else if(kind==='error'){
+        syncDiagStatusEl.textContent='Sync: Error';
+        syncDiagStatusEl.classList.add('is-error');
+      }else{
+        syncDiagStatusEl.textContent='Sync: --';
+      }
+    }
+    if(syncDiagDetailEl){
+      var now=new Date();
+      var hh=String(now.getHours()).padStart(2,'0');
+      var mm=String(now.getMinutes()).padStart(2,'0');
+      var ss=String(now.getSeconds()).padStart(2,'0');
+      syncDiagDetailEl.textContent='['+hh+':'+mm+':'+ss+'] '+(detail||'');
+    }
+  }
   function setLabelNewState(labelId, isNew){
     if(!Array.isArray(state.names)) return;
     for(var i=0;i<state.names.length;i++){
@@ -189,7 +216,6 @@
     if(!Array.isArray(state.names)) state.names=[];
 
     var idRemap={};
-    var seenByText={};
     var seenById={};
     var uniqueNames=[];
 
@@ -204,13 +230,6 @@
         continue;
       }
 
-      var existing=seenByText[key];
-      if(existing){
-        idRemap[rec.id]=existing.id;
-        continue;
-      }
-
-      seenByText[key]=rec;
       seenById[rec.id]=rec.id;
       uniqueNames.push(rec);
     }
@@ -652,6 +671,65 @@
     "Château Nico Lazaridi",
     "Optima Lodgings"
   ];
+  var SANTORINI=[
+    "Santorini Best",
+    "Caldera Yachting",
+    "New York Tourism Advisory Group",
+    "Katikies",
+    "West East Suites",
+    "Fly Away",
+    "Cresanto Luxury Suites",
+    "Aestian",
+    "Sperisma",
+    "Sienna Eco Resort",
+    "Rizes",
+    "Etereo Suites",
+    "Venus Sunrise",
+    "Santorini Princess",
+    "Le Ciel",
+    "NOUS Santorini",
+    "Lilium Holiday Homes & Villas Santorini",
+    "Lilium Hotel Santorini",
+    "mysantorini hotels",
+    "Blue Dolphins",
+    "Grand View",
+    "Casa Grande",
+    "Just Blue",
+    "Yposkafo Jacuzzi House",
+    "Atoles Retreat",
+    "Gofas Jewelry",
+    "Poniros",
+    "Nikki Beach Resort & Spa",
+    "Topos Exclusive",
+    "Oia Suites",
+    "LVKAS Aetherial Living",
+    "Caldera Villas",
+    "Elies Suites",
+    "Vogue Suites",
+    "Phaos Santorini Suites",
+    "Phaos 1870",
+    "Phaos Cellaria",
+    "Phaos St John Villas",
+    "Villa Renos",
+    "Santo Wines 1911",
+    "Barolo Beach",
+    "Barolo Santorini",
+    "Taste and Feel Santorini",
+    "Hill Suites Santorini",
+    "Hillside Suites",
+    "Hillside Elegance Suites",
+    "Cacio e Pepe",
+    "Fusionnelle",
+    "Frati Santorini",
+    "Skala Restaurant",
+    "Skiza Café",
+    "Deck Santorini",
+    "Portioli Super Premium Italian Espresso",
+    "Luxury Spot Helicopter Tours",
+    "Santorini's Luxury Travel",
+    "Therapy",
+    "Elixir Cruises"
+  ];
   var PROVIDED_SET=(function(){
     var map={};
     for(var i=0;i<PROVIDED.length;i++) map[PROVIDED[i]]=true;
@@ -660,6 +738,7 @@
 
   function defaultNamesForBooklet(){
     if(BOOKLET_KEY==='mykonos') return PROVIDED.slice();
+    if(BOOKLET_KEY==='santorini') return SANTORINI.slice();
     if(BOOKLET_KEY==='flying-to-greece') return FLYING_TO_GREECE.slice();
     return [];
   }
@@ -841,16 +920,26 @@
     opts=opts||{};
     if(isGlobalSaveInFlight) return Promise.resolve();
     if(!opts.silent) setSaveStatus('saving');
+    if(!opts.silent) setSyncDiagnostic('pending','GET /api/state');
     return fetch(API_STATE,{cache:'no-store'})
       .then(function(res){
-        if(!res.ok) throw new Error('no-global-state');
+        if(res.status===404) return null;
+        if(!res.ok) throw new Error('GET /api/state '+res.status);
         return res.json();
       })
       .then(function(serverState){
+        if(serverState===null){
+          saveLocal();
+          queueGlobalSave();
+          if(!opts.silent) setSaveStatus('saved');
+          if(!opts.silent) setSyncDiagnostic('ok','No remote state yet, uploading local');
+          return;
+        }
         var incomingFingerprint=stateFingerprint(serverState);
         if(incomingFingerprint && incomingFingerprint===lastServerFingerprint){
           setLastSyncedNow();
           if(!opts.silent) setSaveStatus('saved');
+          if(!opts.silent) setSyncDiagnostic('ok','GET up-to-date');
           return;
         }
         if(pointerDrag) return;
@@ -866,14 +955,19 @@
         lastServerFingerprint=incomingFingerprint;
         setLastSyncedNow();
         if(!opts.silent) setSaveStatus('saved');
+        if(!opts.silent) setSyncDiagnostic('ok','GET applied global state');
       })
-      .catch(function(){ if(!opts.silent) setSaveStatus('saved'); });
+        .catch(function(err){
+          if(!opts.silent) setSaveStatus('error');
+          if(!opts.silent) setSyncDiagnostic('error', (err&&err.message) ? err.message : 'GET failed');
+        });
   }
 
   function queueGlobalSave(){
     if(suppressGlobalSave) return;
     if(saveTimer) clearTimeout(saveTimer);
     setSaveStatus('saving');
+    setSyncDiagnostic('pending','POST /api/state queued');
     saveTimer=setTimeout(function(){
       saveTimer=null;
       flushGlobalSave();
@@ -887,27 +981,31 @@
       isGlobalSaveInFlight=true;
       fetch(API_STATE,{
         method:'POST',
+        cache:'no-store',
         headers:{'Content-Type':'application/json'},
         body:payload,
         keepalive:true
-      }).then(function(){
+      }).then(function(res){
+        if(!res.ok) throw new Error('state-save-failed-'+res.status);
         setLastSyncedNow();
         setSaveStatus('saved');
+        setSyncDiagnostic('ok','POST /api/state '+res.status);
       }).catch(function(){
         setSaveStatus('error');
+        setSyncDiagnostic('error','POST /api/state failed');
       }).finally(function(){
         isGlobalSaveInFlight=false;
       });
     }catch(_){
       isGlobalSaveInFlight=false;
       setSaveStatus('error');
+      setSyncDiagnostic('error','POST serialization failed');
     }
   }
 
   function save(){
     saveLocal();
     queueGlobalSave();
-    setSaveStatus('saved');
   }
 
   function renderAllTagsToPool(){
@@ -1409,32 +1507,109 @@
     },450);
   }
 
+  function createMultiLabelField(value){
+    var input=document.createElement('input');
+    input.type='text';
+    input.className='multiLabelInput';
+    input.placeholder='Enter label…';
+    input.value=value||'';
+    return input;
+  }
+
+  function appendMultiLabelField(value, shouldFocus){
+    if(!multiLabelFields) return null;
+    var input=createMultiLabelField(value);
+    multiLabelFields.appendChild(input);
+    if(shouldFocus){
+      setTimeout(function(){ input.focus(); },0);
+    }
+    return input;
+  }
+
+  function closeMultiLabelModal(){
+    if(!multiLabelModal) return;
+    multiLabelModal.hidden=true;
+    if(multiLabelFields) multiLabelFields.innerHTML='';
+  }
+
+  function openMultiLabelModal(){
+    if(!multiLabelModal || !multiLabelFields) return;
+    multiLabelFields.innerHTML='';
+    appendMultiLabelField('', true);
+    multiLabelModal.hidden=false;
+  }
+
   addNameBtn.onclick=function(){
-    newNameRow.style.display='flex';
-    newNameInput.value='';
-    newNameInput.focus();
+    openMultiLabelModal();
   };
-  saveNameBtn.onclick=function(){
-    var v=(newNameInput.value||'').trim();
-    if(!v) return;
-    if(labelExists(v)){
-      alert('This name already exists.');
+  if(addMultiLabelFieldBtn) addMultiLabelFieldBtn.onclick=function(){
+    appendMultiLabelField('', true);
+  };
+  if(cancelMultiLabelBtn) cancelMultiLabelBtn.onclick=function(){
+    closeMultiLabelModal();
+  };
+  if(confirmMultiLabelBtn) confirmMultiLabelBtn.onclick=function(){
+    if(!multiLabelFields) return;
+    var inputs=[].slice.call(multiLabelFields.querySelectorAll('input.multiLabelInput'));
+    var seenDraft={};
+    var created=[];
+    var baseTime=Date.now();
+
+    for(var i=0;i<inputs.length;i++){
+      var raw=(inputs[i].value||'').trim();
+      if(!raw) continue;
+
+      var key=normalizeLabelText(raw);
+      if(!key || seenDraft[key]) continue;
+      seenDraft[key]=true;
+
+      if(labelExists(raw)) continue;
+
+      created.push({
+        id:uid(),
+        text:raw,
+        isNew:false,
+        createdAt:baseTime+i,
+        bookletKey:BOOKLET_KEY
+      });
+    }
+
+    if(!created.length){
+      alert('No new labels to add.');
       return;
     }
+
     rememberState();
-    var rec={id:uid(),text:v,isNew:false,createdAt:Date.now(),bookletKey:BOOKLET_KEY};
     if(!state.names) state.names=[];
-    state.names.push(rec);
+    for(var j=0;j<created.length;j++) state.names.push(created[j]);
     renderAllTagsToPool();
-    newNameRow.style.display='none';
+    closeMultiLabelModal();
     save();
   };
-  cancelNameBtn.onclick=function(){ newNameRow.style.display='none'; };
+  document.addEventListener('keydown', function(ev){
+    if(ev.key==='Escape' && multiLabelModal && !multiLabelModal.hidden){
+      closeMultiLabelModal();
+      return;
+    }
+    if(ev.key==='Enter' && multiLabelModal && !multiLabelModal.hidden){
+      var target=ev.target;
+      var isInput=target && target.classList && target.classList.contains('multiLabelInput');
+      if(isInput){
+        ev.preventDefault();
+        if(confirmMultiLabelBtn) confirmMultiLabelBtn.click();
+      }
+    }
+  });
+  if(multiLabelModal) multiLabelModal.addEventListener('click', function(ev){
+    if(ev.target===multiLabelModal) closeMultiLabelModal();
+  });
   resetNamesBtn.onclick=function(){
-    if(!confirm('Reset available names to provided list?')) return;
+    if(!confirm('Return all labels to the right and clear all spreads/placements?')) return;
     rememberState();
-    state.names=defaultNamesForBooklet().map(function(t,idx){return{id:uid(),text:t,isNew:false,createdAt:idx+1,bookletKey:BOOKLET_KEY};});
-    renderAllTagsToPool();
+    state.assignments={};
+    state.spreads={};
+    state.layout3={};
+    build();
     save();
   };
 
