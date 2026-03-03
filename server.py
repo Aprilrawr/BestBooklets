@@ -4,6 +4,7 @@ import json
 import os
 import smtplib
 import sys
+import hashlib
 from datetime import datetime, timezone
 from email.message import EmailMessage
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
@@ -36,6 +37,12 @@ def read_store() -> dict:
         return {"booklets": {"mykonos": parsed}}
 
     return {"booklets": {}}
+
+
+def state_revision(payload: dict) -> str:
+    canonical = json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    digest = hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+    return f'"{digest}"'
 
 
 def write_store(store: dict) -> None:
@@ -88,6 +95,7 @@ class Handler(SimpleHTTPRequestHandler):
 
         self.send_response(200)
         self.send_header("Content-Type", "application/json; charset=utf-8")
+        self.send_header("ETag", state_revision(current))
         self.end_headers()
         self.wfile.write(json.dumps(current, ensure_ascii=False).encode("utf-8"))
 
@@ -119,10 +127,37 @@ class Handler(SimpleHTTPRequestHandler):
             return
 
         booklet = booklet_key_from_path(self.path)
+        parsed_url = urlparse(self.path)
+        query = parse_qs(parsed_url.query)
+        client_rev = (self.headers.get("If-Match") or "").strip()
+        if not client_rev:
+            client_rev = (query.get("rev", [""])[0] or "").strip()
+
         try:
             store = read_store()
             if not isinstance(store.get("booklets"), dict):
                 store["booklets"] = {}
+            existing = store["booklets"].get(booklet)
+            if isinstance(existing, dict):
+                current_rev = state_revision(existing)
+                if not client_rev:
+                    self.send_response(409)
+                    self.send_header("Content-Type", "application/json; charset=utf-8")
+                    self.send_header("ETag", current_rev)
+                    self.end_headers()
+                    self.wfile.write(
+                        json.dumps({"error": "stale-state", "reason": "missing-revision", "currentRev": current_rev}).encode("utf-8")
+                    )
+                    return
+                if client_rev != current_rev:
+                    self.send_response(409)
+                    self.send_header("Content-Type", "application/json; charset=utf-8")
+                    self.send_header("ETag", current_rev)
+                    self.end_headers()
+                    self.wfile.write(
+                        json.dumps({"error": "stale-state", "reason": "revision-mismatch", "currentRev": current_rev}).encode("utf-8")
+                    )
+                    return
             store["booklets"][booklet] = parsed
             write_store(store)
         except OSError:
@@ -133,6 +168,7 @@ class Handler(SimpleHTTPRequestHandler):
             return
 
         self.send_response(204)
+        self.send_header("ETag", state_revision(parsed))
         self.end_headers()
 
     def _handle_post_notify(self) -> None:

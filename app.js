@@ -42,6 +42,7 @@
   var globalSyncTimer=null;
   var isGlobalSaveInFlight=false;
   var lastServerFingerprint='';
+  var lastKnownServerRev='';
   var suppressGlobalSave=false;
   var undoStack=[];
   var UNDO_MAX=30;
@@ -593,10 +594,14 @@
   window.addEventListener('mouseup', endPointerDrag);
   window.addEventListener('beforeunload', function(){
     if(suppressGlobalSave) return;
+    if(!lastKnownServerRev) return;
     try{
       var payload = JSON.stringify(state);
       var blob = new Blob([payload], {type:'application/json'});
-      if(navigator.sendBeacon) navigator.sendBeacon(API_STATE, blob);
+      if(navigator.sendBeacon){
+        var beaconUrl=API_STATE+'&rev='+encodeURIComponent(lastKnownServerRev);
+        navigator.sendBeacon(beaconUrl, blob);
+      }
     }catch(_){ }
   });
   rescale();
@@ -923,6 +928,9 @@
     if(!opts.silent) setSyncDiagnostic('pending','GET /api/state');
     return fetch(API_STATE,{cache:'no-store'})
       .then(function(res){
+        if(res.ok){
+          lastKnownServerRev=res.headers.get('ETag') || lastKnownServerRev;
+        }
         if(res.status===404) return null;
         if(!res.ok) throw new Error('GET /api/state '+res.status);
         return res.json();
@@ -979,18 +987,31 @@
       var payload=JSON.stringify(state);
       lastServerFingerprint=payload;
       isGlobalSaveInFlight=true;
+      var requestHeaders={'Content-Type':'application/json'};
+      if(lastKnownServerRev) requestHeaders['If-Match']=lastKnownServerRev;
       fetch(API_STATE,{
         method:'POST',
         cache:'no-store',
-        headers:{'Content-Type':'application/json'},
+        headers:requestHeaders,
         body:payload,
         keepalive:true
       }).then(function(res){
+        if(res.status===409){
+          lastKnownServerRev=res.headers.get('ETag') || lastKnownServerRev;
+          throw new Error('stale-state-409');
+        }
         if(!res.ok) throw new Error('state-save-failed-'+res.status);
+        lastKnownServerRev=res.headers.get('ETag') || lastKnownServerRev;
         setLastSyncedNow();
         setSaveStatus('saved');
         setSyncDiagnostic('ok','POST /api/state '+res.status);
-      }).catch(function(){
+      }).catch(function(err){
+        if(err && err.message==='stale-state-409'){
+          setSaveStatus('error');
+          setSyncDiagnostic('error','Stale tab detected, loading latest state');
+          loadGlobal({silent:false});
+          return;
+        }
         setSaveStatus('error');
         setSyncDiagnostic('error','POST /api/state failed');
       }).finally(function(){
