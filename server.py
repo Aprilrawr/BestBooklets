@@ -11,7 +11,7 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, urlparse
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-STATE_PATH = os.path.join(BASE_DIR, "state.json")
+STATE_PATH = os.environ.get("STATE_PATH", "").strip() or os.path.join(BASE_DIR, "state.json")
 MAX_BODY_BYTES = 2 * 1024 * 1024
 
 

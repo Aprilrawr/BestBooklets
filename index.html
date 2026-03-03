@@ -85,6 +85,19 @@
     </div>
   </div>
 
+  <div id="renameLabelModal" class="modalBackdrop" hidden>
+    <div class="modalWindow" role="dialog" aria-modal="true" aria-labelledby="renameLabelTitle">
+      <h3 id="renameLabelTitle" style="margin:0">Rename label</h3>
+      <input id="renameLabelInput" class="multiLabelInput" type="text" placeholder="Enter label…" />
+      <div class="modalActions">
+        <button id="cancelRenameLabel" class="btn secondary" type="button">Cancel</button>
+        <button id="confirmRenameLabel" class="btn primary" type="button">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <button id="backToTopBtn" class="backToTopBtn" type="button" aria-label="Back to top" title="Back to top">↑</button>
+
   <script src="./app.js?v=20260303z"></script>
 </body>
 </html>

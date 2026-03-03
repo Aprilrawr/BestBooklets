@@ -19,6 +19,14 @@ Then open `http://localhost:5500`.
 All planner changes are saved globally in `state.json` via `POST /api/state` and loaded from `GET /api/state`.
 This means everyone using the same running server sees the same latest layout/state.
 
+You can override the storage file path with:
+
+- `STATE_PATH` (absolute path to state JSON file)
+
+Example for durable Render disk:
+
+- `STATE_PATH=/var/data/state.json`
+
 ## Email notification (Send to Rania)
 
 The **Send to Rania** button calls `POST /api/notify` and sends an email through SMTP.
@@ -52,6 +60,12 @@ After deploy, open your Render URL and use the app normally.
 If your host clears ephemeral disk between restarts/deploys, state may reset.
 For guaranteed long-term persistence, use a host with persistent disk enabled.
 
+Recommended on Render:
+
+1. Attach a persistent disk to the service.
+2. Set env var `STATE_PATH=/var/data/state.json`.
+3. Redeploy once.
+
 ## Keep label order/layout in GitHub
 
 Before pushing future code changes, snapshot the current live Render state into `state.json`:
@@ -69,3 +83,27 @@ git push
 ```
 
 This preserves current label order/placements in Git history and avoids losing changes during later deploys.
+
+### Safer one-command flow before pushes
+
+Use this helper to snapshot current Render state first, then commit/push the snapshot:
+
+```powershell
+./scripts/sync_render_then_push.ps1
+```
+
+Optional: commit snapshot only (no push):
+
+```powershell
+./scripts/sync_render_then_push.ps1 -SkipPush
+```
+
+## One-time migration from browser local snapshot
+
+If your exact old layout exists only in your normal browser (not incognito), export it from that tab:
+
+```javascript
+copy(localStorage.getItem('booklet-v2-sortable-mykonos'))
+```
+
+Paste that JSON to the assistant and it can be migrated to Render for Mykonos only.

@@ -9,6 +9,7 @@
 
   var rowsEl=document.getElementById('rows');
   var pool=document.getElementById('pool');
+  var sidePaletteEl=document.querySelector('.side.palette');
   var topNavEl=document.querySelector('.topNav');
   var bookletTitleEl=document.getElementById('bookletTitle');
   var pageCount=document.getElementById('pageCount');
@@ -19,6 +20,7 @@
   var lastSyncedEl=document.getElementById('lastSyncedStatus');
   var labelSortEl=document.getElementById('labelSort');
   var sendRaniaBtn=document.getElementById('sendRaniaBtn');
+  var backToTopBtn=document.getElementById('backToTopBtn');
   var syncDiagStatusEl=document.getElementById('syncDiagStatus');
   var syncDiagDetailEl=document.getElementById('syncDiagDetail');
   var addNameBtn=document.getElementById('addName');
@@ -28,6 +30,10 @@
   var addMultiLabelFieldBtn=document.getElementById('addMultiLabelField');
   var confirmMultiLabelBtn=document.getElementById('confirmMultiLabel');
   var cancelMultiLabelBtn=document.getElementById('cancelMultiLabel');
+  var renameLabelModal=document.getElementById('renameLabelModal');
+  var renameLabelInput=document.getElementById('renameLabelInput');
+  var confirmRenameLabelBtn=document.getElementById('confirmRenameLabel');
+  var cancelRenameLabelBtn=document.getElementById('cancelRenameLabel');
 
   var BOOKLET_KEY=getBookletKeyFromUrl();
   var BOOKLET_TITLE=bookletTitleForKey(BOOKLET_KEY);
@@ -44,6 +50,7 @@
   var lastServerFingerprint='';
   var lastKnownServerRev='';
   var suppressGlobalSave=false;
+  var pendingRenameLabelId='';
   var undoStack=[];
   var UNDO_MAX=30;
   var isUndoing=false;
@@ -116,6 +123,22 @@
   function stateFingerprint(src){
     try{ return JSON.stringify(src||{}); }
     catch(_){ return ''; }
+  }
+  function restoreScrollIfJumped(beforeX, beforeY){
+    if(beforeY<80) return;
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){
+        var afterY=window.scrollY||0;
+        if(afterY<20 && beforeY-afterY>120){
+          window.scrollTo(beforeX, beforeY);
+        }
+      });
+    });
+  }
+  function updateBackToTopVisibility(){
+    if(!backToTopBtn) return;
+    var show=(window.scrollY||0) > 260;
+    backToTopBtn.classList.toggle('is-visible', show);
   }
 
   function updateUndoButton(){
@@ -462,19 +485,7 @@
     el.querySelector('.tagEdit').addEventListener('click',function(e){
       e.stopPropagation();
       if(!el.closest('#pool')) return;
-      var current=(el.querySelector('.label').textContent||'').trim();
-      var next=prompt('Edit label', current);
-      if(next===null) return;
-      next=(next||'').trim();
-      if(!next || next===current) return;
-      if(labelExists(next, id)){
-        alert('This name already exists.');
-        return;
-      }
-      rememberState();
-      if(!setLabelTextState(id, next)) return;
-      renderAllTagsToPool();
-      save();
+      openRenameLabelModal(id, (el.querySelector('.label').textContent||'').trim());
     });
     el.addEventListener('click',function(e){ e.stopPropagation(); selectTag(el); });
     el.addEventListener('pointerdown',function(e){ startPointerDrag(e, el); });
@@ -604,7 +615,19 @@
       }
     }catch(_){ }
   });
+  document.addEventListener('click', function(ev){
+    var target=ev.target;
+    var button=target && target.closest ? target.closest('button') : null;
+    if(!button) return;
+    if(button===backToTopBtn) return;
+    restoreScrollIfJumped(window.scrollX||0, window.scrollY||0);
+  }, true);
+  window.addEventListener('scroll', updateBackToTopVisibility, {passive:true});
+  if(backToTopBtn) backToTopBtn.addEventListener('click', function(){
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
   rescale();
+  updateBackToTopVisibility();
 
   var PROVIDED=[
     "Deos","Resorts Mykonos","Unmistakably Katikies","Nammos","Kalesma","Once in Mykonos","Epic Blue","San Marco",
@@ -1039,7 +1062,25 @@
     adjustAllFonts();
   }
 
+  function syncPlacedTagsFromState(){
+    for(var pg=START; pg<=state.pages; pg+=1){
+      var cell=getCell(pg);
+      if(!cell) continue;
+      var ids=(state.assignments[pg]||[]).slice();
+      for(var k=0;k<ids.length;k++){
+        var tag=document.querySelector('.tag[data-id="'+ids[k]+'"]');
+        if(tag) placeInCell(tag,cell,false,true);
+      }
+      layoutCell(cell);
+    }
+
+    for(var a in state.spreads){ applySpanVisual(Number(a)); }
+    adjustAllFonts();
+  }
+
   function build(){
+    if(sidePaletteEl) sidePaletteEl.classList.add('is-rebuilding');
+
     var total=Math.max(2,(Number(pageCount.value)||DEFAULT_PAGES));
     if(total%2===1) total+=1;
     state.pages=total;
@@ -1126,6 +1167,10 @@
 
     for(var a in state.spreads){ applySpanVisual(Number(a)); }
     adjustAllFonts();
+
+    requestAnimationFrame(function(){
+      if(sidePaletteEl) sidePaletteEl.classList.remove('is-rebuilding');
+    });
   }
 
   function getCell(p){ return rowsEl.querySelector('.cell[data-page="'+p+'"]'); }
@@ -1537,6 +1582,57 @@
     return input;
   }
 
+  function closeRenameLabelModal(){
+    if(!renameLabelModal) return;
+    renameLabelModal.hidden=true;
+    pendingRenameLabelId='';
+    if(renameLabelInput) renameLabelInput.value='';
+  }
+
+  function openRenameLabelModal(labelId, currentText){
+    if(!renameLabelModal || !renameLabelInput) return;
+    pendingRenameLabelId=labelId||'';
+    renameLabelInput.value=currentText||'';
+    renameLabelModal.hidden=false;
+    setTimeout(function(){
+      renameLabelInput.focus();
+      try{ renameLabelInput.select(); }catch(_){ }
+    },0);
+  }
+
+  function submitRenameLabel(){
+    if(!pendingRenameLabelId || !renameLabelInput) return;
+    var id=pendingRenameLabelId;
+    var next=(renameLabelInput.value||'').trim();
+    var current='';
+    if(Array.isArray(state.names)){
+      for(var i=0;i<state.names.length;i++){
+        var rec=state.names[i];
+        if(rec && rec.id===id){
+          current=(rec.text||'').trim();
+          break;
+        }
+      }
+    }
+    if(!next || next===current){
+      closeRenameLabelModal();
+      return;
+    }
+    if(labelExists(next, id)){
+      alert('This name already exists.');
+      return;
+    }
+    rememberState();
+    if(!setLabelTextState(id, next)){
+      closeRenameLabelModal();
+      return;
+    }
+    renderAllTagsToPool();
+    syncPlacedTagsFromState();
+    closeRenameLabelModal();
+    save();
+  }
+
   function appendMultiLabelField(value, shouldFocus){
     if(!multiLabelFields) return null;
     var input=createMultiLabelField(value);
@@ -1568,6 +1664,9 @@
   };
   if(cancelMultiLabelBtn) cancelMultiLabelBtn.onclick=function(){
     closeMultiLabelModal();
+  };
+  if(cancelRenameLabelBtn) cancelRenameLabelBtn.onclick=function(){
+    closeRenameLabelModal();
   };
   if(confirmMultiLabelBtn) confirmMultiLabelBtn.onclick=function(){
     if(!multiLabelFields) return;
@@ -1604,13 +1703,32 @@
     if(!state.names) state.names=[];
     for(var j=0;j<created.length;j++) state.names.push(created[j]);
     renderAllTagsToPool();
+    syncPlacedTagsFromState();
     closeMultiLabelModal();
     save();
   };
+  if(confirmRenameLabelBtn) confirmRenameLabelBtn.onclick=function(){
+    submitRenameLabel();
+  };
   document.addEventListener('keydown', function(ev){
-    if(ev.key==='Escape' && multiLabelModal && !multiLabelModal.hidden){
-      closeMultiLabelModal();
-      return;
+    if(ev.key==='Escape'){
+      if(renameLabelModal && !renameLabelModal.hidden){
+        closeRenameLabelModal();
+        return;
+      }
+      if(multiLabelModal && !multiLabelModal.hidden){
+        closeMultiLabelModal();
+        return;
+      }
+    }
+    if(ev.key==='Enter' && renameLabelModal && !renameLabelModal.hidden){
+      var renameTarget=ev.target;
+      var isRenameInput=renameTarget===renameLabelInput;
+      if(isRenameInput){
+        ev.preventDefault();
+        submitRenameLabel();
+        return;
+      }
     }
     if(ev.key==='Enter' && multiLabelModal && !multiLabelModal.hidden){
       var target=ev.target;
@@ -1620,6 +1738,9 @@
         if(confirmMultiLabelBtn) confirmMultiLabelBtn.click();
       }
     }
+  });
+  if(renameLabelModal) renameLabelModal.addEventListener('click', function(ev){
+    if(ev.target===renameLabelModal) closeRenameLabelModal();
   });
   if(multiLabelModal) multiLabelModal.addEventListener('click', function(ev){
     if(ev.target===multiLabelModal) closeMultiLabelModal();

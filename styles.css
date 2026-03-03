@@ -266,6 +266,39 @@ button,
   text-overflow:ellipsis;
 }
 
+.backToTopBtn{
+  position:fixed;
+  right:16px;
+  bottom:16px;
+  width:40px;
+  height:40px;
+  border-radius:999px;
+  border:1px solid #bfccde;
+  background:#ffffff;
+  color:#1e293b;
+  font-weight:900;
+  font-size:20px;
+  line-height:1;
+  display:grid;
+  place-items:center;
+  cursor:pointer;
+  z-index:80;
+  box-shadow:0 6px 16px rgba(15,23,42,.16);
+  opacity:0;
+  visibility:hidden;
+  transform:translateY(8px);
+  transition:opacity .18s ease,transform .18s ease,visibility .18s ease,background-color .18s ease,border-color .18s ease;
+}
+.backToTopBtn.is-visible{
+  opacity:1;
+  visibility:visible;
+  transform:translateY(0);
+}
+.backToTopBtn:hover{
+  background:#f8fafc;
+  border-color:#94a3b8;
+}
+
 .row{display:flex;gap:14px;margin-bottom:var(--row-gap);padding-left:12px}
 .row.follow-focus .bubble{
   animation:followGlow .45s ease-out;
@@ -526,6 +559,9 @@ button,
 .palette #pool .tag{width:100%}
 .palette .tag{background:#e8ecf4;border-color:#d6deea}
 .palette .tag{overflow:hidden}
+.side.palette.is-rebuilding #pool{
+  visibility:hidden;
+}
 .palette .tag .tagNew{display:none}
 .palette .tag .tagEdit{display:grid;place-items:center}
 .palette .kill{
@@ -556,58 +592,49 @@ button,
 
 @media (max-width: 900px){
   html,body{
-    height:100dvh;
-    overflow:hidden;
+    height:auto;
+    overflow-x:hidden;
+    overflow-y:auto;
   }
   .viewport{
-    height:100dvh;
     min-height:100dvh;
-    overflow:hidden;
+    overflow:visible;
   }
   #stage{
     margin:8px auto;
     width:min(var(--design-w), calc(100% - 16px));
-    height:calc(100dvh - 16px);
-    display:flex;
-    flex-direction:column;
   }
   .app{
-    position:relative;
     display:block;
-    flex:1;
-    min-height:0;
-    overflow:hidden;
+    overflow:visible;
   }
-  .topNav{padding:8px}
+  .topNav{
+    position:sticky;
+    top:8px;
+    z-index:70;
+    padding:8px;
+  }
   .navItem{padding:7px 10px}
   .board{
     margin-right:0;
-    margin-bottom:0;
-    height:66.5dvh;
-    max-height:66.5dvh;
-    display:flex;
-    flex-direction:column;
-    overflow:hidden;
-  }
-  .scroll{
-    flex:1;
-    min-height:0;
-    overflow:auto;
-    overscroll-behavior:contain;
+    margin-bottom:calc(25dvh + 18px);
+    height:auto;
+    max-height:none;
+    overflow:visible;
   }
   .side{
-    position:absolute;
+    position:fixed;
     top:auto;
-    right:0;
-    left:0;
-    bottom:0;
+    right:12px;
+    left:12px;
+    bottom:10px;
     width:auto;
-    height:33.5dvh;
-    max-height:33.5dvh;
+    height:25dvh;
+    max-height:25dvh;
     margin-top:0;
     padding:10px;
     z-index:40;
-    border-radius:14px 14px 0 0;
+    border-radius:14px;
   }
 
   #pool{
@@ -664,5 +691,10 @@ button,
   }
   .tag.spanning.prev{
     transform:translateX(calc(-100% - var(--pad) - var(--center)));
+  }
+  .backToTopBtn{
+    right:12px;
+    bottom:calc(25dvh + 12px);
+    z-index:90;
   }
 }
