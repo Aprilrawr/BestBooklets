@@ -1,4 +1,4 @@
-{
+﻿{
     "booklets":  {
                      "mykonos":  {
                                      "pages":  82,
@@ -1244,7 +1244,7 @@
                                                      },
                                                      {
                                                          "id":  "zwd8ies",
-                                                         "text":  "Skiza Café",
+                                                         "text":  "Skiza CafÃ©",
                                                          "isNew":  false,
                                                          "createdAt":  1772494771496,
                                                          "bookletKey":  "santorini"
@@ -1546,6 +1546,419 @@
                                        "layout3":  {
 
                                                    }
-                                   }
+                                   },
+                     "flying-to-greece":  {
+                                              "pages":  24,
+                                              "names":  [
+                                                            {
+                                                                "id":  "972cfa8",
+                                                                "text":  "Flying to Greece",
+                                                                "isNew":  false,
+                                                                "createdAt":  1,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "eba1968",
+                                                                "text":  "New York Tourism Advisory Group",
+                                                                "isNew":  false,
+                                                                "createdAt":  2,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "d6cfa95",
+                                                                "text":  "Interconnection Projects",
+                                                                "isNew":  false,
+                                                                "createdAt":  3,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "58e6003",
+                                                                "text":  "Xenodocheio Milos",
+                                                                "isNew":  false,
+                                                                "createdAt":  4,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "cdb5bd8",
+                                                                "text":  "Estiatorio Milos",
+                                                                "isNew":  false,
+                                                                "createdAt":  5,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "edcc081",
+                                                                "text":  "Louis Hotels",
+                                                                "isNew":  false,
+                                                                "createdAt":  6,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "bb016e1",
+                                                                "text":  "Donkey Hotels",
+                                                                "isNew":  false,
+                                                                "createdAt":  7,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "dfd2309",
+                                                                "text":  "NOŪS",
+                                                                "isNew":  false,
+                                                                "createdAt":  8,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "b6fdd92",
+                                                                "text":  "InterContinental Athens",
+                                                                "isNew":  false,
+                                                                "createdAt":  9,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "70efbc2",
+                                                                "text":  "NEW Hotel",
+                                                                "isNew":  false,
+                                                                "createdAt":  10,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "3222958",
+                                                                "text":  "Semiramis",
+                                                                "isNew":  false,
+                                                                "createdAt":  11,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "5d776ed",
+                                                                "text":  "Periscope Hotel",
+                                                                "isNew":  false,
+                                                                "createdAt":  12,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "5a3a9fa",
+                                                                "text":  "Electra Hotels \u0026 Resorts",
+                                                                "isNew":  false,
+                                                                "createdAt":  13,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "5c16422",
+                                                                "text":  "Electra Kefalonia",
+                                                                "isNew":  false,
+                                                                "createdAt":  14,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "54d7abd",
+                                                                "text":  "Academias Hotel, Autograph Collection",
+                                                                "isNew":  false,
+                                                                "createdAt":  15,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "80f88f9",
+                                                                "text":  "Coral Hotel",
+                                                                "isNew":  false,
+                                                                "createdAt":  16,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "cd0d1c4",
+                                                                "text":  "CBS Yachts",
+                                                                "isNew":  false,
+                                                                "createdAt":  17,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "965efff",
+                                                                "text":  "Nilina Management",
+                                                                "isNew":  false,
+                                                                "createdAt":  18,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "096aa56",
+                                                                "text":  "Elixir Cruises",
+                                                                "isNew":  false,
+                                                                "createdAt":  19,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "0e949ba",
+                                                                "text":  "Alpha Marine R Group",
+                                                                "isNew":  false,
+                                                                "createdAt":  20,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "59747ba",
+                                                                "text":  "Gofas Jewelry",
+                                                                "isNew":  false,
+                                                                "createdAt":  21,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "b722192",
+                                                                "text":  "Poniros",
+                                                                "isNew":  false,
+                                                                "createdAt":  22,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "64c173c",
+                                                                "text":  "Barbarossa Athens",
+                                                                "isNew":  false,
+                                                                "createdAt":  23,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "1d2e5a5",
+                                                                "text":  "Sea Satin Market by Caprice",
+                                                                "isNew":  false,
+                                                                "createdAt":  24,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "48329cc",
+                                                                "text":  "Pasaji",
+                                                                "isNew":  false,
+                                                                "createdAt":  25,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "e72adc8",
+                                                                "text":  "Clemente VIII",
+                                                                "isNew":  false,
+                                                                "createdAt":  26,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "b5311a4",
+                                                                "text":  "Drakoulis Restaurants",
+                                                                "isNew":  false,
+                                                                "createdAt":  27,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "32f5ec5",
+                                                                "text":  "DRY \u0026 RAW",
+                                                                "isNew":  false,
+                                                                "createdAt":  28,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "4a35cb6",
+                                                                "text":  "Papaioannou",
+                                                                "isNew":  false,
+                                                                "createdAt":  29,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "ea5cabb",
+                                                                "text":  "Zen Beach",
+                                                                "isNew":  false,
+                                                                "createdAt":  30,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "91f082f",
+                                                                "text":  "Pere Ubu",
+                                                                "isNew":  false,
+                                                                "createdAt":  31,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "6557065",
+                                                                "text":  "nice n easy organic restaurant",
+                                                                "isNew":  false,
+                                                                "createdAt":  32,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "744568b",
+                                                                "text":  "Iguazu Athens",
+                                                                "isNew":  false,
+                                                                "createdAt":  33,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "5d473b0",
+                                                                "text":  "Toy Room Athens",
+                                                                "isNew":  false,
+                                                                "createdAt":  34,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "dac77dc",
+                                                                "text":  "Panagiota Plus",
+                                                                "isNew":  false,
+                                                                "createdAt":  35,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "169c9e6",
+                                                                "text":  "Anemolia Mountain Resort",
+                                                                "isNew":  false,
+                                                                "createdAt":  36,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "841b43e",
+                                                                "text":  "Likoria",
+                                                                "isNew":  false,
+                                                                "createdAt":  37,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "784d664",
+                                                                "text":  "Santa Marina Arachova Resort \u0026 Spa",
+                                                                "isNew":  false,
+                                                                "createdAt":  38,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "ab5a185",
+                                                                "text":  "Ceci Luxury Suites",
+                                                                "isNew":  false,
+                                                                "createdAt":  39,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "5e1830f",
+                                                                "text":  "AJM Luxury Hotel",
+                                                                "isNew":  false,
+                                                                "createdAt":  40,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "370ded6",
+                                                                "text":  "Paeonia",
+                                                                "isNew":  false,
+                                                                "createdAt":  41,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "e2d4fc4",
+                                                                "text":  "Aegli Arachova",
+                                                                "isNew":  false,
+                                                                "createdAt":  42,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "a8bfb3d",
+                                                                "text":  "ParaMount Livadi Arachovas",
+                                                                "isNew":  false,
+                                                                "createdAt":  43,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "6aca546",
+                                                                "text":  "La Fabbrica Della Pizza",
+                                                                "isNew":  false,
+                                                                "createdAt":  44,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "15b889e",
+                                                                "text":  "Hotel City Zen",
+                                                                "isNew":  false,
+                                                                "createdAt":  45,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "3995da2",
+                                                                "text":  "Le Grand Chalet",
+                                                                "isNew":  false,
+                                                                "createdAt":  46,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "8647e26",
+                                                                "text":  "Balcony",
+                                                                "isNew":  false,
+                                                                "createdAt":  47,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "ee0c0ea",
+                                                                "text":  "Xenonas Kiriaki",
+                                                                "isNew":  false,
+                                                                "createdAt":  48,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "3927691",
+                                                                "text":  "Due-S",
+                                                                "isNew":  false,
+                                                                "createdAt":  49,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "da811d9",
+                                                                "text":  "Manifest Hotel",
+                                                                "isNew":  false,
+                                                                "createdAt":  50,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "c350f43",
+                                                                "text":  "Cape Ftelia",
+                                                                "isNew":  false,
+                                                                "createdAt":  51,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "cccbe89",
+                                                                "text":  "Castro Hotel Syros",
+                                                                "isNew":  false,
+                                                                "createdAt":  52,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "e81a555",
+                                                                "text":  "Aithrio Lounge",
+                                                                "isNew":  false,
+                                                                "createdAt":  53,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "803df73",
+                                                                "text":  "Cellar 1857",
+                                                                "isNew":  false,
+                                                                "createdAt":  54,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "2137d79",
+                                                                "text":  "Cavo Fregada Syros",
+                                                                "isNew":  false,
+                                                                "createdAt":  55,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "0d7b93f",
+                                                                "text":  "Château Nico Lazaridi",
+                                                                "isNew":  false,
+                                                                "createdAt":  56,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            },
+                                                            {
+                                                                "id":  "34471b4",
+                                                                "text":  "Optima Lodgings",
+                                                                "isNew":  false,
+                                                                "createdAt":  57,
+                                                                "bookletKey":  "flying-to-greece"
+                                                            }
+                                                        ],
+                                              "assignments":  {
+
+                                                              },
+                                              "spreads":  {
+
+                                                          },
+                                              "layout3":  {
+
+                                                          }
+                                          }
                  }
 }

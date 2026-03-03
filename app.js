@@ -171,6 +171,89 @@
     }
     return false;
   }
+  function normalizeLabelText(text){
+    return ((text||'').toString().trim()).toLowerCase();
+  }
+  function labelExists(text, excludeId){
+    var needle=normalizeLabelText(text);
+    if(!needle || !Array.isArray(state.names)) return false;
+    for(var i=0;i<state.names.length;i++){
+      var rec=state.names[i];
+      if(!rec) continue;
+      if(excludeId && rec.id===excludeId) continue;
+      if(normalizeLabelText(rec.text)===needle) return true;
+    }
+    return false;
+  }
+  function dedupeLabelsInState(){
+    if(!Array.isArray(state.names)) state.names=[];
+
+    var idRemap={};
+    var seenByText={};
+    var seenById={};
+    var uniqueNames=[];
+
+    for(var i=0;i<state.names.length;i++){
+      var rec=state.names[i];
+      if(!rec || !rec.id) continue;
+      var key=normalizeLabelText(rec.text);
+      if(!key) continue;
+
+      if(seenById[rec.id]){
+        idRemap[rec.id]=seenById[rec.id];
+        continue;
+      }
+
+      var existing=seenByText[key];
+      if(existing){
+        idRemap[rec.id]=existing.id;
+        continue;
+      }
+
+      seenByText[key]=rec;
+      seenById[rec.id]=rec.id;
+      uniqueNames.push(rec);
+    }
+
+    state.names=uniqueNames;
+
+    var validIds={};
+    state.names.forEach(function(rec){ validIds[rec.id]=true; });
+
+    if(state.assignments && typeof state.assignments==='object'){
+      Object.keys(state.assignments).forEach(function(page){
+        var arr=state.assignments[page];
+        if(!Array.isArray(arr)) return;
+        var out=[];
+        var seen={};
+        for(var j=0;j<arr.length;j++){
+          var id=arr[j];
+          if(idRemap[id]) id=idRemap[id];
+          if(!validIds[id]) continue;
+          if(seen[id]) continue;
+          seen[id]=true;
+          out.push(id);
+        }
+        state.assignments[page]=out;
+      });
+    }
+
+    if(state.spreads && typeof state.spreads==='object'){
+      Object.keys(state.spreads).forEach(function(anchor){
+        var info=state.spreads[anchor];
+        if(!info || !info.id){
+          delete state.spreads[anchor];
+          return;
+        }
+        var mapped=idRemap[info.id] || info.id;
+        if(!validIds[mapped]){
+          delete state.spreads[anchor];
+          return;
+        }
+        info.id=mapped;
+      });
+    }
+  }
   function currentLabelSort(){
     if(labelSortEl && labelSortEl.value) return labelSortEl.value;
     return labelSortMode || 'recent';
@@ -364,6 +447,10 @@
       if(next===null) return;
       next=(next||'').trim();
       if(!next || next===current) return;
+      if(labelExists(next, id)){
+        alert('This name already exists.');
+        return;
+      }
       rememberState();
       if(!setLabelTextState(id, next)) return;
       renderAllTagsToPool();
@@ -506,6 +593,65 @@
     "Portioli","OneExchange","Cinema","Costa Lekka","GMT Voyager","Premium Legal","MPOS","Priveon","Traffic","Autopower",
     "Nilina","Elixir","Lionsbay","Dolphin","Advanced VIP","Yaloou"
   ];
+  var FLYING_TO_GREECE=[
+    "Flying to Greece",
+    "New York Tourism Advisory Group",
+    "Interconnection Projects",
+    "Xenodocheio Milos",
+    "Estiatorio Milos",
+    "Louis Hotels",
+    "Donkey Hotels",
+    "NOŪS",
+    "InterContinental Athens",
+    "NEW Hotel",
+    "Semiramis",
+    "Periscope Hotel",
+    "Electra Hotels & Resorts",
+    "Electra Kefalonia",
+    "Academias Hotel, Autograph Collection",
+    "Coral Hotel",
+    "CBS Yachts",
+    "Nilina Management",
+    "Elixir Cruises",
+    "Alpha Marine R Group",
+    "Gofas Jewelry",
+    "Poniros",
+    "Barbarossa Athens",
+    "Sea Satin Market by Caprice",
+    "Pasaji",
+    "Clemente VIII",
+    "Drakoulis Restaurants",
+    "DRY & RAW",
+    "Papaioannou",
+    "Zen Beach",
+    "Pere Ubu",
+    "nice n easy organic restaurant",
+    "Iguazu Athens",
+    "Toy Room Athens",
+    "Panagiota Plus",
+    "Anemolia Mountain Resort",
+    "Likoria",
+    "Santa Marina Arachova Resort & Spa",
+    "Ceci Luxury Suites",
+    "AJM Luxury Hotel",
+    "Paeonia",
+    "Aegli Arachova",
+    "ParaMount Livadi Arachovas",
+    "La Fabbrica Della Pizza",
+    "Hotel City Zen",
+    "Le Grand Chalet",
+    "Balcony",
+    "Xenonas Kiriaki",
+    "Due-S",
+    "Manifest Hotel",
+    "Cape Ftelia",
+    "Castro Hotel Syros",
+    "Aithrio Lounge",
+    "Cellar 1857",
+    "Cavo Fregada Syros",
+    "Château Nico Lazaridi",
+    "Optima Lodgings"
+  ];
   var PROVIDED_SET=(function(){
     var map={};
     for(var i=0;i<PROVIDED.length;i++) map[PROVIDED[i]]=true;
@@ -514,6 +660,7 @@
 
   function defaultNamesForBooklet(){
     if(BOOKLET_KEY==='mykonos') return PROVIDED.slice();
+    if(BOOKLET_KEY==='flying-to-greece') return FLYING_TO_GREECE.slice();
     return [];
   }
 
@@ -528,21 +675,23 @@
       return !drop;
     });
 
-    if(!Object.keys(removed).length) return;
+    if(Object.keys(removed).length){
+      if(state.assignments && typeof state.assignments==='object'){
+        Object.keys(state.assignments).forEach(function(key){
+          var arr=state.assignments[key];
+          if(Array.isArray(arr)) state.assignments[key]=arr.filter(function(id){ return !removed[id]; });
+        });
+      }
 
-    if(state.assignments && typeof state.assignments==='object'){
-      Object.keys(state.assignments).forEach(function(key){
-        var arr=state.assignments[key];
-        if(Array.isArray(arr)) state.assignments[key]=arr.filter(function(id){ return !removed[id]; });
-      });
+      if(state.spreads && typeof state.spreads==='object'){
+        Object.keys(state.spreads).forEach(function(key){
+          var info=state.spreads[key];
+          if(info && removed[info.id]) delete state.spreads[key];
+        });
+      }
     }
 
-    if(state.spreads && typeof state.spreads==='object'){
-      Object.keys(state.spreads).forEach(function(key){
-        var info=state.spreads[key];
-        if(info && removed[info.id]) delete state.spreads[key];
-      });
-    }
+    dedupeLabelsInState();
   }
 
   var state={pages:DEFAULT_PAGES,names:[],assignments:{},spreads:{},layout3:{}};
@@ -597,6 +746,7 @@
       if(!s.layout3 || typeof s.layout3!=='object') s.layout3={};
       state=s;
       stripForeignLabelsFromState();
+      dedupeLabelsInState();
       pageCount.value=String(state.pages||DEFAULT_PAGES);
       return true;
     }catch(_){return false;}
@@ -671,6 +821,7 @@
     if(!s.pages || !isFinite(Number(s.pages))) s.pages=DEFAULT_PAGES;
     state=s;
     stripForeignLabelsFromState();
+    dedupeLabelsInState();
     normalizeSpreads();
     pageCount.value=String(state.pages||DEFAULT_PAGES);
     return true;
@@ -759,6 +910,7 @@
     var total=Math.max(2,(Number(pageCount.value)||DEFAULT_PAGES));
     if(total%2===1) total+=1;
     state.pages=total;
+    dedupeLabelsInState();
     normalizeSpreads();
     state.assignments[1]=[];
     state.assignments[2]=[];
@@ -1251,6 +1403,10 @@
   saveNameBtn.onclick=function(){
     var v=(newNameInput.value||'').trim();
     if(!v) return;
+    if(labelExists(v)){
+      alert('This name already exists.');
+      return;
+    }
     rememberState();
     var rec={id:uid(),text:v,isNew:false,createdAt:Date.now(),bookletKey:BOOKLET_KEY};
     if(!state.names) state.names=[];
