@@ -338,6 +338,23 @@ button,
   padding:0;
   cursor:pointer;
 }
+.tag .tagEdit{
+  display:none;
+  position:absolute;
+  right:34px;
+  top:50%;
+  transform:translateY(-50%);
+  width:20px;
+  height:20px;
+  border-radius:999px;
+  border:1px solid #cbd5e1;
+  background:#f8fafc;
+  color:#334155;
+  font-weight:900;
+  line-height:1;
+  padding:0;
+  cursor:pointer;
+}
 .tag .tagNew{
   position:absolute;
   right:46px;
@@ -358,6 +375,7 @@ button,
 }
 .tag .tagNew:hover{background:#f6b9df;border-color:#ee8fcf;box-shadow:0 0 0 3px rgba(244,164,216,.22),0 4px 10px rgba(233,129,199,.24);transform:translateY(-1px)}
 .tag .tagSpread:hover{background:#bbf7d0;border-color:#4ade80;box-shadow:0 0 0 3px rgba(34,197,94,.2),0 4px 10px rgba(34,197,94,.25);transform:translateY(-1px)}
+.tag .tagEdit:hover{background:#eef2f7;border-color:#94a3b8;box-shadow:0 0 0 3px rgba(148,163,184,.18),0 4px 10px rgba(100,116,139,.18)}
 .tag.can-spread .tagSpread{display:grid;place-items:center}
 .bubble .tag .label{overflow:visible}
 .chip{
@@ -433,6 +451,7 @@ button,
 .palette .tag{background:#e8ecf4;border-color:#d6deea}
 .palette .tag{overflow:hidden}
 .palette .tag .tagNew{display:none}
+.palette .tag .tagEdit{display:grid;place-items:center}
 .palette .kill{
   right:8px;
   top:50%;

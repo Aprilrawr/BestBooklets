@@ -37,6 +37,7 @@
   var labelSortMode='default';
   var saveTimer=null;
   var globalSyncTimer=null;
+  var isGlobalSaveInFlight=false;
   var lastServerFingerprint='';
   var suppressGlobalSave=false;
   var undoStack=[];
@@ -100,6 +101,14 @@
   }
 
   function cloneState(src){ return JSON.parse(JSON.stringify(src)); }
+  function preserveWindowScroll(work){
+    var sx=window.scrollX||0;
+    var sy=window.scrollY||0;
+    work();
+    requestAnimationFrame(function(){
+      window.scrollTo(sx, sy);
+    });
+  }
   function stateFingerprint(src){
     try{ return JSON.stringify(src||{}); }
     catch(_){ return ''; }
@@ -150,6 +159,17 @@
         return;
       }
     }
+  }
+  function setLabelTextState(labelId, text){
+    if(!Array.isArray(state.names)) return false;
+    for(var i=0;i<state.names.length;i++){
+      var rec=state.names[i];
+      if(rec && rec.id===labelId){
+        rec.text=text;
+        return true;
+      }
+    }
+    return false;
   }
   function currentLabelSort(){
     if(labelSortEl && labelSortEl.value) return labelSortEl.value;
@@ -305,7 +325,7 @@
     if(!id)id=uid();
     var el=document.createElement('div');
     el.className='tag'; el.setAttribute('data-id',id); el.draggable=false;
-    el.innerHTML='<span class="label"></span><button type="button" class="tagNew" title="Mark as New">NEW</button><button type="button" class="tagSpread" title="Spread">↔</button><button type="button" class="kill" title="Remove">×</button>';
+    el.innerHTML='<span class="label"></span><button type="button" class="tagNew" title="Mark as New">NEW</button><button type="button" class="tagSpread" title="Spread">↔</button><button type="button" class="tagEdit" title="Edit label">✎</button><button type="button" class="kill" title="Remove">×</button>';
     el.querySelector('.label').textContent=name;
     var isNew=false;
     if(Array.isArray(state.names)){
@@ -334,6 +354,19 @@
       var nowNew=!el.classList.contains('is-new');
       el.classList.toggle('is-new', nowNew);
       setLabelNewState(id, nowNew);
+      save();
+    });
+    el.querySelector('.tagEdit').addEventListener('click',function(e){
+      e.stopPropagation();
+      if(!el.closest('#pool')) return;
+      var current=(el.querySelector('.label').textContent||'').trim();
+      var next=prompt('Edit label', current);
+      if(next===null) return;
+      next=(next||'').trim();
+      if(!next || next===current) return;
+      rememberState();
+      if(!setLabelTextState(id, next)) return;
+      renderAllTagsToPool();
       save();
     });
     el.addEventListener('click',function(e){ e.stopPropagation(); selectTag(el); });
@@ -645,6 +678,7 @@
 
   function loadGlobal(opts){
     opts=opts||{};
+    if(isGlobalSaveInFlight) return Promise.resolve();
     if(!opts.silent) setSaveStatus('saving');
     return fetch(API_STATE,{cache:'no-store'})
       .then(function(res){
@@ -661,7 +695,7 @@
         if(pointerDrag) return;
         if(!applyState(serverState)) return;
         suppressGlobalSave=true;
-        build();
+        preserveWindowScroll(function(){ build(); });
         suppressGlobalSave=false;
         saveLocal();
         lastServerFingerprint=incomingFingerprint;
@@ -683,19 +717,24 @@
 
   function flushGlobalSave(){
     try{
+      var payload=JSON.stringify(state);
+      lastServerFingerprint=payload;
+      isGlobalSaveInFlight=true;
       fetch(API_STATE,{
         method:'POST',
         headers:{'Content-Type':'application/json'},
-        body:JSON.stringify(state),
+        body:payload,
         keepalive:true
       }).then(function(){
-        lastServerFingerprint=stateFingerprint(state);
         setLastSyncedNow();
         setSaveStatus('saved');
       }).catch(function(){
         setSaveStatus('error');
+      }).finally(function(){
+        isGlobalSaveInFlight=false;
       });
     }catch(_){
+      isGlobalSaveInFlight=false;
       setSaveStatus('error');
     }
   }
@@ -1216,7 +1255,7 @@
     var rec={id:uid(),text:v,isNew:false,createdAt:Date.now(),bookletKey:BOOKLET_KEY};
     if(!state.names) state.names=[];
     state.names.push(rec);
-    build();
+    renderAllTagsToPool();
     newNameRow.style.display='none';
     save();
   };
