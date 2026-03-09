@@ -299,7 +299,9 @@
     }
   }
   function normalizeLabelSortMode(mode){
-    return mode==='az' ? 'az' : 'recent';
+    if(mode==='az') return 'az';
+    if(mode==='oldest') return 'oldest';
+    return 'recent';
   }
   function currentLabelSort(){
     if(labelSortEl && labelSortEl.value) return normalizeLabelSortMode(labelSortEl.value);
@@ -313,6 +315,14 @@
         var at=((a&&a.text)||'').toLowerCase();
         var bt=((b&&b.text)||'').toLowerCase();
         return at.localeCompare(bt);
+      });
+      return copy;
+    }
+    if(mode==='oldest'){
+      copy.sort(function(a,b){
+        var av=Number((a&&a.createdAt)||0);
+        var bv=Number((b&&b.createdAt)||0);
+        return av-bv;
       });
       return copy;
     }
@@ -350,6 +360,13 @@
         var bt=((brec.text||'').toLowerCase());
         var cmp=at.localeCompare(bt);
         if(cmp!==0) return cmp;
+        return aid.localeCompare(bid);
+      }
+
+      if(mode==='oldest'){
+        var ao=Number(arec.createdAt||0);
+        var bo=Number(brec.createdAt||0);
+        if(ao!==bo) return ao-bo;
         return aid.localeCompare(bid);
       }
 
