@@ -43,7 +43,7 @@
   var API_STATE='/api/state?booklet='+encodeURIComponent(BOOKLET_KEY);
   var API_NOTIFY='/api/notify?booklet='+encodeURIComponent(BOOKLET_KEY);
   var MAX=4, START=1;
-  var labelSortMode='default';
+  var labelSortMode='recent';
   var saveTimer=null;
   var globalSyncTimer=null;
   var isGlobalSaveInFlight=false;
@@ -298,14 +298,16 @@
       });
     }
   }
+  function normalizeLabelSortMode(mode){
+    return mode==='az' ? 'az' : 'recent';
+  }
   function currentLabelSort(){
-    if(labelSortEl && labelSortEl.value) return labelSortEl.value;
-    return labelSortMode || 'recent';
+    if(labelSortEl && labelSortEl.value) return normalizeLabelSortMode(labelSortEl.value);
+    return normalizeLabelSortMode(labelSortMode);
   }
   function sortNamesForPool(names){
     var copy=(names||[]).slice();
     var mode=currentLabelSort();
-    if(mode==='default') return copy;
     if(mode==='az'){
       copy.sort(function(a,b){
         var at=((a&&a.text)||'').toLowerCase();
@@ -321,23 +323,6 @@
     });
     return copy;
   }
-  function getPlacedLabelIds(){
-    var placed={};
-    if(state.assignments && typeof state.assignments==='object'){
-      Object.keys(state.assignments).forEach(function(page){
-        var arr=state.assignments[page];
-        if(!Array.isArray(arr)) return;
-        for(var i=0;i<arr.length;i++) placed[arr[i]]=true;
-      });
-    }
-    if(state.spreads && typeof state.spreads==='object'){
-      Object.keys(state.spreads).forEach(function(anchor){
-        var info=state.spreads[anchor];
-        if(info && info.id) placed[info.id]=true;
-      });
-    }
-    return placed;
-  }
   function sortPoolTagsOnly(){
     if(!pool) return;
     var tags=[].slice.call(pool.querySelectorAll('.tag[data-id]'));
@@ -345,19 +330,12 @@
 
     var mode=currentLabelSort();
     var byId={};
-    var defaultOrder={};
-    var placed=getPlacedLabelIds();
 
     if(Array.isArray(state.names)){
-      var rank=0;
       for(var i=0;i<state.names.length;i++){
         var rec=state.names[i];
         if(!rec || !rec.id) continue;
         byId[rec.id]=rec;
-        if(!placed[rec.id]){
-          defaultOrder[rec.id]=rank;
-          rank+=1;
-        }
       }
     }
 
@@ -375,16 +353,9 @@
         return aid.localeCompare(bid);
       }
 
-      if(mode==='recent'){
-        var av=Number(arec.createdAt||0);
-        var bv=Number(brec.createdAt||0);
-        if(av!==bv) return bv-av;
-        return aid.localeCompare(bid);
-      }
-
-      var ar=(defaultOrder[aid]!==undefined) ? defaultOrder[aid] : Number.MAX_SAFE_INTEGER;
-      var br=(defaultOrder[bid]!==undefined) ? defaultOrder[bid] : Number.MAX_SAFE_INTEGER;
-      if(ar!==br) return ar-br;
+      var av=Number(arec.createdAt||0);
+      var bv=Number(brec.createdAt||0);
+      if(av!==bv) return bv-av;
       return aid.localeCompare(bid);
     });
 
@@ -1885,14 +1856,12 @@
   setNotifyButtonState('idle');
   try{
     var savedSort=localStorage.getItem(SORT_STORAGE);
-    if(savedSort==='default' || savedSort==='az' || savedSort==='recent') labelSortMode=savedSort;
-  }catch(_){ }
+    labelSortMode=normalizeLabelSortMode(savedSort);
+  }catch(_){ labelSortMode='recent'; }
   if(labelSortEl){
     labelSortEl.value=labelSortMode;
     labelSortEl.onchange=function(){
-      if(labelSortEl.value==='az') labelSortMode='az';
-      else if(labelSortEl.value==='recent') labelSortMode='recent';
-      else labelSortMode='default';
+      labelSortMode=normalizeLabelSortMode(labelSortEl.value);
       try{ localStorage.setItem(SORT_STORAGE,labelSortMode); }catch(_){ }
       applyCurrentSortToPoolOnly();
     };
