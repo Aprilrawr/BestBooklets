@@ -471,7 +471,7 @@
   function startPointerDrag(ev, tag){
     if(ev.button!==0) return;
     if(ev.pointerType && ev.pointerType!=='mouse') return;
-    if(ev.target && ev.target.classList && (ev.target.classList.contains('kill') || ev.target.classList.contains('tagSpread') || ev.target.classList.contains('tagNew'))) return;
+    if(ev.target && ev.target.classList && (ev.target.classList.contains('kill') || ev.target.classList.contains('tagSpread') || ev.target.classList.contains('tagNew') || ev.target.classList.contains('tagMoveUp') || ev.target.classList.contains('tagMoveDown'))) return;
 
     var ghost=document.createElement('div');
     ghost.className='dragGhost';
@@ -518,7 +518,7 @@
     if(!id)id=uid();
     var el=document.createElement('div');
     el.className='tag'; el.setAttribute('data-id',id); el.draggable=false;
-    el.innerHTML='<span class="label"></span><button type="button" class="tagNew" title="Mark as New">NEW</button><button type="button" class="tagSpread" title="Spread">↔</button><button type="button" class="tagEdit" title="Edit label">✎</button><button type="button" class="kill" title="Remove">×</button>';
+    el.innerHTML='<span class="label"></span><button type="button" class="tagNew" title="Mark as New">NEW</button><button type="button" class="tagSpread" title="Spread">↔</button><button type="button" class="tagEdit" title="Edit label">✎</button><button type="button" class="tagMoveUp" title="Move up">↑</button><button type="button" class="tagMoveDown" title="Move down">↓</button><button type="button" class="kill" title="Remove">×</button>';
     el.querySelector('.label').textContent=name;
     var isNew=false;
     if(Array.isArray(state.names)){
@@ -553,6 +553,22 @@
       e.stopPropagation();
       if(!el.closest('#pool')) return;
       openRenameLabelModal(id, (el.querySelector('.label').textContent||'').trim());
+    });
+    el.querySelector('.tagMoveUp').addEventListener('click',function(e){
+      e.stopPropagation();
+      var cell=el.closest('.cell');
+      var labelId=el.getAttribute('data-id');
+      if(!canMoveTagInFour(cell, labelId, -1)) return;
+      rememberState();
+      if(moveTagInFour(cell, labelId, -1)) save();
+    });
+    el.querySelector('.tagMoveDown').addEventListener('click',function(e){
+      e.stopPropagation();
+      var cell=el.closest('.cell');
+      var labelId=el.getAttribute('data-id');
+      if(!canMoveTagInFour(cell, labelId, 1)) return;
+      rememberState();
+      if(moveTagInFour(cell, labelId, 1)) save();
     });
     el.addEventListener('click',function(e){ e.stopPropagation(); selectTag(el); });
     el.addEventListener('pointerdown',function(e){ startPointerDrag(e, el); });
@@ -1354,6 +1370,49 @@
     return true;
   }
 
+  function canMoveTagInFour(cell, labelId, dir){
+    if(!cell || !labelId) return false;
+    if(dir!==-1 && dir!==1) return false;
+
+    var p=Number(cell.getAttribute('data-page'));
+    if(!p || isLockedCoverPage(p)) return false;
+
+    var ids=list(p);
+    if(!Array.isArray(ids) || ids.length!==4) return false;
+
+    var idx=ids.indexOf(labelId);
+    if(idx<0) return false;
+
+    var target=idx+dir;
+    return target>=0 && target<ids.length;
+  }
+
+  function moveTagInFour(cell, labelId, dir){
+    if(!canMoveTagInFour(cell, labelId, dir)) return false;
+
+    var p=Number(cell.getAttribute('data-page'));
+    var ids=list(p);
+    var idx=ids.indexOf(labelId);
+    var target=idx+dir;
+
+    ids.splice(idx,1);
+    ids.splice(target,0,labelId);
+
+    var slot=cell.querySelector('.slot');
+    if(slot){
+      var visualTags=[].slice.call(slot.querySelectorAll('.tag'));
+      var byId={};
+      visualTags.forEach(function(t){ byId[t.getAttribute('data-id')] = t; });
+      ids.forEach(function(currentId){
+        var node=byId[currentId];
+        if(node) slot.appendChild(node);
+      });
+    }
+
+    layoutCell(cell);
+    return true;
+  }
+
   function selectTag(t){
     var cell=t.closest('.cell');
     if(cell){
@@ -1463,7 +1522,7 @@
     }
 
     tag.classList.remove('is-half','is-quarter','is-single','half-row','spanning','is-spread','next','prev');
-    tag.classList.remove('can-spread');
+    tag.classList.remove('can-spread','can-move-up','can-move-down');
     [].slice.call(tag.querySelectorAll('.chip')).forEach(function(x){x.remove();});
     var lbl=tag.querySelector('.label'); if(lbl) lbl.style.fontSize='';
     pool.appendChild(tag);
@@ -1487,7 +1546,7 @@
     }
 
     tags.forEach(function(t){
-      t.classList.remove('is-half','is-quarter','is-single','half-row','spanning','is-spread','next','prev','can-spread');
+      t.classList.remove('is-half','is-quarter','is-single','half-row','spanning','is-spread','next','prev','can-spread','can-move-up','can-move-down');
       [].slice.call(t.querySelectorAll('.chip.half,.chip.quarter')).forEach(function(x){x.remove();});
     });
 
@@ -1529,6 +1588,13 @@
         q.className='chip quarter';
         q.textContent='1/4';
         t.appendChild(q);
+      });
+    }
+
+    if(count===4){
+      tags.forEach(function(t,i){
+        if(i>0) t.classList.add('can-move-up');
+        if(i<count-1) t.classList.add('can-move-down');
       });
     }
 
