@@ -1,0 +1,8 @@
+{
+    "liveServer.settings.port": 5501,
+    "chat.tools.terminal.autoApprove": {
+        "ConvertFrom-Json": true,
+        "Group-Object": true,
+        "ForEach-Object": true
+    }
+}
