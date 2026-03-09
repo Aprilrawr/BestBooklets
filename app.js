@@ -321,6 +321,84 @@
     });
     return copy;
   }
+  function getPlacedLabelIds(){
+    var placed={};
+    if(state.assignments && typeof state.assignments==='object'){
+      Object.keys(state.assignments).forEach(function(page){
+        var arr=state.assignments[page];
+        if(!Array.isArray(arr)) return;
+        for(var i=0;i<arr.length;i++) placed[arr[i]]=true;
+      });
+    }
+    if(state.spreads && typeof state.spreads==='object'){
+      Object.keys(state.spreads).forEach(function(anchor){
+        var info=state.spreads[anchor];
+        if(info && info.id) placed[info.id]=true;
+      });
+    }
+    return placed;
+  }
+  function sortPoolTagsOnly(){
+    if(!pool) return;
+    var tags=[].slice.call(pool.querySelectorAll('.tag[data-id]'));
+    if(tags.length<2) return;
+
+    var mode=currentLabelSort();
+    var byId={};
+    var defaultOrder={};
+    var placed=getPlacedLabelIds();
+
+    if(Array.isArray(state.names)){
+      var rank=0;
+      for(var i=0;i<state.names.length;i++){
+        var rec=state.names[i];
+        if(!rec || !rec.id) continue;
+        byId[rec.id]=rec;
+        if(!placed[rec.id]){
+          defaultOrder[rec.id]=rank;
+          rank+=1;
+        }
+      }
+    }
+
+    tags.sort(function(a,b){
+      var aid=a.getAttribute('data-id')||'';
+      var bid=b.getAttribute('data-id')||'';
+      var arec=byId[aid]||{};
+      var brec=byId[bid]||{};
+
+      if(mode==='az'){
+        var at=((arec.text||'').toLowerCase());
+        var bt=((brec.text||'').toLowerCase());
+        var cmp=at.localeCompare(bt);
+        if(cmp!==0) return cmp;
+        return aid.localeCompare(bid);
+      }
+
+      if(mode==='recent'){
+        var av=Number(arec.createdAt||0);
+        var bv=Number(brec.createdAt||0);
+        if(av!==bv) return bv-av;
+        return aid.localeCompare(bid);
+      }
+
+      var ar=(defaultOrder[aid]!==undefined) ? defaultOrder[aid] : Number.MAX_SAFE_INTEGER;
+      var br=(defaultOrder[bid]!==undefined) ? defaultOrder[bid] : Number.MAX_SAFE_INTEGER;
+      if(ar!==br) return ar-br;
+      return aid.localeCompare(bid);
+    });
+
+    tags.forEach(function(tag){ pool.appendChild(tag); });
+  }
+  function applyCurrentSortToPoolOnly(){
+    var sx=window.scrollX||0;
+    var sy=window.scrollY||0;
+    preserveWindowScroll(function(){
+      sortPoolTagsOnly();
+      adjustAllFonts();
+    });
+    restoreScrollIfJumped(sx, sy);
+  }
   function deleteLabelEverywhere(labelId){
     if(!labelId) return;
 
@@ -1816,7 +1894,7 @@
       else if(labelSortEl.value==='recent') labelSortMode='recent';
       else labelSortMode='default';
       try{ localStorage.setItem(SORT_STORAGE,labelSortMode); }catch(_){ }
-      build();
+      applyCurrentSortToPoolOnly();
     };
   }
   updateFixedSidebarMetrics();
