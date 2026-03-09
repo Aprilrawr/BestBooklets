@@ -47,6 +47,7 @@
   var saveTimer=null;
   var globalSyncTimer=null;
   var isGlobalSaveInFlight=false;
+  var hasPendingGlobalSave=false;
   var lastServerFingerprint='';
   var lastKnownServerRev='';
   var suppressGlobalSave=false;
@@ -946,7 +947,7 @@
 
   function loadGlobal(opts){
     opts=opts||{};
-    if(isGlobalSaveInFlight) return Promise.resolve();
+    if(isGlobalSaveInFlight || hasPendingGlobalSave || saveTimer) return Promise.resolve();
     if(!opts.silent) setSaveStatus('saving');
     if(!opts.silent) setSyncDiagnostic('pending','GET /api/state');
     return fetch(API_STATE,{cache:'no-store'})
@@ -996,9 +997,11 @@
 
   function queueGlobalSave(){
     if(suppressGlobalSave) return;
+    hasPendingGlobalSave=true;
     if(saveTimer) clearTimeout(saveTimer);
     setSaveStatus('saving');
     setSyncDiagnostic('pending','POST /api/state queued');
+    if(isGlobalSaveInFlight) return;
     saveTimer=setTimeout(function(){
       saveTimer=null;
       flushGlobalSave();
@@ -1006,6 +1009,9 @@
   }
 
   function flushGlobalSave(){
+    if(isGlobalSaveInFlight) return;
+    if(!hasPendingGlobalSave) return;
+    hasPendingGlobalSave=false;
     try{
       var payload=JSON.stringify(state);
       lastServerFingerprint=payload;
@@ -1030,15 +1036,16 @@
         setSyncDiagnostic('ok','POST /api/state '+res.status);
       }).catch(function(err){
         if(err && err.message==='stale-state-409'){
-          setSaveStatus('error');
-          setSyncDiagnostic('error','Stale tab detected, loading latest state');
-          loadGlobal({silent:false});
+          hasPendingGlobalSave=true;
+          setSaveStatus('saving');
+          setSyncDiagnostic('pending','Stale revision, retrying save');
           return;
         }
         setSaveStatus('error');
         setSyncDiagnostic('error','POST /api/state failed');
       }).finally(function(){
         isGlobalSaveInFlight=false;
+        if(hasPendingGlobalSave) flushGlobalSave();
       });
     }catch(_){
       isGlobalSaveInFlight=false;
@@ -1050,6 +1057,25 @@
   function save(){
     saveLocal();
     queueGlobalSave();
+  }
+
+  function clearPlacedTagsFromDom(){
+    [].slice.call(rowsEl.querySelectorAll('.cell[data-page]')).forEach(function(cell){
+      var slot=cell.querySelector('.slot');
+      if(slot) slot.innerHTML='';
+      cell.classList.remove('spanning-host','spread-locked');
+    });
+  }
+
+  function refreshTagDomFromState(){
+    var sx=window.scrollX||0;
+    var sy=window.scrollY||0;
+    preserveWindowScroll(function(){
+      clearPlacedTagsFromDom();
+      renderAllTagsToPool();
+      syncPlacedTagsFromState();
+    });
+    restoreScrollIfJumped(sx, sy);
   }
 
   function renderAllTagsToPool(){
@@ -1627,9 +1653,8 @@
       closeRenameLabelModal();
       return;
     }
-    renderAllTagsToPool();
-    syncPlacedTagsFromState();
     closeRenameLabelModal();
+    refreshTagDomFromState();
     save();
   }
 
@@ -1702,9 +1727,8 @@
     rememberState();
     if(!state.names) state.names=[];
     for(var j=0;j<created.length;j++) state.names.push(created[j]);
-    renderAllTagsToPool();
-    syncPlacedTagsFromState();
     closeMultiLabelModal();
+    refreshTagDomFromState();
     save();
   };
   if(confirmRenameLabelBtn) confirmRenameLabelBtn.onclick=function(){
